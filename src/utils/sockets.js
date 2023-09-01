@@ -1,21 +1,15 @@
 const listen = function(io) {
-  // console.log();
+  console.log(`Socket server start listening`);
   const chatNS = io.of('/chat');
   const matchNS = io.of('/match');
   chatNS.on('connection', socket => {
-    //
-
-    socket.on('disconnect', reason => {
-      console.log(`Client ${socket.id} disconnected: ${reason}`);
-    });
+    // chat logic here...
+    socket.on('disconnect', reason => {});
   });
 
   matchNS.on('connection', socket => {
-    //
-
-    socket.on('disconnect', reason => {
-      console.log(`Client ${socket.id} disconnected: ${reason}`);
-    });
+    // chat logic here...
+    socket.on('disconnect', reason => {});
   });
 };
 

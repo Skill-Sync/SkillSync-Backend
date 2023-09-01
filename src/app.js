@@ -1,37 +1,36 @@
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 
-const AppError = require('./utils/appErrorsClass');
+const authRouter = require('./routes/auth.Routes');
+const usersRouter = require('./routes/users.Routes');
+const coursesRouter = require('./routes/courses.Routes');
+const reviewsRouter = require('./routes/reviews.Routes');
+const { isLogin } = require('./controllers/authController');
 const globalErrorHandler = require('./controllers/errors.controller');
-
 //--------------------------------//
 const app = express();
 
-app.use(morgan('dev'));
-app.use(express.json());
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+
+app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
 //--------------------------------//
-app.use('/api/v1/', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Hello from the server side'
+app.use('/api/v1/auth', authRouter);
+app.use(isLogin);
+app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/courses', coursesRouter);
+app.use('/api/v1/reviews', reviewsRouter);
+
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    message: 'Invalid route, please check URL'
   });
 });
 //--------------------------------//
-// app.use('/api/v1/users', usersRouter);
-
-// Handling invalid Routes
-app.all('*', (req, res, next) => {
-  next(
-    new AppError(
-      `Sorry, the page you are trying to access is not available`,
-      404
-    )
-  );
-});
-//--------------------------------//
-// Error Handling Middleware
 app.use(globalErrorHandler);
 //--------------------------------//
 module.exports = app;

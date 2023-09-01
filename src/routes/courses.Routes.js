@@ -1,11 +1,11 @@
 const express = require('express');
-const CourseController = require('./../controllers/CoursesController');
-const authController = require('../controllers/authController');
 const reviewsRouter = require('./reviews.Routes');
+const authController = require('../controllers/authController');
+const CourseController = require('../controllers/CoursesController.js');
 //-----------------------------------------//
 const router = express.Router();
 //-------------------Router----------------//
-router.use('/:tourID/reviews', reviewsRouter);
+router.use('/:courseID/reviews', reviewsRouter);
 
 router
   .route('/')
