@@ -11,7 +11,6 @@ const port = process.env.PORT || 3000;
 const server = http.createServer(app);
 
 (async function startServer() {
-  // Connect to MongoDB
   await mongoConnect();
   // Start the server
   server.listen(port, () =>
