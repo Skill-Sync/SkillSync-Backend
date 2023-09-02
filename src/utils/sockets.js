@@ -1,5 +1,7 @@
 const listen = function(io) {
-  console.log(`Socket server start listening`);
+  console.log(
+    `Socket server start listening on server port ${process.env.PORT}`
+  );
   const chatNS = io.of('/chat');
   const matchNS = io.of('/match');
   chatNS.on('connection', socket => {
@@ -13,4 +15,6 @@ const listen = function(io) {
   });
 };
 
-export default { listen };
+module.exports = {
+  listen
+};

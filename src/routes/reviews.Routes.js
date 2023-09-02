@@ -7,12 +7,17 @@ const router = express.Router({ mergeParams: true });
 router
   .route('/')
   .get(reviewController.getAllReviews)
-  .post(authController.restrictTo('user'), reviewController.createReview);
+  .post(
+    authController.restrictTo('user'),
+    reviewController.setCourseUserId,
+    reviewController.createReview
+  );
 
+router.route('/:id').get(reviewController.getReview);
+
+router.use(authController.restrictTo('user', 'admin'));
 router
   .route('/:id')
-  .get(reviewController.getReview)
-  .use(authController.restrictTo('user', 'admin'))
   .patch(reviewController.updateReview)
   .delete(reviewController.deleteReview);
 //-------------------------------------------//

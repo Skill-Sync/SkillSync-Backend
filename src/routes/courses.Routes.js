@@ -3,19 +3,23 @@ const reviewsRouter = require('./reviews.Routes');
 const authController = require('../controllers/authController');
 const CourseController = require('../controllers/CoursesController.js');
 //-----------------------------------------//
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 //-------------------Router----------------//
 router.use('/:courseID/reviews', reviewsRouter);
 
 router
   .route('/')
   .get(CourseController.getAllCourses)
-  .post(CourseController.createCourse);
+  .post(authController.restrictTo('mentor'), CourseController.createCourse);
 
 router
   .route('/:id')
   .get(CourseController.getCourse)
   .patch(CourseController.updateCourse)
   .delete(CourseController.deleteCourse);
+
+router
+  .get('MyCourses', CourseController.getMyCourses)
+  .get('RelatedCourses', CourseController.getRelatedCourses);
 //-----------------------------------------//
 module.exports = router;

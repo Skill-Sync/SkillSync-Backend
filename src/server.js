@@ -22,7 +22,9 @@ const socketServer = new Server(server, {
   await mongoConnect();
   // Start the server
   server.listen(port, () =>
-    console.log(`Listening on port ${port} in the ${process.env.NODE_ENV} mode`)
+    console.log(
+      `Server listening on port ${port} in the ${process.env.NODE_ENV} mode`
+    )
   );
   // Start Socket Listener
   sockets.listen(socketServer);
