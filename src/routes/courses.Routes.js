@@ -21,5 +21,5 @@ router
 router
   .get('MyCourses', CourseController.getMyCourses)
   .get('RelatedCourses', CourseController.getRelatedCourses);
-//-----------------------------------------//
+//-------------------------------------------//
 module.exports = router;

@@ -13,5 +13,5 @@ router
   .post('/', skillController.createSkill)
   .patch('/:id', skillController.updateSkill)
   .delete('/:id', skillController.deleteSkill);
-//-----------------------------------------//
+//-------------------------------------------//
 module.exports = router;

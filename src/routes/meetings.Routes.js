@@ -16,5 +16,5 @@ router
   .delete(meetingController.deleteMeeting);
 
 router.get('MyMeetings', meetingController.getMyMeetings);
-//-----------------------------------------//
+//-------------------------------------------//
 module.exports = router;

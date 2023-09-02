@@ -13,7 +13,7 @@ router
     reviewController.createReview
   );
 
-router.route('/:id').get(reviewController.getReview);
+router.get('/:id', reviewController.getReview);
 
 router.use(authController.restrictTo('user', 'admin'));
 router

@@ -11,19 +11,19 @@ router.use('/meetings', meetingsRouter);
 
 router
   .use(mentorController.getMe)
-  .get('/me', mentorController.getUser)
-  .patch('/activateMe', mentorController.activateUser)
-  .delete('/deactivateMe', mentorController.deactivateUser);
+  .get('/me', mentorController.getMentor)
+  .patch('/activateMe', mentorController.activateMentor)
+  .delete('/deactivateMe', mentorController.deactivateMentor);
 
 router.patch('/updatePersonalData', mentorController.UpdateMe);
 router.patch('/updatePassword', authController.updatePassword);
 //---------------Admin Routes---------------//
 router.use(authController.restrictTo('admin'));
-router.get('/', mentorController.getAllUsers);
+router.get('/', mentorController.getAllMentors);
 router
   .route('/:id')
-  .get(mentorController.getUser)
-  .patch(mentorController.activateUser)
-  .delete(mentorController.deactivateUser);
+  .get(mentorController.getMentor)
+  .patch(mentorController.activateMentor)
+  .delete(mentorController.deactivateMentor);
 //-------------------------------------------//
 module.exports = router;
