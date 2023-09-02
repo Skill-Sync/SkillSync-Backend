@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 //------------------------------------------//
-const userSchema = new mongoose.Schema(
+const usersSchema = new mongoose.Schema(
   {
     role: {
       type: String,
@@ -53,14 +53,14 @@ const userSchema = new mongoose.Schema(
     skillsToLearn: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Skills'
+        ref: 'Skill'
       }
     ],
     skillsLearned: [
       {
         skill: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Skills'
+          ref: 'Skill'
         },
         level: {
           type: String,
@@ -84,11 +84,11 @@ const userSchema = new mongoose.Schema(
 );
 
 //-------------------Query Middleware-------------------//
-userSchema.pre(/^find/, function(next) {
+usersSchema.pre(/^find/, function(next) {
   this.select('photo name email isEmployed skillsToLearn skillsLearned');
   this.find({ active: { $ne: false } });
   next();
 });
 //-------------------------Export-----------------------//
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', usersSchema);
 module.exports = User;

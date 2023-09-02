@@ -58,7 +58,7 @@ const mentorSchema = new mongoose.Schema(
     courses: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'courses'
+        ref: 'Course'
       }
     ],
     active: {

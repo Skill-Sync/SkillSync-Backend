@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 //------------------------------------------//
-const sessionSchema = new mongoose.Schema({
+const sessionsSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -17,22 +17,22 @@ const sessionSchema = new mongoose.Schema({
   }
 });
 //--------------------Static Methods--------------------//
-sessionSchema.statics.invalidateSession = async function(userId) {
+sessionsSchema.statics.invalidateSession = async function(userId) {
   this.findOneAndUpdate({ user: userId }, { valid: false });
 };
-sessionSchema.statics.createSession = async function(userId) {
+sessionsSchema.statics.createSession = async function(userId) {
   return await this.create({ user: userId });
 };
-sessionSchema.statics.checkSession = async function(sessionId) {
+sessionsSchema.statics.checkSession = async function(sessionId) {
   const session = await this.findById(sessionId);
   return session.valid;
 };
-sessionSchema.statics.deleteSession = async function(sessionId) {
+sessionsSchema.statics.deleteSession = async function(sessionId) {
   this.find(sessionId).deleteOne();
 };
-sessionSchema.statics.invalidateSAllSessions = async function(userId) {
+sessionsSchema.statics.invalidateAllUserSessions = async function(userId) {
   await this.find({ user: userId, valid: true }).updateMany({ valid: false });
 };
 //-------------------------Export-----------------------//
-const Session = mongoose.model('Session', sessionSchema);
+const Session = mongoose.model('Session', sessionsSchema);
 module.exports = Session;
