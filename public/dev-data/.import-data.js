@@ -2,10 +2,11 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
-const User = require('./../../src/models/usersModel');
-const Mentor = require('./../../src/models/mentorsModel');
-const Course = require('./../../src/models/coursesModel');
-const Review = require('./../../src/models/reviewsModel');
+const User = require('../../src/models/usersModel');
+const skill = require('../../src/models/skillsModel');
+const Mentor = require('../../src/models/mentorsModel');
+const Course = require('../../src/models/coursesModel');
+const Review = require('../../src/models/reviewsModel');
 //-------------------Config----------------//
 dotenv.config({ path: './config.env' });
 //--------------------DB-------------------//
@@ -23,9 +24,9 @@ mongoose
   })
   .then(console.log('DB connection successful!'));
 //------------------Read_File----------------//
-const usersData = JSON.parse(
-  fs.readFileSync(`${__dirname}/users.json`, 'utf-8')
-);
+const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8'));
+const skills = JSON.parse(fs.readFileSync(`${__dirname}/skills.json`, 'utf-8'));
+
 const mentors = JSON.parse(
   fs.readFileSync(`${__dirname}/mentors.json`, 'utf-8')
 );
@@ -36,23 +37,24 @@ const reviews = JSON.parse(
   fs.readFileSync(`${__dirname}/reviews.json`, 'utf-8')
 );
 //--------------------CRUD------------------//
-// Import data into DB
 async function importData() {
   try {
-    await User.create(usersData, { validateBeforeSave: false });
-    await Mentor.create(mentors, { validateBeforeSave: false });
+    await skill.create(skills);
     await Course.create(courses);
     await Review.create(reviews);
+    await User.create(users, { validateBeforeSave: false });
+    await Mentor.create(mentors, { validateBeforeSave: false });
     console.log('Data successfully loaded!');
   } catch (err) {
     console.log(err);
   }
   process.exit();
 }
-// Delete all data from DB
+
 async function deelteData() {
   try {
     await User.deleteMany();
+    await skill.deleteMany();
     await Mentor.deleteMany();
     await Course.deleteMany();
     await Review.deleteMany();
@@ -62,7 +64,7 @@ async function deelteData() {
   }
   process.exit();
 }
-// process.argv to check passed arguments
+//--------------Run_Commands----------------//
 if (process.argv[2] === '--import') {
   importData();
 } else if (process.argv[2] === '--delete') {

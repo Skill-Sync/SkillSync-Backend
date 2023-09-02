@@ -1,10 +1,9 @@
 const JWT = require('jsonwebtoken');
 const { promisify } = require('util');
 const User = require('./../models/usersModel');
-const Session = require('./../models/sessionsModel');
 const AppError = require('./../utils/appErrorsClass');
+const Session = require('../models/authSessionsModels');
 const catchAsyncError = require('./../utils/catchAsyncErrors');
-const exp = require('constants');
 //-----------------handler functions---------------//
 async function sendRefreshAndAccess(res, statusCode, userId, sessionId) {}
 async function verifyToken(token, secret, status) {

@@ -8,7 +8,7 @@ const usersRouter = require('./routes/users.Routes');
 const coursesRouter = require('./routes/courses.Routes');
 const reviewsRouter = require('./routes/reviews.Routes');
 const { isLogin } = require('./controllers/authController');
-const globalErrorHandler = require('./controllers/errors.controller');
+const globalErrorHandler = require('./controllers/controllerUtils/errorController');
 //--------------------------------//
 const app = express();
 

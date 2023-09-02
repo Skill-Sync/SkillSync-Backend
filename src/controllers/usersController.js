@@ -1,7 +1,7 @@
-const factory = require('./handlerFactory');
+const factory = require('./controllerUtils/handlerFactory');
 const User = require('./../models/usersModel');
-const Session = require('./../models/sessionsModel');
 const AppError = require('./../utils/appErrorsClass');
+const Session = require('../models/authSessionsModels');
 const catchAsyncError = require('./../utils/catchAsyncErrors');
 // ----------Active User Operations ---------//
 exports.getMe = (req, res, next) => {
