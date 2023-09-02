@@ -1,6 +1,7 @@
 const JWT = require('jsonwebtoken');
 const { promisify } = require('util');
 const User = require('./../models/usersModel');
+const Mentor = require('./../models/mentorsModel');
 const AppError = require('./../utils/appErrorsClass');
 const Session = require('../models/authSessionsModels');
 const catchAsyncError = require('./../utils/catchAsyncErrors');

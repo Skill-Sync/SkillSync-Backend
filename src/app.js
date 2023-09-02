@@ -1,10 +1,10 @@
-const path = require('path');
 const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const hpp = require('hpp');
+const cors = require('cors');
 const xss = require('xss-clean');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');

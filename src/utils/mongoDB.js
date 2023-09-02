@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
 
-// const { MongoMemoryServer } = require('mongodb-memory-server');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 //------------------Config------------------//
 dotenv.config({
   path: path.join(__dirname, '..', '..', 'config.env')
