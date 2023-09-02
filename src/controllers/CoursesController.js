@@ -1,7 +1,7 @@
-const Course = require('./../models/coursesModel');
-const AppError = require('./../utils/appErrorsClass');
+const Course = require('../models/coursesModel');
+const AppError = require('../utils/appErrorsClass');
 const factory = require('./controllerUtils/handlerFactory');
-const catchAsyncError = require('./../utils/catchAsyncErrors');
+const catchAsyncError = require('../utils/catchAsyncErrors');
 // ------------- User Operations ------------//
 exports.getRelatedCourses = catchAsyncError(async (req, res, next) => {});
 // ------------ Mentor Operations -----------//
