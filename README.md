@@ -30,9 +30,9 @@
 | Features                          | Description                                                                                                 |
 |----------------------------------|------------------------------------------------------------------------------------------------------|
 | Authentication & Authorization   | This feature provides users with login and logout functionality to access the system.                  |
-| Credit Card Payment System       | This feature provides a secure payment system that enables users to make online payments using their credit cards. |
-| Real-Time Matching System        | This feature enables users to update their profile information, such as their username, photo, email, and password. |
-| Live Meetings scheduling         | includes the ability to manage tour bookings, render tour maps, and display user reviews and ratings on each tour. |
+| Credit Card Payment System       | We provides a secure payment system that enables users to book mentor sessions using their credit cards. |
+| Real-Time Matching System        | |
+| Live Meetings scheduling         | |
 
 
 ## Digrams
