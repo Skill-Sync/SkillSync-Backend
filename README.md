@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Logo.png" alt="Natours" width="100"></a>
+  <img align="center" alt="Skill-Sync" height="125px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Logo.png" /> 
   <br>
   Skill-Sync
     <h4 align="center">An Innovative learning Platform  Built On Top Of <a href="https://nodejs.org/en/" target="_blank">NodeJS</a> That Makes Skill Acquisition An Enjoyable Journey.</h4>
@@ -13,7 +13,7 @@
 - <a href="#key-features">Key Features</a><br>
 - <a href="#digrams">Diagrams </a><br>
 - <a href="#built-with">Used Packages</a><br>
-- <a href="#CI/CD-Pipeline">CI/CD Pipeline</a><br>
+- <a href="#cicd-pipeline">CI/CD Pipeline</a><br>
 - <a href="#future-updates">Future Updates</a><br> 
 - <a href="#team-members">Team Members</a>
 
@@ -23,7 +23,7 @@
 
 | Components            | 
 | -------                         |
-| <img src="https://github.com/MAES-Pyramids/Natours-Course-Node/blob/master/.ReadMeResources/Photos/wakatime.png" width="1000" />   | 
+| <img src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Components.png" width="1000" />   | 
 
 
 ## Key Features
@@ -36,19 +36,19 @@
 
 
 ## Digrams
-Natours provides a highly interactive and user-friendly interface for users to book their tours. Some of the major highlights of Natours are:
+Here are several diagrams that we employed to document and elucidate some of our fundamental features.
 
-Sign Up Page            |  Login Page 
+Login sequence           |  Session Making Sequence
 :-------------------------:|:-------------------------:
-<img  src="https://github.com/MAES-Pyramids/Natours-Course-Node/blob/master/.ReadMeResources/Photos/Sign%20.gif" />  | <img src="https://github.com/MAES-Pyramids/Natours-Course-Node/blob/master/.ReadMeResources/Photos/login.gif" /> 
+<img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/login.png" />  | <img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/sessions.png" /> 
 
-Home Page            |  Tour Details
+Onboarding Sequence           |  Chatting Sequence
 :-------------------------:|:-------------------------:
-  A highly intuitive and aesthetically pleasing home page with a visually appealing animation.<img src="https://github.com/MAES-Pyramids/Natours-Course-Node/blob/master/.ReadMeResources/Photos/Home%20.gif"  />  |  Users can view detailed information about tours, such as their ratings and reviews.  <img src="https://github.com/MAES-Pyramids/Natours-Course-Node/blob/master/.ReadMeResources/Photos/Tour%20.gif" />
+<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/onboarding.png"  />  |  <img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/chatting.png" />
   
-Payment Process        |  Booked Tours
+System Architecture       |  Database ERD
 :-------------------------:|:-------------------------:
-A streamlined payment process that allows users to pay for their tours quickly and easily. <img src="https://github.com/MAES-Pyramids/Natours-Course-Node/blob/master/.ReadMeResources/Photos/Payment.gif" />  |Users can view a list of all the tours they have booked. <img src="https://github.com/MAES-Pyramids/Natours-Course-Node/blob/master/.ReadMeResources/Photos/booking.gif"  />
+<img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Skill-Sync%20(ERD).png" />  |<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/system%20arch.png"  />
   
 
 
@@ -88,9 +88,9 @@ Skill-Sync will be built using the following Technologies & Packages:
 * I also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
 
 ## CI/CD Pipeline
+
   
 ## Future Updates
-- 
 - 
 
 ## Team-Members
