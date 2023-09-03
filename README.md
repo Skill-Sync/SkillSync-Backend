@@ -11,7 +11,9 @@
 # Table of Contents
 <img align="right" alt="GIF" height="125px" src="https://media.giphy.com/media/du3J3cXyzhj75IOgvA/giphy.gif" /> 
 - <a href="#key-features">Key Features</a><br>
+- <a href="#digrams">Diagrams </a><br>
 - <a href="#built-with">Used Packages</a><br>
+- <a href="#CI/CD-Pipeline">CI/CD Pipeline</a><br>
 - <a href="#future-updates">Future Updates</a><br> 
 - <a href="#team-members">Team Members</a>
 
@@ -85,6 +87,8 @@ Skill-Sync will be built using the following Technologies & Packages:
 * [Render](https://render.com/) - Cloud platform
 * I also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
 
+## CI/CD Pipeline
+  
 ## Future Updates
 - 
 - 
