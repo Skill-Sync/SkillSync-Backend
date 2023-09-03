@@ -75,32 +75,23 @@ For more info check API Documentation on Postman 👉 : [Natours API Documentati
 
 ## Built With
 Skill-Sync will be built using the following Technologies and packages:
-## Technologies Used
+### Technologies Used
 
 - [Node.js](https://nodejs.org/en/): for server-side programming.
 - [Express](http://expressjs.com/): for building the backend API.
-- [Mongoose](https://mongoosejs.com/): for storing users-generated data.
+- [MongoDB](https://www.mongodb.com/): for storing users-generated data.
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - for remotely deploy MongoDB database
+- [redis](https://redis.io/):  in-memory data store for users in matching process
 - [Cloudinary](https://cloudinary.com/): for image hosting and management.
+- [Firebase](https://firebase.google.com/) - for 
 - [Postman](https://www.getpostman.com/) - API testing
-
-
-
-
-
-
-
-  
 
 
 ---
 
-* [JSON Web Token](https://jwt.io/) - Security token
-* [ParcelJS](https://parceljs.org/) - Blazing fast, zero configuration web application bundler
-* [Stripe](https://stripe.com/) - Online payment API
-* [Mailtrap](https://mailtrap.io/) & [Mailgun](https://www.mailgun.com/) - Email delivery platform
+### Packages Used
 
-* I also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
+* 23 also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
 
 ## CI/CD Pipeline
 -
