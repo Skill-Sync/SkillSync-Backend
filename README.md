@@ -74,17 +74,32 @@ For more info check API Documentation on Postman 👉 : [Natours API Documentati
 ---
 
 ## Built With
-Skill-Sync will be built using the following Technologies & Packages:
-* [Express](http://expressjs.com/) - The web framework used 
-* [Mongoose](https://mongoosejs.com/) - Object Data Modelling (ODM) library
-* [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - Cloud database service
-* [Pug](https://pugjs.org/api/getting-started.html) - High performance template engine
+Skill-Sync will be built using the following Technologies and packages:
+## Technologies Used
+
+- [Node.js](https://nodejs.org/en/): for server-side programming.
+- [Express](http://expressjs.com/): for building the backend API.
+- [Mongoose](https://mongoosejs.com/): for storing users-generated data.
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - for remotely deploy MongoDB database
+- [Cloudinary](https://cloudinary.com/): for image hosting and management.
+- [Postman](https://www.getpostman.com/) - API testing
+
+
+
+
+
+
+
+  
+
+
+---
+
 * [JSON Web Token](https://jwt.io/) - Security token
 * [ParcelJS](https://parceljs.org/) - Blazing fast, zero configuration web application bundler
 * [Stripe](https://stripe.com/) - Online payment API
-* [Postman](https://www.getpostman.com/) - API testing
 * [Mailtrap](https://mailtrap.io/) & [Mailgun](https://www.mailgun.com/) - Email delivery platform
-* [Render](https://render.com/) - Cloud platform
+
 * I also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
 
 ## CI/CD Pipeline
