@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://natours-pw5m.onrender.com/"><img src="https://github.com/lgope/Natours/blob/master/public/img/logo-green-round.png" alt="Natours" width="100"></a>
+  <a href="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Logo.png" alt="Natours" width="100"></a>
   <br>
   Skill-Sync
     <h4 align="center">An Innovative learning Platform  Built On Top Of <a href="https://nodejs.org/en/" target="_blank">NodeJS</a> That Makes Skill Acquisition An Enjoyable Journey.</h4>
