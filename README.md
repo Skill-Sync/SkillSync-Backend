@@ -88,7 +88,7 @@ Skill-Sync will be built using the following Technologies & Packages:
 * I also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
 
 ## CI/CD Pipeline
-
+-
   
 ## Future Updates
 - 
