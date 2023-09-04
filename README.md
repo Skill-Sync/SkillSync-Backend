@@ -84,15 +84,18 @@ Skill-Sync will be built using the following Technologies and packages:
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - for remotely deploy MongoDB database
 - [redis](https://redis.io/):  in-memory data store for users in matching process
 - [Cloudinary](https://cloudinary.com/): for image hosting and management.
-- [Firebase](https://firebase.google.com/) - for 
-- [Postman](https://www.getpostman.com/) - API testing
+- [Firebase](https://firebase.google.com/) - for pushing notification
+- [Postman](https://www.getpostman.com/) - for API testing
 
-
----
 
 ### Packages Used
+Security Packages:      |  Development Packages 
+:-------------------------:|:-------------------------:
+<img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Skill-Sync%20(ERD).png" />  |<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/system%20arch.png"  /> 
 
-* 23 also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
+* we also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
+
+
 
 ## CI/CD Pipeline
 -
