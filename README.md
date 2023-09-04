@@ -14,7 +14,6 @@
 - <a href="#digrams">Diagrams </a><br>
 - <a href="#built-with">Used Packages</a><br>
 - <a href="#cicd-pipeline">CI/CD Pipeline</a><br>
-- <a href="#future-updates">Future Updates</a><br> 
 - <a href="#team-members">Team Members</a>
 
 ---
@@ -149,9 +148,6 @@ Security Packages          |  Development Packages
 ## CI/CD Pipeline
 -
   
-## Future Updates
-- 
-
 ## Team-Members
 #### BackEnd Team consists of:
 - [@Mohammed Medhat    ](https://github.com/MOHAMMED1MEDHAT)     
