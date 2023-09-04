@@ -130,7 +130,7 @@ Skill-Sync will be built using the following Technologies and packages:
 
 Security Packages          |  Development Packages
 :-------------------------:|:-------------------------:
-<img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Security%20Packages.png" />  |<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Development%20Packages.png"  /> <br> we utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
+<img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Security%20Packages.png" />  |<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Development%20Packages.png"  /> <br> we utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for formatting and style.
 
 
 
