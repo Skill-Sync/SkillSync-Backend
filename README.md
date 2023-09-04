@@ -69,26 +69,7 @@ For more info check API Documentation on Postman 👉 : [Natours API Documentati
   - 👉 [Get Top 5 Cheap Tours](https://natours-pw5m.onrender.com/api/v1/tours/top_5_rated)
   - 👉 [Get Tours Within Radius](https://natours-pw5m.onrender.com/api/v1/tours/tours-within/200/center/34.098453,-118.096327/unit/mi)
   - 👉 [Get Tours Plans In Each Month](https://natours-pw5m.onrender.com/api/v1/tours/monthly-plan/2021)
-</div>
--->
 
----
-
-## Built With
-Skill-Sync will be built using the following Technologies and packages:
-### Technologies Used
-
-- [Node.js](https://nodejs.org/en/): for server-side programming.
-- [Express](http://expressjs.com/): for building the backend API.
-- [MongoDB](https://www.mongodb.com/): for storing users-generated data.
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - for remotely deploy MongoDB database
-- [redis](https://redis.io/):  in-memory data store for users in matching process
-- [Cloudinary](https://cloudinary.com/): for image hosting and management.
-- [Firebase](https://firebase.google.com/) - for pushing notification
-- [Postman](https://www.getpostman.com/) - for API testing
-
-
-### Packages Used
 | General Package                  | Description                                      |
 |--------------------------|--------------------------------------------------|
 | express                  | Web framework for building APIs.                  |
@@ -121,6 +102,40 @@ Skill-Sync will be built using the following Technologies and packages:
 | hpp                      | Middleware for preventing HTTP Parameter Pollution. |
 | jsonwebtoken             | Library for generating and verifying JSON Web Tokens (JWT). |
 | xss-clean                | Middleware for preventing cross-site scripting (XSS) attacks. |
+
+
+</div>
+-->
+
+---
+
+## Built With
+Skill-Sync will be built using the following Technologies and packages:
+### Technologies Used
+
+- [Node.js](https://nodejs.org/en/): for server-side programming.
+- [Express](http://expressjs.com/): for building the backend API.
+- [MongoDB](https://www.mongodb.com/): for storing users-generated data.
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) - for remotely deploy MongoDB database
+- [redis](https://redis.io/):  in-memory data store for users in matching process
+- [Cloudinary](https://cloudinary.com/): for image hosting and management.
+- [Firebase](https://firebase.google.com/) - for pushing notification
+- [Postman](https://www.getpostman.com/) - for API testing
+
+
+### Packages Used
+| General Packages            | 
+| -------                         |
+| <img src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/General%20Packages.png" width="1000" />   | 
+
+Security Packages          |  Development Packages
+:-------------------------:|:-------------------------:
+<img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Security%20Packages.png" />  |<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Development%20Packages.png"  /> <br> we utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
+
+
+
+
+
 
 
 
