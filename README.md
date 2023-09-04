@@ -29,10 +29,10 @@
 ## Key Features
 | Features                          | Description                                                                                                 |
 |----------------------------------|------------------------------------------------------------------------------------------------------|
-| Authentication & Authorization   | This feature provides users with login and logout functionality to access the system.                  |
-| Payment system      | We provide a secure payment system that enables users to book mentor sessions using their credit cards. |
+| Authentication and  Authorization System   | This feature provides users with login and logout functionality to access the system.                  |
+| Managing & Scheduling Live Sessions      | |
 | Real-Time Matching System        | |
-| Live Meetings scheduling         | |
+| Payment system         | |
 | Optimized Feed        | |
 
 
@@ -89,11 +89,45 @@ Skill-Sync will be built using the following Technologies and packages:
 
 
 ### Packages Used
-Security Packages:      |  Development Packages 
-:-------------------------:|:-------------------------:
-<img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Skill-Sync%20(ERD).png" />  |<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/system%20arch.png"  /> 
+| General Package                  | Description                                      |
+|--------------------------|--------------------------------------------------|
+| express                  | Web framework for building APIs.                  |
+| mongoose                 | MongoDB object modeling tool.                    |
+| dotenv                   | Loads environment variables from a .env file.     |
+| cookie-parser            | Middleware for parsing cookies.                   |
+| body-parser              | Middleware for parsing JSON and URL-encoded data. |
+| morgan                   | HTTP request logger middleware.                  |
+| validator                | Library for data validation and sanitization.     |
+| socket.io                | Real-time, bidirectional communication library.   |
+| nodemon                  | Utility to automatically restart Node.js applications. |
+| pm2                      | Process manager for Node.js applications.         |
+| cryptjs                  | Library for hashing and salting passwords.        |
+| crypto                   | Node.js library for cryptographic functions.     |
 
-* we also utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for code formatting and style.
+| Development Package                  | Description                                      |
+|--------------------------|--------------------------------------------------|
+| prettier                 | Code formatter to enforce code style.            |
+| eslint                   | JavaScript linting utility for code quality.     |
+| jest                     | JavaScript testing framework.                    |
+| supertest                | HTTP assertion library for testing APIs.         |
+
+
+| Security Package                  | Description                                      |
+|--------------------------|--------------------------------------------------|
+| cors                     | Middleware for handling Cross-Origin Resource Sharing (CORS). |
+| express-rate-limit       | Middleware for rate-limiting requests.            |
+| express-mongo-sanitize   | Middleware to prevent MongoDB query injection.    |
+| helmet                   | Middleware for securing HTTP headers.             |
+| hpp                      | Middleware for preventing HTTP Parameter Pollution. |
+| jsonwebtoken             | Library for generating and verifying JSON Web Tokens (JWT). |
+| xss-clean                | Middleware for preventing cross-site scripting (XSS) attacks. |
+
+
+
+
+
+
+
 
 
 
