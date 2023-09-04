@@ -30,9 +30,10 @@
 | Features                          | Description                                                                                                 |
 |----------------------------------|------------------------------------------------------------------------------------------------------|
 | Authentication & Authorization   | This feature provides users with login and logout functionality to access the system.                  |
-| Credit Card Payment System       | We provides a secure payment system that enables users to book mentor sessions using their credit cards. |
+| Payment system      | We provide a secure payment system that enables users to book mentor sessions using their credit cards. |
 | Real-Time Matching System        | |
 | Live Meetings scheduling         | |
+| Optimized Feed        | |
 
 
 ## Digrams
@@ -46,7 +47,7 @@ Onboarding Sequence           |  Chatting Sequence
 :-------------------------:|:-------------------------:
 <img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/onboarding.png"  />  |  <img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/chatting.png" />
   
-System Architecture       |  Database ERD
+Database ERD       |  System Architecture 
 :-------------------------:|:-------------------------:
 <img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Skill-Sync%20(ERD).png" />  |<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/system%20arch.png"  />
   
