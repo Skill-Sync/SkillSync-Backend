@@ -1,4 +1,8 @@
-const { signAccessToken, signRefreshToken } = require('./../utils/jwt');
+const {
+  signAccessToken,
+  signRefreshToken,
+  verifyToken
+} = require('./../utils/jwt');
 const User = require('../models/user.model');
 const Mentor = require('../models/mentor.model');
 const Session = require('../models/authSession.models');
