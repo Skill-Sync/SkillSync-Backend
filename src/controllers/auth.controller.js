@@ -32,16 +32,25 @@ async function sendTokens(user, userType, statusCode, res) {
 
   const refreshToken = signRefreshToken(user._id, userType, session._id);
 
+  // res.cookies('refreshJWT', refreshToken, { httpOnly: true });
+  // res.cookies('accessJWT', accessToken, { httpOnly: true });
+
   res.status(statusCode).json({
     status: 'success',
-    accessToken,
-    refreshToken,
+    accessJWT: accessToken,
+    refreshJWT: refreshToken,
     data: { user }
   });
 }
 
 exports.signup = catchAsyncError(async (req, res, next) => {
-  const signUpData = filterObj(req.body, 'name', 'email', 'pass');
+  const signUpData = filterObj(
+    req.body,
+    'name',
+    'email',
+    'pass',
+    'passConfirm'
+  );
 
   const newUser = await (req.body.type.toLowerCase() === 'mentor'
     ? Mentor
@@ -72,7 +81,18 @@ exports.login = catchAsyncError(async (req, res, next) => {
 
 exports.logout = catchAsyncError(async (req, res, next) => {
   //1- from the token get the user id
+  const { refreshSession } = await verifyToken(
+    req.headers.authorization?.split(' ')[2],
+    process.env.JWT_REFRESH_SECRET
+  );
+  // console.log(refreshSession);
   //2- delete the session from the database
+  await Session.invalidateSession(refreshSession);
+  //3- delete the cookie
+  res.status(200 || res.locals.statusCode).json({
+    status: 'success',
+    message: 'Logged out successfully'
+  });
 });
 
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {
@@ -108,12 +128,12 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
     process.env.JWT_REFRESH_SECRET
   );
 
-  if (!decodedAccessToken.status) {
-    const decodedRefreshToken = await verifyToken(
-      refreshToken,
-      process.env.JWT_REFRESH_SECRET
-    );
+  const decodedRefreshToken = await verifyToken(
+    refreshToken,
+    process.env.JWT_REFRESH_SECRET
+  );
 
+  if (!decodedAccessToken.status) {
     if (!decodedRefreshToken.status) {
       return next(
         new AppError('You are not logged in! Please log in to get access.', 401)
