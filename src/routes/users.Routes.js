@@ -16,7 +16,7 @@ router
   .get('/me', userController.getUser)
   .delete('/deactivateMe', userController.deactivateUser);
 router.patch('/updatePersonalData', userController.UpdateMe);
-router.patch('/updatePassword', authController.updatePassword);
+// router.patch('/updatePassword', authController.updatePassword);
 //---------------Admin Routes---------------//
 router.use(authController.restrictTo('admin'));
 router.get('/', userController.getAllUsers);
