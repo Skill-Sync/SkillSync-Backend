@@ -30,8 +30,8 @@ async function sendTokens(user, userType, statusCode, res) {
 
     res.status(statusCode).json({
         status: 'success',
-        accessToken,
-        refreshToken,
+        accessJWT: accessToken,
+        refreshJWT: refreshToken,
         data: { user }
     });
 }
