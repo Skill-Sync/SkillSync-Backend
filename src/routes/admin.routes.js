@@ -1,6 +1,6 @@
 const express = require('express');
-const usersRouter = require('./users.Routes');
-const mentorsRouter = require('./mentors.Routes');
+const usersRouter = require('./user.routes');
+const mentorsRouter = require('./mentor.routes');
 //------------------------------------------//
 const router = express.Router();
 //---------------Admin Routes---------------//

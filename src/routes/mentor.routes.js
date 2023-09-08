@@ -1,8 +1,8 @@
 const express = require('express');
-const coursesRouter = require('./courses.Routes');
-const meetingsRouter = require('./meetings.Routes');
-const authController = require('../controllers/authController');
-const mentorController = require('../controllers/mentorsController');
+const coursesRouter = require('./course.routes');
+const meetingsRouter = require('./meeting.routes');
+const authController = require('../controllers/auth.controller');
+const mentorController = require('../controllers/mentor.controller');
 //------------------------------------------//
 const router = express.Router();
 //-------------Users Routes-----------------//
