@@ -1,6 +1,7 @@
 const Mentor = require('./../models/mentorsModel');
-const AppError = require('./../utils/appErrorsClass');
 const factory = require('./controllerUtils/handlerFactory');
+
+const AppError = require('./../utils/appErrorsClass');
 const catchAsyncError = require('./../utils/catchAsyncErrors');
 // ---------- mentor Operations ---------//
 exports.getMe = (req, res, next) => {
@@ -9,8 +10,12 @@ exports.getMe = (req, res, next) => {
 };
 
 exports.UpdateMe = catchAsyncError(async (req, res, next) => {});
-//----------Admin Operations- ----------//
+exports.deactivateMentor = factory.deactivateOne(Mentor);
+//------Basic Admin CRUD Operations------//
 exports.getMentor = factory.getOne(Mentor);
 exports.getAllMentors = factory.getAll(Mentor);
 exports.activateMentor = factory.activateOne(Mentor);
-exports.deactivateMentor = factory.deactivateOne(Mentor);
+exports.deleteMentor = factory.deleteOne(Mentor);
+//-----Advance Admin CRUD Operations-----//
+exports.verifyMentor = catchAsyncError(async (req, res, next) => {});
+exports.getMentorsReq = catchAsyncError(async (req, res, next) => {});
