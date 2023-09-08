@@ -14,18 +14,16 @@ router.use('/friends', friendsRouter);
 router
   .use(userController.getMe)
   .get('/me', userController.getUser)
-  .patch('/activateMe', userController.activateUser)
   .delete('/deactivateMe', userController.deactivateUser);
-
 router.patch('/updatePersonalData', userController.UpdateMe);
-router.patch('/updatePassword', authController.updatePassword);
+// router.patch('/updatePassword', authController.updatePassword);
 //---------------Admin Routes---------------//
 router.use(authController.restrictTo('admin'));
 router.get('/', userController.getAllUsers);
 router
   .route('/:id')
   .get(userController.getUser)
-  .patch(userController.activateUser)
-  .delete(userController.deactivateUser);
+  .delete(userController.deleteUser);
+router.patch('/activateMe', userController.activateUser);
 //-------------------------------------------//
 module.exports = router;

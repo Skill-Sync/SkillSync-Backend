@@ -15,6 +15,7 @@ const globalErrorHandler = require('./controllers/controllerUtils/errorControlle
 
 const authRouter = require('./routes/auth.Routes');
 const usersRouter = require('./routes/users.Routes');
+const adminRouter = require('./routes/admins.Routes');
 const skillsRouter = require('./routes/skills.Routes');
 const mentorsRouter = require('./routes/mentors.Routes');
 const coursesRouter = require('./routes/courses.Routes');
@@ -55,6 +56,7 @@ app.use(xss());
 app.use('/api/v1/auth', authRouter);
 app.use(isLogin);
 app.use('/api/v1/users', usersRouter);
+app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/skills', skillsRouter);
 app.use('/api/v1/mentors', mentorsRouter);
 app.use('/api/v1/courses', coursesRouter);

@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const validator = require('validator');
 //------------------------------------------//
@@ -69,6 +70,10 @@ const usersSchema = new mongoose.Schema(
         }
       }
     ],
+    onboarding_completed: {
+      type: Boolean,
+      default: false
+    },
     active: {
       type: Boolean,
       default: true,
@@ -82,7 +87,19 @@ const usersSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+//-------------------Document Middleware-----------------//
+usersSchema.pre('save', function(next) {
+  if (this.isNew) return next();
+  this.onboarding_completed = true;
+  next();
+});
 
+usersSchema.pre('save', async function(next) {
+  // Only run this function only when password got modified (or created)
+  if (!this.isModified('pass')) return next();
+  this.password = await bcrypt.hash(this.pass, 12);
+  this.passwordConfirm = undefined;
+});
 //-------------------Query Middleware-------------------//
 usersSchema.pre(/^find/, function(next) {
   this.select('photo name email isEmployed skillsToLearn skillsLearned');

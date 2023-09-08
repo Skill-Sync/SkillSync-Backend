@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const validator = require('validator');
 //------------------------------------------//
@@ -61,14 +62,18 @@ const mentorSchema = new mongoose.Schema(
         ref: 'Course'
       }
     ],
+    onboarding_completed: {
+      type: Boolean,
+      default: false
+    },
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
     active: {
       type: Boolean,
       default: true,
       select: false
-    },
-    verified: {
-      type: Boolean,
-      default: false
     },
     passwordResetToken: String,
     passwordResetExpires: Date
@@ -78,7 +83,19 @@ const mentorSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+//-------------------Document Middleware-----------------//
+mentorSchema.pre('save', function(next) {
+  if (this.isNew) return next();
+  this.onboarding_completed = true;
+  next();
+});
 
+mentorSchema.pre('save', async function(next) {
+  // Only run this function only when password got modified (or created)
+  if (!this.isModified('pass')) return next();
+  this.password = await bcrypt.hash(this.pass, 12);
+  this.passwordConfirm = undefined;
+});
 //-------------------Query Middleware-------------------//
 mentorSchema.pre(/^find/, function(next) {
   this.find({ active: { $ne: false } });
