@@ -2,11 +2,12 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const validator = require('validator');
 //------------------------------------------//
-const mentorSchema = new mongoose.Schema(
+const usersSchema = new mongoose.Schema(
   {
     role: {
       type: String,
-      default: 'mentor'
+      enum: ['user', 'admin'],
+      default: 'user'
     },
     name: {
       type: String,
@@ -38,10 +39,6 @@ const mentorSchema = new mongoose.Schema(
       },
       required: [true, 'A user must have a password confirmation']
     },
-    identityCard: {
-      type: String,
-      required: [true, 'A mentor must provide an identity card']
-    },
     photo: {
       type: String,
       default: 'default.jpg'
@@ -50,23 +47,30 @@ const mentorSchema = new mongoose.Schema(
       type: String,
       default: 'No description'
     },
-    experience: [
-      {
-        type: String,
-        default: 'No experience'
-      }
-    ],
-    courses: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
-      }
-    ],
-    onboarding_completed: {
+    isEmployed: {
       type: Boolean,
       default: false
     },
-    isVerified: {
+    skillsToLearn: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Skill'
+      }
+    ],
+    skillsLearned: [
+      {
+        skill: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Skill'
+        },
+        level: {
+          type: String,
+          enum: ['beginner', 'intermediate', 'advanced'],
+          default: 'beginner'
+        }
+      }
+    ],
+    onboarding_completed: {
       type: Boolean,
       default: false
     },
@@ -83,24 +87,39 @@ const mentorSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+//-------------------Instance Methods-------------------//
+usersSchema.methods.correctPassword = async function(loginPass, userPass) {
+  return await bcrypt.compare(loginPass, userPass);
+};
+
+usersSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  this.passwordResetExpires = Date.now() + 5 * 60 * 1000;
+  return resetToken;
+};
 //-------------------Document Middleware-----------------//
-mentorSchema.pre('save', function(next) {
+usersSchema.pre('save', function(next) {
   if (this.isNew) return next();
   this.onboarding_completed = true;
   next();
 });
 
-mentorSchema.pre('save', async function(next) {
+usersSchema.pre('save', async function(next) {
   // Only run this function only when password got modified (or created)
   if (!this.isModified('pass')) return next();
   this.password = await bcrypt.hash(this.pass, 12);
   this.passwordConfirm = undefined;
 });
 //-------------------Query Middleware-------------------//
-mentorSchema.pre(/^find/, function(next) {
+usersSchema.pre(/^find/, function(next) {
+  this.select('photo name email isEmployed skillsToLearn skillsLearned');
   this.find({ active: { $ne: false } });
   next();
 });
 //-------------------------Export-----------------------//
-const Mentor = mongoose.model('Mentor', mentorSchema);
-module.exports = Mentor;
+const User = mongoose.model('User', usersSchema);
+module.exports = User;

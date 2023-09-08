@@ -2,11 +2,11 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
-const User = require('../../src/models/usersModel');
-const skill = require('../../src/models/skillsModel');
-const Mentor = require('../../src/models/mentorsModel');
-const Course = require('../../src/models/coursesModel');
-const Review = require('../../src/models/reviewsModel');
+const User = require('../../src/models/user.model');
+const skill = require('../../src/models/skill.model');
+const Mentor = require('../../src/models/mentor.model');
+const Course = require('../../src/models/course.model');
+const Review = require('../../src/models/review.model');
 //-------------------Config----------------//
 dotenv.config({ path: './config.env' });
 //--------------------DB-------------------//

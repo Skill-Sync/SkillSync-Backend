@@ -1,8 +1,8 @@
-const Mentor = require('./../models/mentorsModel');
+const Mentor = require('../models/mentor.model');
 const factory = require('./controllerUtils/handlerFactory');
 
-const AppError = require('./../utils/appErrorsClass');
-const catchAsyncError = require('./../utils/catchAsyncErrors');
+const AppError = require('../utils/appErrorsClass');
+const catchAsyncError = require('../utils/catchAsyncErrors');
 //------------handler functions ------------//
 const filterObj = (obj, ...allowedFields) => {
   const returnedFiled = {};

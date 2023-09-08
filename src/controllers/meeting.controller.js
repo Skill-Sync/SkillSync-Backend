@@ -1,4 +1,4 @@
-const Meeting = require('../models/meetingsModel');
+const Meeting = require('../models/meeting.model');
 const AppError = require('../utils/appErrorsClass');
 const factory = require('./controllerUtils/handlerFactory');
 const catchAsyncError = require('../utils/catchAsyncErrors');

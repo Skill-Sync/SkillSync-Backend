@@ -10,18 +10,18 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 
-const { isLogin } = require('./controllers/authController');
+const { isLogin } = require('./controllers/auth.controller');
 const globalErrorHandler = require('./controllers/controllerUtils/errorController');
 
-const authRouter = require('./routes/auth.Routes');
-const usersRouter = require('./routes/users.Routes');
-const adminRouter = require('./routes/admins.Routes');
-const skillsRouter = require('./routes/skills.Routes');
-const mentorsRouter = require('./routes/mentors.Routes');
-const coursesRouter = require('./routes/courses.Routes');
-const reviewsRouter = require('./routes/reviews.Routes');
-const friendsRouter = require('./routes/friends.Routes');
-const meetingsRouter = require('./routes/meetings.Routes');
+const authRouter = require('./routes/auth.routes');
+const usersRouter = require('./routes/user.routes');
+const adminRouter = require('./routes/admin.routes');
+const skillsRouter = require('./routes/skill.routes');
+const mentorsRouter = require('./routes/mentor.routes');
+const coursesRouter = require('./routes/course.routes');
+const reviewsRouter = require('./routes/review.routes');
+const friendsRouter = require('./routes/friend.routes');
+const meetingsRouter = require('./routes/meeting.routes');
 //--------------------------------//
 const app = express();
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
