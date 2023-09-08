@@ -87,6 +87,20 @@ const usersSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+//-------------------Instance Methods-------------------//
+usersSchema.methods.correctPassword = async function(loginPass, userPass) {
+  return await bcrypt.compare(loginPass, userPass);
+};
+
+usersSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  this.passwordResetExpires = Date.now() + 5 * 60 * 1000;
+  return resetToken;
+};
 //-------------------Document Middleware-----------------//
 usersSchema.pre('save', function(next) {
   if (this.isNew) return next();
