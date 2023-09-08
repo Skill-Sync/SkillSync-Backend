@@ -84,13 +84,13 @@ const mentorSchema = new mongoose.Schema(
   }
 );
 //-------------------Document Middleware-----------------//
-usersSchema.pre('save', function(next) {
+mentorSchema.pre('save', function(next) {
   if (this.isNew) return next();
   this.onboarding_completed = true;
   next();
 });
 
-usersSchema.pre('save', async function(next) {
+mentorSchema.pre('save', async function(next) {
   // Only run this function only when password got modified (or created)
   if (!this.isModified('pass')) return next();
   this.password = await bcrypt.hash(this.pass, 12);

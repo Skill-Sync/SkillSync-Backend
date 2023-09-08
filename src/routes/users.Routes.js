@@ -23,7 +23,7 @@ router.get('/', userController.getAllUsers);
 router
   .route('/:id')
   .get(userController.getUser)
-  .delete(userController.deleteUser)
-  .patch('/activateMe', userController.activateUser);
+  .delete(userController.deleteUser);
+router.patch('/activateMe', userController.activateUser);
 //-------------------------------------------//
 module.exports = router;

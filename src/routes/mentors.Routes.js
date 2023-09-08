@@ -23,7 +23,7 @@ router.patch('/verifyMentor/:id', mentorController.verifyMentor);
 router
   .route('/:id')
   .get(mentorController.getMentor)
-  .delete(mentorController.deleteMentor)
-  .patch('/activateMe', mentorController.activateMentor);
+  .delete(mentorController.deleteMentor);
+router.patch('/activateMe', mentorController.activateMentor);
 //-------------------------------------------//
 module.exports = router;
