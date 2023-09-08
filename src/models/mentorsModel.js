@@ -66,7 +66,7 @@ const mentorSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
-    verified: {
+    isVerified: {
       type: Boolean,
       default: false
     },
