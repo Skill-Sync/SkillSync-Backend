@@ -135,6 +135,7 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
         refreshToken,
         process.env.JWT_REFRESH_SECRET
     );
+
     if (!decodedAccessToken.status) {
         if (!decodedRefreshToken.status) {
             return next(
