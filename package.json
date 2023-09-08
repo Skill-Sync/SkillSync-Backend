@@ -1,54 +1,54 @@
 {
-  "name": "skill-sync",
-  "version": "1.0.0",
-  "description": "Bringing together talented people from around the world based on their skills for an engaging session where participants have the opportunity to learn and improve various skills.  and Cultivating Lifelong Friendships",
-  "main": "server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "test-watch": " jest --watch ",
-    "watch": "nodemon src/server.js",
-    "test": " jest --detectOpenHandles",
-    "cluster": "pm2 start src/server.js -l logs.txt -i 2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Skill-Sync/SkillSync-Backend.git"
-  },
-  "author": "MAES / Medhat",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Skill-Sync/SkillSync-Backend/issues"
-  },
-  "homepage": "https://github.com/Skill-Sync/SkillSync-Backend#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.20.2",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "crypto": "^1.0.1",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-mongo-sanitize": "^2.2.0",
-    "express-rate-limit": "^6.10.0",
-    "helmet": "^7.0.0",
-    "hpp": "^0.2.3",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb-memory-server": "^8.15.1",
-    "mongoose": "^7.4.3",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.0.1",
-    "pm2": "^5.3.0",
-    "socket.io": "^4.7.2",
-    "ts-jest": "^29.1.1",
-    "validator": "^13.11.0",
-    "xss-clean": "^0.1.4"
-  },
-  "devDependencies": {
-    "jest": "^29.6.2",
-    "prettier": "^1.17.0",
-    "supertest": "^6.3.3"
-  },
-  "engines": {
-    "node": "18.x"
-  }
+    "name": "skill-sync",
+    "version": "1.0.0",
+    "description": "Bringing together talented people from around the world based on their skills for an engaging session where participants have the opportunity to learn and improve various skills.  and Cultivating Lifelong Friendships",
+    "main": "server.js",
+    "scripts": {
+        "start": "node src/server.js",
+        "test-watch": " jest --watch ",
+        "watch": "nodemon src/server.js",
+        "test": " jest --detectOpenHandles",
+        "cluster": "pm2 start src/server.js -l logs.txt -i 2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Skill-Sync/SkillSync-Backend.git"
+    },
+    "author": "MAES / Medhat",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Skill-Sync/SkillSync-Backend/issues"
+    },
+    "homepage": "https://github.com/Skill-Sync/SkillSync-Backend#readme",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.20.2",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "crypto": "^1.0.1",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "express-mongo-sanitize": "^2.2.0",
+        "express-rate-limit": "^6.10.0",
+        "helmet": "^7.0.0",
+        "hpp": "^0.2.3",
+        "jsonwebtoken": "^9.0.2",
+        "mongodb-memory-server": "^8.15.1",
+        "mongoose": "^7.4.3",
+        "morgan": "^1.10.0",
+        "nodemon": "^3.0.1",
+        "pm2": "^5.3.0",
+        "socket.io": "^4.7.2",
+        "ts-jest": "^29.1.1",
+        "validator": "^13.11.0",
+        "xss-clean": "^0.1.4"
+    },
+    "devDependencies": {
+        "jest": "^29.6.2",
+        "prettier": "^1.17.0",
+        "supertest": "^6.3.3"
+    },
+    "engines": {
+        "node": "18.x"
+    }
 }
