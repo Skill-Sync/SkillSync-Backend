@@ -28,6 +28,9 @@ async function sendTokens(user, userType, statusCode, res) {
 
     const refreshToken = signRefreshToken(user._id, userType, session._id);
 
+    res.cookies('refreshJWT', refreshToken, { httpOnly: true });
+    res.cookies('accessJWT', accessToken, { httpOnly: true });
+
     res.status(statusCode).json({
         status: 'success',
         accessJWT: accessToken,
@@ -37,7 +40,13 @@ async function sendTokens(user, userType, statusCode, res) {
 }
 
 exports.signup = catchAsyncError(async (req, res, next) => {
-    const signUpData = filterObj(req.body, 'name', 'email', 'pass');
+    const signUpData = filterObj(
+        req.body,
+        'name',
+        'email',
+        'pass',
+        'passConfirm'
+    );
 
     const newUser = await (req.body.type.toLowerCase() === 'mentor'
         ? Mentor
