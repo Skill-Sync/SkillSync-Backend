@@ -13,7 +13,7 @@ const filterObj = (obj, ...allowedFields) => {
 };
 // ---------- User Operations ---------//
 exports.getMe = (req, res, next) => {
-  req.params.id = res.locals.user.id;
+  req.params.id = res.locals.userId;
   next();
 };
 

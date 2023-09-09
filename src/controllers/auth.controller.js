@@ -135,14 +135,14 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
 
   if (!decodedAccessToken.status) {
     if (!decodedRefreshToken.status) {
-      return next(
-        new AppError('You are not logged in! Please log in to get access.', 401)
-      );
+      return next(new AppError('You are not logged in! ', 401));
     }
 
     if (!(await Session.checkSession(decodedRefreshToken.refreshSession))) {
       return next(new AppError('Invalid session. Please re-login"', 401));
     }
+
+    const user = await User.findById(decodedRefreshToken.id);
 
     const accessToken = signAccessToken(
       decodedRefreshToken.id,
