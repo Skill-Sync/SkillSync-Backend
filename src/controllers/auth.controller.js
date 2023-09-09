@@ -31,7 +31,7 @@ async function sendTokens(user, userType, statusCode, res) {
     }
 
     if (userType.toLowerCase() === 'user') {
-        userType = await User.role;
+        userType = user.role;
     }
 
     const accessToken = signAccessToken(user._id, userType);
@@ -105,7 +105,7 @@ exports.confirmEmail = catchAsyncError(async (req, res, next) => {
     ).findById(authenticationToken.id);
 
     //update user status
-    user.isVerified = true;
+    user.active = true;
     await user.save({ validateBeforeSave: false });
 
     //send welcome email
@@ -270,7 +270,7 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
-        if (!roles.includes(req.locals.userType.toLowerCase())) {
+        if (!roles.includes(res.locals.userType.toLowerCase())) {
             return next(
                 new AppError(
                     'You do not have permission to perform this action',
