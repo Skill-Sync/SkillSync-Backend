@@ -4,22 +4,13 @@ const {
     signEmailConfirmationToken,
     verifyToken
 } = require('./../utils/jwt');
+const { filterObj } = require('./../utils/ApiFeatures');
 const sendEmail = require('./../utils/email/sendMail');
 const User = require('../models/user.model');
 const Mentor = require('../models/mentor.model');
 const Session = require('../models/authSession.models');
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
-
-function filterObj(obj, ...allowedAtt) {
-    const newObj = {};
-    for (att in obj) {
-        if (allowedAtt.includes(att)) {
-            newObj[att] = obj[att];
-        }
-    }
-    return newObj;
-}
 
 async function sendTokens(user, userType, statusCode, res) {
     user.password = undefined;
@@ -38,8 +29,19 @@ async function sendTokens(user, userType, statusCode, res) {
 
     const refreshToken = signRefreshToken(user._id, userType, session._id);
 
-    // res.cookies('refreshJWT', refreshToken, { httpOnly: true });
-    // res.cookies('accessJWT', accessToken, { httpOnly: true });
+    const cookieOptions = {
+        expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+        cookieOptions.secure = true;
+    }
+
+    res.cookie('refreshJWT', refreshToken, cookieOptions);
+    res.cookie('accessJWT', accessToken, cookieOptions);
 
     let responseObject =
         userType.toLowerCase() === 'mentor'
@@ -196,7 +198,7 @@ exports.logout = catchAsyncError(async (req, res, next) => {
     );
     await Session.invalidateSession(refreshSession);
     //3- delete the cookie
-    res.status(200 || res.locals.statusCode).json({
+    res.status(res.locals.statusCode || 200).json({
         status: 'success',
         message: 'Logged out successfully'
     });
@@ -234,6 +236,8 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     }
     user.pass = req.body.pass;
     user.passConfirm = req.body.passConfirm;
+    //3- update changedPassAt property for the user
+    // user.chancgedPassAt = Date.now() - 1000;
     await user.save({ validateBeforeSave: false });
 
     await Session.InvalidateAllUserSessions(user_id);
