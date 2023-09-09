@@ -13,7 +13,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const { isLogin } = require('./controllers/auth.controller');
 const globalErrorHandler = require('./controllers/controllerUtils/errorController');
 
-const authRouter = require('./routes/auth.routes');
+const authRouter = require('./routes/auth.Routes');
 const usersRouter = require('./routes/user.routes');
 const adminRouter = require('./routes/admin.routes');
 const skillsRouter = require('./routes/skill.routes');
@@ -34,9 +34,9 @@ app.options('*', cors());
 // app.use(helmet.contentSecurityPolicy({}));
 
 const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!'
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many requests from this IP, please try again in an hour!'
 });
 app.use('/api', limiter);
 
@@ -68,9 +68,9 @@ app.use('/api/v1/friends', friendsRouter);
 app.use('/api/v1/meetings', meetingsRouter);
 
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    message: 'Invalid route, please check URL'
-  });
+    res.status(404).json({
+        message: 'Invalid route, please check URL'
+    });
 });
 //--------------------------------//
 app.use(globalErrorHandler);
