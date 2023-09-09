@@ -38,8 +38,19 @@ async function sendTokens(user, userType, statusCode, res) {
 
     const refreshToken = signRefreshToken(user._id, userType, session._id);
 
-    // res.cookies('refreshJWT', refreshToken, { httpOnly: true });
-    // res.cookies('accessJWT', accessToken, { httpOnly: true });
+    const cookieOptions = {
+        expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+        cookieOptions.secure = true;
+    }
+
+    res.cookie('refreshJWT', refreshToken, cookieOptions);
+    res.cookie('accessJWT', accessToken, cookieOptions);
 
     res.status(statusCode).json({
         status: 'success',
