@@ -173,12 +173,14 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 });
 
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
+    const { token, type } = req.params;
+
     //1- get user based on token
-    const user = await (req.body.type.toLowerCase() === 'mentor'
+    const user = await (type.toLowerCase() === 'mentor'
         ? Mentor
         : User
     ).findOne({
-        passwordResetToken: req.body.token,
+        passwordResetToken: token,
         passwordResetExpires: { $gt: Date.now() }
     });
 
@@ -192,7 +194,9 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     user.chancgedPassAt = Date.now() - 1000;
     await user.save({ validateBeforeSave: false });
 
-    //4- log the user in, send JWT
+    //4-Invalidate all user sessions
+    await Session.InvalidateAllUserSessions(user_id);
+
     //TODO:Redirect to login page
     res.status(200).json({
         status: 'success',
@@ -200,7 +204,7 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     });
 });
 
-exports.getResetToken = catchAsyncError(async (req, res, next) => {});
+// exports.getResetToken = catchAsyncError(async (req, res, next) => {});
 
 exports.isLogin = catchAsyncError(async (req, res, next) => {
     const [accessToken, refreshToken] = [

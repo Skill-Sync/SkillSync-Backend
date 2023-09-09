@@ -9,7 +9,7 @@ router.get('/confirmEmail/:token', authController.confirmEmail);
 router.post('/forgotPass', authController.forgotPassword);
 
 router
-    .route('/resetPass/:token')
+    .route('/resetPass/:token/:type')
     // .get(authController.getResetToken)
     .patch(authController.resetPassword);
 
