@@ -121,13 +121,13 @@ usersSchema.pre(/^find/, function(next) {
     this.find()
         .populate({
             path: 'skillsToLearn',
-            select: 'name description logo'
+            select: 'name'
         })
         .populate({
             path: 'skillsLearned',
             populate: {
                 path: 'skill',
-                select: 'name description logo'
+                select: 'name'
             }
         });
     // this.find({ active: { $ne: false } });
