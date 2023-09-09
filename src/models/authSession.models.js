@@ -28,7 +28,7 @@ sessionsSchema.statics.checkSession = async function(sessionId) {
     return session.valid;
 };
 sessionsSchema.statics.deleteSession = async function(sessionId) {
-    this.find(sessionId).deleteOne();
+    await this.find(sessionId).deleteOne();
 };
 sessionsSchema.statics.invalidateAllUserSessions = async function(userId) {
     await this.find({ user: userId, valid: true }).updateMany({ valid: false });

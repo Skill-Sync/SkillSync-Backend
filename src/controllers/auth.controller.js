@@ -223,7 +223,7 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
 
     const decodedAccessToken = await verifyToken(
         accessToken,
-        process.env.JWT_REFRESH_SECRET
+        process.env.JWT_ACCESS_SECRET
     );
 
     const decodedRefreshToken = await verifyToken(
@@ -254,6 +254,11 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
 
         res.locals.statusCode = 309;
     }
+
+    if (!decodedRefreshToken.status) {
+        return next(new AppError(decodedRefreshToken.message, 401));
+    }
+
     res.locals.userId = decodedAccessToken.id || decodedRefreshToken.id;
     res.locals.userType =
         decodedAccessToken.userType || decodedRefreshToken.userType;
@@ -264,8 +269,7 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
-        const { userType } = res.locals;
-        if (!roles.includes(userType.toLowerCase())) {
+        if (!roles.includes(req.locals.userType.toLowerCase())) {
             return next(
                 new AppError(
                     'You do not have permission to perform this action',
