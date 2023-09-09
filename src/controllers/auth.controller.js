@@ -146,11 +146,13 @@ exports.confirmEmail = catchAsyncError(async (req, res, next) => {
     const user = await (authenticationToken.userType.toLowerCase() === 'mentor'
         ? Mentor
         : User
-    ).findById(authenticationToken.id);
+    ).findByIdAndUpdate(authenticationToken.id, {
+        active: true
+    });
 
     //update user status
-    user.active = true;
-    await user.save({ validateBeforeSave: false });
+    // user.active = true;
+    // await user.save({ validateBeforeSave: false });
 
     //send welcome email
     sendEmail(
