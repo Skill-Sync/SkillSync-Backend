@@ -32,7 +32,7 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
         'experience',
         'identityCard',
         'skillsToLearn',
-        'skillsLearned'
+        'skillsLearned',
         'courses'
     );
 
