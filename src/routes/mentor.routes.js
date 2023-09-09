@@ -16,7 +16,11 @@ router
     mentorController.getMe,
     mentorController.deactivateMentor
   );
-router.patch('/updatePersonalData', mentorController.UpdateMe);
+router.patch(
+  '/updatePersonalData',
+  mentorController.getMe,
+  mentorController.UpdateMe
+);
 // router.patch('/updatePassword', authController.updatePassword);
 //---------------Admin Routes---------------//
 // router.use(authController.restrictTo('admin'));

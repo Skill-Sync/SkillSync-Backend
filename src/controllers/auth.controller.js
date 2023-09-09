@@ -142,8 +142,6 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
       return next(new AppError('Invalid session. Please re-login"', 401));
     }
 
-    const user = await User.findById(decodedRefreshToken.id);
-
     const accessToken = signAccessToken(
       decodedRefreshToken.id,
       decodedRefreshToken.userType
