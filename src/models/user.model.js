@@ -102,7 +102,7 @@ usersSchema.methods.createPasswordResetToken = function() {
 };
 //-------------------Document Middleware-----------------//
 usersSchema.pre('save', function(next) {
-    if (this.isNew) return next();
+    if (this.isNew || this.isModified('active')) return next();
     this.onboarding_completed = true;
     next();
 });
