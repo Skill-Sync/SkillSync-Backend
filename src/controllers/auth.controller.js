@@ -12,37 +12,37 @@ const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
 
 function filterObj(obj, ...allowedAtt) {
-  const newObj = {};
-  for (att in obj) {
-    if (allowedAtt.includes(att)) {
-      newObj[att] = obj[att];
+    const newObj = {};
+    for (att in obj) {
+        if (allowedAtt.includes(att)) {
+            newObj[att] = obj[att];
+        }
     }
-  }
-  return newObj;
+    return newObj;
 }
 
 async function sendTokens(user, userType, statusCode, res) {
-  user.password = undefined;
-  let session;
-  try {
-    session = await Session.createSession(user._id);
-  } catch (err) {
-    return next(new AppError('Error creating session', 500));
-  }
+    user.password = undefined;
+    let session;
+    try {
+        session = await Session.createSession(user._id);
+    } catch (err) {
+        return next(new AppError('Error creating session', 500));
+    }
 
-  const accessToken = signAccessToken(user._id, userType);
+    const accessToken = signAccessToken(user._id, userType);
 
-  const refreshToken = signRefreshToken(user._id, userType, session._id);
+    const refreshToken = signRefreshToken(user._id, userType, session._id);
 
-  // res.cookies('refreshJWT', refreshToken, { httpOnly: true });
-  // res.cookies('accessJWT', accessToken, { httpOnly: true });
+    // res.cookies('refreshJWT', refreshToken, { httpOnly: true });
+    // res.cookies('accessJWT', accessToken, { httpOnly: true });
 
-  res.status(statusCode).json({
-    status: 'success',
-    accessJWT: accessToken,
-    refreshJWT: refreshToken,
-    data: { user }
-  });
+    res.status(statusCode).json({
+        status: 'success',
+        accessJWT: accessToken,
+        refreshJWT: refreshToken,
+        data: { user }
+    });
 }
 
 exports.signup = catchAsyncError(async (req, res, next) => {
@@ -118,17 +118,17 @@ exports.confirmEmail = catchAsyncError(async (req, res, next) => {
 });
 
 exports.login = catchAsyncError(async (req, res, next) => {
-  const { email, pass, type } = req.body;
-  if (!email || !pass)
-    return next(new AppError('Please provide email and password', 400));
+    const { email, pass, type } = req.body;
+    if (!email || !pass)
+        return next(new AppError('Please provide email and password', 400));
 
-  const user = await (type.toLowerCase() === 'mentor' ? Mentor : User)
-    .findOne({ email })
-    .select('+pass');
+    const user = await (type.toLowerCase() === 'mentor' ? Mentor : User)
+        .findOne({ email })
+        .select('+pass');
 
-  if (!user || !(await user.correctPassword(pass, user.pass))) {
-    return next(new AppError('Incorrect email or password', 401));
-  }
+    if (!user || !(await user.correctPassword(pass, user.pass))) {
+        return next(new AppError('Incorrect email or password', 401));
+    }
 
     if (!user.active) {
         return next(new AppError('Your account is not active', 401));
@@ -138,19 +138,19 @@ exports.login = catchAsyncError(async (req, res, next) => {
 });
 
 exports.logout = catchAsyncError(async (req, res, next) => {
-  //1- from the token get the user id
-  const { refreshSession } = await verifyToken(
-    req.headers.authorization?.split(' ')[2],
-    process.env.JWT_REFRESH_SECRET
-  );
-  // console.log(refreshSession);
-  //2- delete the session from the database
-  await Session.invalidateSession(refreshSession);
-  //3- delete the cookie
-  res.status(200 || res.locals.statusCode).json({
-    status: 'success',
-    message: 'Logged out successfully'
-  });
+    //1- from the token get the user id
+    const { refreshSession } = await verifyToken(
+        req.headers.authorization?.split(' ')[2],
+        process.env.JWT_REFRESH_SECRET
+    );
+    // console.log(refreshSession);
+    //2- delete the session from the database
+    await Session.invalidateSession(refreshSession);
+    //3- delete the cookie
+    res.status(200 || res.locals.statusCode).json({
+        status: 'success',
+        message: 'Logged out successfully'
+    });
 });
 
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {
@@ -204,7 +204,6 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     });
 });
 
-
 // exports.getResetToken = catchAsyncError(async (req, res, next) => {});
 
 exports.isLogin = catchAsyncError(async (req, res, next) => {
@@ -222,31 +221,31 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
         );
     }
 
-  const decodedAccessToken = await verifyToken(
-    accessToken,
-    process.env.JWT_REFRESH_SECRET
-  );
-
-  const decodedRefreshToken = await verifyToken(
-    refreshToken,
-    process.env.JWT_REFRESH_SECRET
-  );
-
-  if (!decodedAccessToken.status) {
-    if (!decodedRefreshToken.status) {
-      return next(new AppError('You are not logged in! ', 401));
-    }
-
-    if (!(await Session.checkSession(decodedRefreshToken.refreshSession))) {
-      return next(new AppError('Invalid session. Please re-login"', 401));
-    }
-
-    const accessToken = signAccessToken(
-      decodedRefreshToken.id,
-      decodedRefreshToken.userType
+    const decodedAccessToken = await verifyToken(
+        accessToken,
+        process.env.JWT_REFRESH_SECRET
     );
 
-    res.setHeader('Authorization', `Bearer ${accessToken} ${refreshToken}`);
+    const decodedRefreshToken = await verifyToken(
+        refreshToken,
+        process.env.JWT_REFRESH_SECRET
+    );
+
+    if (!decodedAccessToken.status) {
+        if (!decodedRefreshToken.status) {
+            return next(new AppError('You are not logged in! ', 401));
+        }
+
+        if (!(await Session.checkSession(decodedRefreshToken.refreshSession))) {
+            return next(new AppError('Invalid session. Please re-login"', 401));
+        }
+
+        const accessToken = signAccessToken(
+            decodedRefreshToken.id,
+            decodedRefreshToken.userType
+        );
+
+        res.setHeader('Authorization', `Bearer ${accessToken} ${refreshToken}`);
 
         res.locals.statusCode = 309;
     }
@@ -259,7 +258,7 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
     res.locals.userType =
         decodedAccessToken.userType || decodedRefreshToken.userType;
     req.isLogin = true;
-  next();
+    next();
 });
 
 exports.restrictTo = (...roles) => {
