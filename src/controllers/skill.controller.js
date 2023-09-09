@@ -8,7 +8,7 @@ exports.getSkill = factory.getOne(Skill);
 exports.getAllSkills = factory.getAll(Skill);
 exports.deleteSkill = factory.deleteOne(Skill);
 exports.createSkill = catchAsyncError(async (req, res, next) => {
-    const skillObj = filterObj(req.body, 'name', 'description', 'logo');
+    const skillObj = filterObj(req.body, 'name', 'description');
 
     const newSkill = await Skill.create(skillObj);
 
