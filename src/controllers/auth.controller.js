@@ -198,7 +198,7 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     user.pass = req.body.pass;
     user.passConfirm = req.body.passConfirm;
     //3- update changedPassAt property for the user
-    user.chancgedPassAt = Date.now() - 1000;
+    // user.chancgedPassAt = Date.now() - 1000;
     await user.save({ validateBeforeSave: false });
 
     //4-Invalidate all user sessions
