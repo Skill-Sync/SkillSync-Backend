@@ -31,8 +31,6 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
         'about',
         'experience',
         'identityCard',
-        'skillsToLearn',
-        'skillsLearned',
         'courses'
     );
 
