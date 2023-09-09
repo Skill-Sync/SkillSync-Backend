@@ -40,8 +40,7 @@ const mentorSchema = new mongoose.Schema(
       required: [true, 'A user must have a password confirmation']
     },
     identityCard: {
-      type: String,
-      required: [true, 'A mentor must provide an identity card']
+      type: String
     },
     photo: {
       type: String,
@@ -108,11 +107,12 @@ mentorSchema.pre('save', function(next) {
 mentorSchema.pre('save', async function(next) {
   // Only run this function only when password got modified (or created)
   if (!this.isModified('pass')) return next();
-  this.password = await bcrypt.hash(this.pass, 12);
-  this.passwordConfirm = undefined;
+  this.pass = await bcrypt.hash(this.pass, 12);
+  this.passConfirm = undefined;
 });
 //-------------------Query Middleware-------------------//
 mentorSchema.pre(/^find/, function(next) {
+  this.select('photo name email about experience courses onboarding_completed');
   this.find({ active: { $ne: false } });
   next();
 });

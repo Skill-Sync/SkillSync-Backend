@@ -42,7 +42,7 @@ exports.deleteOne = Model => {
   });
 };
 //------------ User handler functions -------------//
-exports.getOne = (Model, populateOptions) => {
+exports.getOne = Model => {
   return catchAsyncError(async (req, res, next) => {
     const doc = await Model.findById(req.params.id);
     if (!doc) return next(new AppError(`No ${Model} found with that ID`, 404));
