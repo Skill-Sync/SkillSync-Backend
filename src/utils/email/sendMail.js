@@ -23,12 +23,9 @@ const sendEmail = (email, subject, payload, template) => {
     };
     transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
-            return res.status(500).json({ message: 'Internal server error' });
+            throw new Error(error);
         } else {
-            // console.log("Email sent: " + info.response);
-            return res.status(200).json({
-                success: true
-            });
+            console.log('Email sent: ' + info.response);
         }
     });
 };

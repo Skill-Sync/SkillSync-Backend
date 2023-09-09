@@ -164,7 +164,7 @@ exports.logout = catchAsyncError(async (req, res, next) => {
     //2- delete the session from the database
     await Session.invalidateSession(refreshSession);
     //3- delete the cookie
-    res.status(200 || res.locals.statusCode).json({
+    res.status(res.locals.statusCode || 200).json({
         status: 'success',
         message: 'Logged out successfully'
     });

@@ -68,7 +68,7 @@ app.use('/api/v1/friends', friendsRouter);
 app.use('/api/v1/meetings', meetingsRouter);
 
 app.all('*', (req, res, next) => {
-    res.status(404).json({
+    res.status(res.locals.statusCode || 404).json({
         message: 'Invalid route, please check URL'
     });
 });
