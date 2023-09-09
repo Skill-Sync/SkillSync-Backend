@@ -118,6 +118,18 @@ usersSchema.pre(/^find/, function(next) {
     this.select(
         'photo name email isEmployed skillsToLearn skillsLearned about onboarding_completed active role'
     );
+    this.find()
+        .populate({
+            path: 'skillsToLearn',
+            select: 'name description logo'
+        })
+        .populate({
+            path: 'skillsLearned',
+            populate: {
+                path: 'skill',
+                select: 'name description logo'
+            }
+        });
     // this.find({ active: { $ne: false } });
     next();
 });
