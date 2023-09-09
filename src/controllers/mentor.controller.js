@@ -13,7 +13,7 @@ const filterObj = (obj, ...allowedFields) => {
 };
 // ---------- mentor Operations ---------//
 exports.getMe = (req, res, next) => {
-  req.params.id = res.locals.user.id;
+  req.params.id = res.locals.userId;
   next();
 };
 
@@ -33,14 +33,11 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
     'skillsLearned'
   );
 
-  const updatedUser = await Mentor.findByIdAndUpdate(
-    req.params.id,
-    filteredBody,
-    {
-      new: true,
-      runValidators: true
-    }
-  );
+  const updatedUser = await Mentor.findById(req.params.id);
+  Object.keys(filteredBody).forEach(key => {
+    updatedUser[key] = filteredBody[key];
+  });
+  await updatedUser.save({ runValidators: true });
 
   res.status(200).json({
     status: 'success',
@@ -58,16 +55,31 @@ exports.activateMentor = factory.activateOne(Mentor);
 exports.deleteMentor = factory.deleteOne(Mentor);
 //-----Advance Admin CRUD Operations-----//
 exports.verifyMentor = catchAsyncError(async (req, res, next) => {
-  const mentor = await Mentor.findByIdAndUpdate(req.params.id, {
-    isVerified: true
-  });
+  const mentor = await Mentor.findOneAndUpdate(
+    {
+      _id: req.params.id,
+      onboarding_completed: true
+    },
+    { isVerified: true }
+  );
+
+  if (!mentor) {
+    return next(new AppError('No mentor found with ID ready to verify', 404));
+  }
+
   res.status(200).json({
-    status: 'success'
+    status: 'success',
+    data: {
+      mentor
+    }
   });
 });
 
 exports.getMentorsReq = catchAsyncError(async (req, res, next) => {
-  const mentors = await Mentor.find({ isVerified: false });
+  const mentors = await Mentor.find({
+    isVerified: false,
+    onboarding_completed: true
+  });
   res.status(200).json({
     status: 'success',
     results: mentors.length,

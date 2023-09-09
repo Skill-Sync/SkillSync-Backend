@@ -1,0 +1,59 @@
+[
+  {
+    "name": "User 1",
+    "email": "user1@example.com",
+    "pass": "password123",
+    "passConfirm": "password123",
+    "about": "About User 1",
+    "isEmployed": true,
+    "skillsToLearn": [],
+    "skillsLearned": []
+  },
+  {
+    "name": "User 2",
+    "email": "user2@example.com",
+    "pass": "password456",
+    "passConfirm": "password456",
+    "about": "About User 2",
+    "isEmployed": false,
+    "skillsToLearn": [],
+    "skillsLearned": []
+  },
+  {
+    "name": "User 3",
+    "email": "user3@example.com",
+    "pass": "password789",
+    "passConfirm": "password789",
+    "about": "About User 3",
+    "isEmployed": true,
+    "skillsToLearn": [],
+    "skillsLearned": []
+  },
+  {
+    "name": "User 4",
+    "email": "user4@example.com",
+    "pass": "passwordABC",
+    "passConfirm": "passwordABC",
+    "about": "About User 4",
+    "isEmployed": false,
+    "skillsToLearn": [],
+    "skillsLearned": []
+  },
+  {
+    "name": "User 5",
+    "email": "user5@example.com",
+    "pass": "passwordXYZ",
+    "passConfirm": "passwordXYZ",
+    "about": "About User 5",
+    "isEmployed": true,
+    "skillsToLearn": [],
+    "skillsLearned": []
+  },
+  {
+    "name": "admin",
+    "email": "adminemail@me.com",
+    "pass": "pass1221",
+    "passConfirm": "pass1221",
+    "about": "About admin"
+  }
+]
