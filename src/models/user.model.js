@@ -118,7 +118,7 @@ usersSchema.pre('save', async function(next) {
 //-------------------Query Middleware-------------------//
 usersSchema.pre(/^find/, function(next) {
     this.select('photo name email isEmployed skillsToLearn skillsLearned');
-    this.find({ active: { $ne: false } });
+    // this.find({ active: { $ne: false } });
     next();
 });
 //-------------------------Export-----------------------//

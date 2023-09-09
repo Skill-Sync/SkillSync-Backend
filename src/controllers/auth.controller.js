@@ -1,8 +1,11 @@
 const {
     signAccessToken,
     signRefreshToken,
+    signEmailConfirmationToken,
+    signPasswordResetToken,
     verifyToken
 } = require('./../utils/jwt');
+const sendEmail = require('./../utils/email/sendMail');
 const User = require('../models/user.model');
 const Mentor = require('../models/mentor.model');
 const Session = require('../models/authSession.models');
@@ -52,10 +55,30 @@ exports.signup = catchAsyncError(async (req, res, next) => {
         'passConfirm'
     );
 
+    //TODO:only the new users and the users with non active accounts can signup
+    //TODO:what if the 10m are gone and the user didn't confirm his email
+
     const newUser = await (req.body.type.toLowerCase() === 'mentor'
         ? Mentor
         : User
     ).create(signUpData);
+
+    //send Activation Mail to User
+
+    //1-create email confirmation token
+    const emailConfirmationToken = signEmailConfirmationToken(
+        newUser._id,
+        req.body.type
+    );
+    //2-send email
+    const emailConfirmationURL = `${req.protocol}://${req.url}/api/v1/auth/confirmEmail/${emailConfirmationToken}`;
+
+    sendEmail(
+        newUser.email,
+        'Confirm your Email (valid for 10 min)',
+        { name: newUser.name, link: emailConfirmationURL },
+        './templates/mailConfirmation.handlebars'
+    );
 
     res.status(200).json({
         status: 'success',
@@ -74,6 +97,10 @@ exports.login = catchAsyncError(async (req, res, next) => {
 
     if (!user || !(await user.correctPassword(pass, user.pass))) {
         return next(new AppError('Incorrect email or password', 401));
+    }
+
+    if (!user.active) {
+        return next(new AppError('Your account is not active', 401));
     }
 
     sendTokens(user, type, 200, res);
@@ -97,15 +124,42 @@ exports.logout = catchAsyncError(async (req, res, next) => {
 
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {
     //1- get user based on email
+    const user = await (req.body.type.toLowerCase() === 'mentor'
+        ? Mentor
+        : User
+    ).findOne({ email: req.body.email });
     //2- generate random token
+    const resetToken = user.createPasswordResetToken();
     //3- send it to user's email
-    //4- save token to database
+    const resetURL = `${process.env.CLIENT_URL}/resetPass/${resetToken}`;
+
+    sendEmail(
+        user.email,
+        'Reset your password (valid for 5 min)',
+        { name: user.name, link: resetURL },
+        './templates/requestResetPassword.handlebars'
+    );
 });
 
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
     //1- get user based on token
+    const { id, userType } = await verifyToken(req.body.token);
     //2- if token has not expired and there is user, set new password
+    const user = await (userType.toLowerCase() === 'mentor' ? Mentor : User)
+        .findById(id)
+        .select('+pass');
+
+    if (!user) {
+        return next(new AppError('User not found', 404));
+    }
+
+    user.pass = req.body.pass;
+    user.passConfirm = req.body.passConfirm;
+    user.chancgedPassAt = Date.now() - 1000;
+    await user.save({ validateBeforeSave: false });
+
     //3- update changedPassAt property for the user
+
     //4- log the user in, send JWT
 });
 
