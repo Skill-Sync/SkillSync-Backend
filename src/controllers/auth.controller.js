@@ -268,7 +268,7 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
 
     const decodedAccessToken = await verifyToken(
         accessToken,
-        process.env.JWT_REFRESH_SECRET
+        process.env.JWT_ACCESS_SECRET
     );
 
     const decodedRefreshToken = await verifyToken(
