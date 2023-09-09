@@ -43,15 +43,38 @@ async function sendTokens(user, userType, statusCode, res) {
     res.cookie('refreshJWT', refreshToken, cookieOptions);
     res.cookie('accessJWT', accessToken, cookieOptions);
 
+    let responseObject =
+        userType.toLowerCase() === 'mentor'
+            ? {
+                  name: user.name,
+                  email: user.email,
+                  about: user.about,
+                  experience: user.experience,
+                  identityCard: user.identityCard,
+                  courses: user.courses,
+                  onboarding_completed: user.onboarding_completed
+              }
+            : {
+                  name: user.name,
+                  email: user.email,
+                  photo: user.photo,
+                  about: user.about,
+                  isEmployed: user.isEmployed,
+                  skillsToLearn: user.skillsToLearn,
+                  onboarding_completed: user.onboarding_completed,
+                  skillsLearned: user.skillsLearned
+              };
+
     res.status(statusCode).json({
         status: 'success',
         accessJWT: accessToken,
         refreshJWT: refreshToken,
-        data: { user }
+        data: { responseObject }
     });
 }
 
 exports.signup = catchAsyncError(async (req, res, next) => {
+    const { type } = req.body;
     const signUpData = filterObj(
         req.body,
         'name',
@@ -60,36 +83,57 @@ exports.signup = catchAsyncError(async (req, res, next) => {
         'passConfirm'
     );
 
-    //TODO:only the new users and the users with non active accounts can signup
-    //TODO:what if the 10m are gone and the user didn't confirm his email -> if login without confirming email -> send email again
-
-    const newUser = await (req.body.type.toLowerCase() === 'mentor'
+    // Create a new user based on the 'type' (Mentor or User)
+    const newUser = await (type.toLowerCase() === 'mentor'
         ? Mentor
         : User
     ).create(signUpData);
 
-    //send Activation Mail to User
-
-    //1-create email confirmation token
+    // Create email confirmation token and confirmation URL
     const emailConfirmationToken = signEmailConfirmationToken(
         newUser._id,
-        req.body.type
+        type
     );
-    //2-send email
     const emailConfirmationURL = `${req.protocol}://${req.get(
         'host'
     )}/api/v1/auth/confirmEmail/${emailConfirmationToken}`;
 
+    // Send email with the confirmation link
     sendEmail(
         newUser.email,
         'Confirm your Email (valid for 10 min)',
-        { name: newUser.name, link: emailConfirmationURL },
+        {
+            name: newUser.name,
+            link: emailConfirmationURL
+        },
         './templates/mailConfirmation.handlebars'
     );
 
+    let responseObject =
+        type.toLowerCase() === 'mentor'
+            ? {
+                  name: newUser.name,
+                  email: newUser.email,
+                  about: newUser.about,
+                  experience: newUser.experience,
+                  identityCard: newUser.identityCard,
+                  courses: newUser.courses,
+                  onboarding_completed: newUser.onboarding_completed
+              }
+            : {
+                  name: newUser.name,
+                  email: newUser.email,
+                  photo: newUser.photo,
+                  about: newUser.about,
+                  isEmployed: newUser.isEmployed,
+                  skillsToLearn: newUser.skillsToLearn,
+                  onboarding_completed: newUser.onboarding_completed,
+                  skillsLearned: newUser.skillsLearned
+              };
+
     res.status(200).json({
         status: 'success',
-        data: { newUser }
+        data: responseObject
     });
 });
 
@@ -104,11 +148,13 @@ exports.confirmEmail = catchAsyncError(async (req, res, next) => {
     const user = await (authenticationToken.userType.toLowerCase() === 'mentor'
         ? Mentor
         : User
-    ).findById(authenticationToken.id);
+    ).findByIdAndUpdate(authenticationToken.id, {
+        active: true
+    });
 
     //update user status
-    user.active = true;
-    await user.save({ validateBeforeSave: false });
+    // user.active = true;
+    // await user.save({ validateBeforeSave: false });
 
     //send welcome email
     sendEmail(
@@ -146,13 +192,10 @@ exports.login = catchAsyncError(async (req, res, next) => {
 });
 
 exports.logout = catchAsyncError(async (req, res, next) => {
-    //1- from the token get the user id
     const { refreshSession } = await verifyToken(
         req.headers.authorization?.split(' ')[2],
         process.env.JWT_REFRESH_SECRET
     );
-    // console.log(refreshSession);
-    //2- delete the session from the database
     await Session.invalidateSession(refreshSession);
     //3- delete the cookie
     res.status(res.locals.statusCode || 200).json({
@@ -162,17 +205,13 @@ exports.logout = catchAsyncError(async (req, res, next) => {
 });
 
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {
-    //1- get user based on email
     const user = await (req.body.type.toLowerCase() === 'mentor'
         ? Mentor
         : User
     ).findOne({ email: req.body.email });
 
-    //2- generate random token
     const resetToken = user.createPasswordResetToken();
-    //3- send it to user's email
     const resetURL = `${process.env.CLIENT_URL}/resetPass/${resetToken}`;
-
     sendEmail(
         user.email,
         'Reset your password (valid for 5 min)',
@@ -184,7 +223,6 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
     const { token, type } = req.params;
 
-    //1- get user based on token
     const user = await (type.toLowerCase() === 'mentor'
         ? Mentor
         : User
@@ -196,14 +234,12 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     if (!user) {
         return next(new AppError('The token is invalid or has expired', 404));
     }
-    //2- if token has not expired and there is user, set new password
     user.pass = req.body.pass;
     user.passConfirm = req.body.passConfirm;
     //3- update changedPassAt property for the user
     // user.chancgedPassAt = Date.now() - 1000;
     await user.save({ validateBeforeSave: false });
 
-    //4-Invalidate all user sessions
     await Session.InvalidateAllUserSessions(user_id);
 
     //TODO:Redirect to login page

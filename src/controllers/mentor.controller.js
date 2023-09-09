@@ -33,6 +33,7 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
         'identityCard',
         'skillsToLearn',
         'skillsLearned'
+        'courses'
     );
 
     const updatedUser = await Mentor.findById(req.params.id);
@@ -41,7 +42,7 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
     });
     await updatedUser.save({ runValidators: true });
 
-    res.status(res.locals.statusCode || 200).json({
+  res.status(res.locals.statusCode || 200).json({
         status: 'success',
         data: {
             user: updatedUser
@@ -84,7 +85,8 @@ exports.getMentorsReq = catchAsyncError(async (req, res, next) => {
         isVerified: false,
         onboarding_completed: true
     });
-    res.status(res.locals.statusCode || 200).json({
+
+  res.status(res.locals.statusCode || 200).json({
         status: 'success',
         results: mentors.length,
         data: {
