@@ -1,8 +1,8 @@
-const User = require('./../models/usersModel');
+const User = require('../models/user.model');
 const factory = require('./controllerUtils/handlerFactory');
 
-const AppError = require('./../utils/appErrorsClass');
-const catchAsyncError = require('./../utils/catchAsyncErrors');
+const AppError = require('../utils/appErrorsClass');
+const catchAsyncError = require('../utils/catchAsyncErrors');
 //------------handler functions ------------//
 const filterObj = (obj, ...allowedFields) => {
   const returnedFiled = {};
@@ -13,7 +13,7 @@ const filterObj = (obj, ...allowedFields) => {
 };
 // ---------- User Operations ---------//
 exports.getMe = (req, res, next) => {
-  req.params.id = res.locals.user.id;
+  req.params.id = res.locals.userId;
   next();
 };
 
@@ -32,14 +32,11 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
     'skillsLearned'
   );
 
-  const updatedUser = await User.findByIdAndUpdate(
-    req.params.id,
-    filteredBody,
-    {
-      new: true,
-      runValidators: true
-    }
-  );
+  const updatedUser = await User.findById(req.params.id);
+  Object.keys(filteredBody).forEach(key => {
+    updatedUser[key] = filteredBody[key];
+  });
+  await updatedUser.save({ runValidators: true });
 
   res.status(200).json({
     status: 'success',

@@ -1,13 +1,13 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 //------------------------------------------//
-const usersSchema = new mongoose.Schema(
+const mentorSchema = new mongoose.Schema(
   {
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'user'
+      default: 'mentor'
     },
     name: {
       type: String,
@@ -39,6 +39,9 @@ const usersSchema = new mongoose.Schema(
       },
       required: [true, 'A user must have a password confirmation']
     },
+    identityCard: {
+      type: String
+    },
     photo: {
       type: String,
       default: 'default.jpg'
@@ -47,30 +50,23 @@ const usersSchema = new mongoose.Schema(
       type: String,
       default: 'No description'
     },
-    isEmployed: {
-      type: Boolean,
-      default: false
-    },
-    skillsToLearn: [
+    experience: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Skill'
+        type: String,
+        default: 'No experience'
       }
     ],
-    skillsLearned: [
+    courses: [
       {
-        skill: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Skill'
-        },
-        level: {
-          type: String,
-          enum: ['beginner', 'intermediate', 'advanced'],
-          default: 'beginner'
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Course'
       }
     ],
     onboarding_completed: {
+      type: Boolean,
+      default: false
+    },
+    isVerified: {
       type: Boolean,
       default: false
     },
@@ -87,25 +83,39 @@ const usersSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+//-------------------Instance Methods-------------------//
+mentorSchema.methods.correctPassword = async function(loginPass, userPass) {
+  return await bcrypt.compare(loginPass, userPass);
+};
+
+mentorSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  this.passwordResetExpires = Date.now() + 5 * 60 * 1000;
+  return resetToken;
+};
 //-------------------Document Middleware-----------------//
-usersSchema.pre('save', function(next) {
+mentorSchema.pre('save', function(next) {
   if (this.isNew) return next();
   this.onboarding_completed = true;
   next();
 });
 
-usersSchema.pre('save', async function(next) {
+mentorSchema.pre('save', async function(next) {
   // Only run this function only when password got modified (or created)
   if (!this.isModified('pass')) return next();
-  this.password = await bcrypt.hash(this.pass, 12);
-  this.passwordConfirm = undefined;
+  this.pass = await bcrypt.hash(this.pass, 12);
+  this.passConfirm = undefined;
 });
 //-------------------Query Middleware-------------------//
-usersSchema.pre(/^find/, function(next) {
-  this.select('photo name email isEmployed skillsToLearn skillsLearned');
+mentorSchema.pre(/^find/, function(next) {
+  this.select('photo name email about experience courses onboarding_completed');
   this.find({ active: { $ne: false } });
   next();
 });
 //-------------------------Export-----------------------//
-const User = mongoose.model('User', usersSchema);
-module.exports = User;
+const Mentor = mongoose.model('Mentor', mentorSchema);
+module.exports = Mentor;

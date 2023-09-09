@@ -1,7 +1,7 @@
-const Review = require('./../models/reviewsModel');
-const AppError = require('./../utils/appErrorsClass');
+const Review = require('../models/review.model');
+const AppError = require('../utils/appErrorsClass');
 const factory = require('./controllerUtils/handlerFactory');
-const catchAsyncError = require('./../utils/catchAsyncErrors');
+const catchAsyncError = require('../utils/catchAsyncErrors');
 //----------------Alias Methods----------------//
 exports.setCourseUserId = (req, res, next) => {
   // Allow nested routes
