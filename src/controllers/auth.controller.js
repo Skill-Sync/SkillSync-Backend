@@ -47,7 +47,7 @@ async function sendTokens(user, userType, statusCode, res) {
         status: 'success',
         accessJWT: accessToken,
         refreshJWT: refreshToken,
-        data: { user }
+        data: user
     });
 }
 
