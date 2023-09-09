@@ -10,7 +10,7 @@ router.post('/forgotPass', authController.forgotPassword);
 
 router
     .route('/resetPass/:token')
-    .get(authController.getResetToken)
+    // .get(authController.getResetToken)
     .patch(authController.resetPassword);
 
 router.use(authController.isLogin);

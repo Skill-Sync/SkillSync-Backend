@@ -2,7 +2,6 @@ const {
     signAccessToken,
     signRefreshToken,
     signEmailConfirmationToken,
-    signPasswordResetToken,
     verifyToken
 } = require('./../utils/jwt');
 const sendEmail = require('./../utils/email/sendMail');
@@ -56,7 +55,7 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     );
 
     //TODO:only the new users and the users with non active accounts can signup
-    //TODO:what if the 10m are gone and the user didn't confirm his email
+    //TODO:what if the 10m are gone and the user didn't confirm his email -> if login without confirming email -> send email again
 
     const newUser = await (req.body.type.toLowerCase() === 'mentor'
         ? Mentor
@@ -83,6 +82,38 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         data: { newUser }
+    });
+});
+
+exports.confirmEmail = catchAsyncError(async (req, res, next) => {
+    const { token } = req.params;
+
+    const authenticationToken = await verifyToken(
+        token,
+        process.env.JWT_EMAIL_CONFIRMATION_SECRET
+    );
+
+    const user = await (authenticationToken.userType.toLowerCase() === 'mentor'
+        ? Mentor
+        : User
+    ).findById(authenticationToken.id);
+
+    //update user status
+    user.isVerified = true;
+    await user.save({ validateBeforeSave: false });
+
+    //send welcome email
+    sendEmail(
+        user.email,
+        'Welcome to our website',
+        { name: user.name },
+        './templates/welcome.handlebars'
+    );
+
+    //send the response
+    res.status(200).json({
+        status: 'success',
+        message: 'Your account has been activated successfully'
     });
 });
 
@@ -143,24 +174,30 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
     //1- get user based on token
-    const { id, userType } = await verifyToken(req.body.token);
-    //2- if token has not expired and there is user, set new password
-    const user = await (userType.toLowerCase() === 'mentor' ? Mentor : User)
-        .findById(id)
-        .select('+pass');
+    const user = await (req.body.type.toLowerCase() === 'mentor'
+        ? Mentor
+        : User
+    ).findOne({
+        passwordResetToken: req.body.token,
+        passwordResetExpires: { $gt: Date.now() }
+    });
 
     if (!user) {
-        return next(new AppError('User not found', 404));
+        return next(new AppError('The token is invalid or has expired', 404));
     }
-
+    //2- if token has not expired and there is user, set new password
     user.pass = req.body.pass;
     user.passConfirm = req.body.passConfirm;
+    //3- update changedPassAt property for the user
     user.chancgedPassAt = Date.now() - 1000;
     await user.save({ validateBeforeSave: false });
 
-    //3- update changedPassAt property for the user
-
     //4- log the user in, send JWT
+    //TODO:Redirect to login page
+    res.status(200).json({
+        status: 'success',
+        message: 'Password reset successfully'
+    });
 });
 
 exports.getResetToken = catchAsyncError(async (req, res, next) => {});
