@@ -74,7 +74,9 @@ exports.signup = catchAsyncError(async (req, res, next) => {
         req.body.type
     );
     //2-send email
-    const emailConfirmationURL = `${req.protocol}://${req.url}/api/v1/auth/confirmEmail/${emailConfirmationToken}`;
+    const emailConfirmationURL = `${req.protocol}://${req.get(
+        'host'
+    )}/api/v1/auth/confirmEmail/${emailConfirmationToken}`;
 
     sendEmail(
         newUser.email,
