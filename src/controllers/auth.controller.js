@@ -13,13 +13,15 @@ const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
 
 async function sendTokens(user, userType, statusCode, res) {
-    user.password = undefined;
+    user.pass = undefined;
     let session;
     try {
         session = await Session.createSession(user._id);
     } catch (err) {
         return next(new AppError('Error creating session', 500));
     }
+
+    // console.log(user.role);
 
     if (userType.toLowerCase() === 'user') {
         userType = user.role;
@@ -127,6 +129,7 @@ exports.confirmEmail = catchAsyncError(async (req, res, next) => {
 
 exports.login = catchAsyncError(async (req, res, next) => {
     const { email, pass, type } = req.body;
+
     if (!email || !pass)
         return next(new AppError('Please provide email and password', 400));
 
