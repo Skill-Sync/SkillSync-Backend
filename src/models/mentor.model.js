@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const validator = require('validator');
 //------------------------------------------//
@@ -38,8 +40,7 @@ const mentorSchema = new mongoose.Schema(
       required: [true, 'A user must have a password confirmation']
     },
     identityCard: {
-      type: String,
-      required: [true, 'A mentor must provide an identity card']
+      type: String
     },
     photo: {
       type: String,
@@ -61,14 +62,18 @@ const mentorSchema = new mongoose.Schema(
         ref: 'Course'
       }
     ],
+    onboarding_completed: {
+      type: Boolean,
+      default: false
+    },
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
     active: {
       type: Boolean,
       default: true,
       select: false
-    },
-    verified: {
-      type: Boolean,
-      default: false
     },
     passwordResetToken: String,
     passwordResetExpires: Date
@@ -78,9 +83,36 @@ const mentorSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+//-------------------Instance Methods-------------------//
+mentorSchema.methods.correctPassword = async function(loginPass, userPass) {
+  return await bcrypt.compare(loginPass, userPass);
+};
 
+mentorSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  this.passwordResetExpires = Date.now() + 5 * 60 * 1000;
+  return resetToken;
+};
+//-------------------Document Middleware-----------------//
+mentorSchema.pre('save', function(next) {
+  if (this.isNew) return next();
+  this.onboarding_completed = true;
+  next();
+});
+
+mentorSchema.pre('save', async function(next) {
+  // Only run this function only when password got modified (or created)
+  if (!this.isModified('pass')) return next();
+  this.pass = await bcrypt.hash(this.pass, 12);
+  this.passConfirm = undefined;
+});
 //-------------------Query Middleware-------------------//
 mentorSchema.pre(/^find/, function(next) {
+  this.select('photo name email about experience courses onboarding_completed');
   this.find({ active: { $ne: false } });
   next();
 });

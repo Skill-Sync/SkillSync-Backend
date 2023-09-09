@@ -1,4 +1,4 @@
-const Course = require('../models/coursesModel');
+const Course = require('../models/course.model');
 const AppError = require('../utils/appErrorsClass');
 const factory = require('./controllerUtils/handlerFactory');
 const catchAsyncError = require('../utils/catchAsyncErrors');

@@ -15,9 +15,19 @@ exports.signRefreshToken = (id, userType, refreshSession) => {
     return JWT.sign(payload, secret, { expiresIn });
 };
 
+exports.signEmailConfirmationToken = (id, userType) => {
+    const payload = { name: 'emailConfirmation', id, userType };
+    const secret = process.env.JWT_EMAIL_CONFIRMATION_SECRET;
+    const expiresIn = process.env.JWT_EMAIL_CONFIRMATION_EXPIRES_IN;
+    return JWT.sign(payload, secret, { expiresIn });
+};
+
 exports.verifyToken = async (token, secret) => {
     try {
-        return await promisify(JWT.verify)(token, secret);
+        return {
+            ...(await promisify(JWT.verify)(token, secret)),
+            status: true
+        };
     } catch (err) {
         if (err instanceof JWT.TokenExpiredError) {
             return { message: 'Token expired.', status: false };

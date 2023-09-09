@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const validator = require('validator');
 //------------------------------------------//
@@ -69,6 +70,10 @@ const usersSchema = new mongoose.Schema(
         }
       }
     ],
+    onboarding_completed: {
+      type: Boolean,
+      default: false
+    },
     active: {
       type: Boolean,
       default: true,
@@ -82,12 +87,40 @@ const usersSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+//-------------------Instance Methods-------------------//
+usersSchema.methods.correctPassword = async function(loginPass, userPass) {
+  return await bcrypt.compare(loginPass, userPass);
+};
 
+usersSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  this.passwordResetExpires = Date.now() + 5 * 60 * 1000;
+  return resetToken;
+};
+//-------------------Document Middleware-----------------//
+usersSchema.pre('save', function(next) {
+  if (this.isNew) return next();
+  this.onboarding_completed = true;
+  next();
+});
+
+usersSchema.pre('save', async function(next) {
+  // Only run this function only when password got modified (or created)
+  if (!this.isModified('pass')) return next();
+  this.pass = await bcrypt.hash(this.pass, 12);
+  this.passConfirm = undefined;
+});
 //-------------------Query Middleware-------------------//
 usersSchema.pre(/^find/, function(next) {
-  this.select('photo name email isEmployed skillsToLearn skillsLearned');
-  this.find({ active: { $ne: false } });
-  next();
+  this.select(
+    'photo name email isEmployed skillsToLearn skillsLearned about onboarding_completed'
+  );
+    // this.find({ active: { $ne: false } });
+    next();
 });
 //-------------------------Export-----------------------//
 const User = mongoose.model('User', usersSchema);
