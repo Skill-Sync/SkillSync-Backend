@@ -1,6 +1,6 @@
 const express = require('express');
-const authController = require('../controllers/authController');
-const meetingController = require('../controllers/meetingsController.js');
+const authController = require('../controllers/auth.controller');
+const meetingController = require('../controllers/meeting.controller.js');
 //-----------------------------------------//
 const router = express.Router();
 //-------------------Router----------------//
