@@ -84,6 +84,7 @@ exports.getMentorsReq = catchAsyncError(async (req, res, next) => {
         isVerified: false,
         onboarding_completed: true
     });
+
     res.status(res.locals.statusCode || 200).json({
         status: 'success',
         results: mentors.length,
