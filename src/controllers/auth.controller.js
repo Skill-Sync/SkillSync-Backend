@@ -30,6 +30,10 @@ async function sendTokens(user, userType, statusCode, res) {
         return next(new AppError('Error creating session', 500));
     }
 
+    if (userType.toLowerCase() === 'user') {
+        userType = await User.role;
+    }
+
     const accessToken = signAccessToken(user._id, userType);
 
     const refreshToken = signRefreshToken(user._id, userType, session._id);
@@ -159,6 +163,7 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
         ? Mentor
         : User
     ).findOne({ email: req.body.email });
+
     //2- generate random token
     const resetToken = user.createPasswordResetToken();
     //3- send it to user's email
