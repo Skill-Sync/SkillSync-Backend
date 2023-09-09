@@ -4,22 +4,13 @@ const {
     signEmailConfirmationToken,
     verifyToken
 } = require('./../utils/jwt');
+const { filterObj } = require('./../utils/ApiFeatures');
 const sendEmail = require('./../utils/email/sendMail');
 const User = require('../models/user.model');
 const Mentor = require('../models/mentor.model');
 const Session = require('../models/authSession.models');
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
-
-function filterObj(obj, ...allowedAtt) {
-    const newObj = {};
-    for (att in obj) {
-        if (allowedAtt.includes(att)) {
-            newObj[att] = obj[att];
-        }
-    }
-    return newObj;
-}
 
 async function sendTokens(user, userType, statusCode, res) {
     user.password = undefined;
