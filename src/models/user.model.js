@@ -119,8 +119,8 @@ usersSchema.pre(/^find/, function(next) {
   this.select(
     'photo name email isEmployed skillsToLearn skillsLearned about onboarding_completed'
   );
-  this.find({ active: { $ne: false } });
-  next();
+    // this.find({ active: { $ne: false } });
+    next();
 });
 //-------------------------Export-----------------------//
 const User = mongoose.model('User', usersSchema);
