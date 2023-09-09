@@ -1,5 +1,5 @@
 const express = require('express');
-const friendsController = require('../controllers/friendsController');
+const friendsController = require('../controllers/friend.controller');
 //------------------------------------------//
 const router = express.Router({ mergeParams: true });
 //-------------Users Routes-----------------//

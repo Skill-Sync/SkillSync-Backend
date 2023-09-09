@@ -1,6 +1,6 @@
-const AppError = require('./../utils/appErrorsClass');
-const FriendShip = require('./../models/friendshipsModel');
-const catchAsyncError = require('./../utils/catchAsyncErrors');
+const AppError = require('../utils/appErrorsClass');
+const FriendShip = require('../models/friendship.model');
+const catchAsyncError = require('../utils/catchAsyncErrors');
 // ---------- User Operations ---------//
 exports.getFriend = catchAsyncError(async (req, res, next) => {});
 exports.getMyFriends = catchAsyncError(async (req, res, next) => {});
