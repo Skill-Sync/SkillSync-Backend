@@ -65,10 +65,19 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     //TODO:only the new users and the users with non active accounts can signup
     //TODO:what if the 10m are gone and the user didn't confirm his email -> if login without confirming email -> send email again
 
-    const newUser = await (req.body.type.toLowerCase() === 'mentor'
-        ? Mentor
-        : User
-    ).create(signUpData);
+    let newUser;
+
+    if (req.body.type.toLowerCase() === 'mentor') {
+        newUser = await Mentor.findOne({ email: signUpData.email });
+        if (!newUser) {
+            return next(new AppError('No mentor found with that email', 404));
+        }
+        newUser.pass = signUpData.pass;
+        newUser.passConfirm = signUpData.passConfirm;
+        await newUser.save({ validateBeforeSave: false });
+    } else {
+        newUser = await User.create(signUpData);
+    }
 
     //send Activation Mail to User
 
@@ -92,6 +101,27 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     res.status(200).json({
         status: 'success',
         data: newUser
+    });
+});
+
+exports.createMentorRequest = catchAsyncError(async (req, res, next) => {
+    let mentorRequestData = filterObj(
+        req.body,
+        'name',
+        'email',
+        'phone',
+        'skill',
+        'requestLetter'
+    );
+
+    mentorRequestData.pass = '12345678';
+    mentorRequestData.passConfirm = '12345678';
+
+    const newMentorRequest = await Mentor.create(mentorRequestData);
+
+    res.status(200).json({
+        status: 'success',
+        data: newMentorRequest
     });
 });
 
