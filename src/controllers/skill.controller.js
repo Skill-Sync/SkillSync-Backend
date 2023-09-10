@@ -14,9 +14,7 @@ exports.createSkill = catchAsyncError(async (req, res, next) => {
 
     res.status(res.locals.statusCdoe || 201).json({
         status: 'success',
-        data: {
-            newSkill
-        }
+        data: newSkill
     });
 });
 
@@ -30,8 +28,6 @@ exports.updateSkill = catchAsyncError(async (req, res, next) => {
 
     res.status(res.locals.statusCdoe || 200).json({
         status: 'success',
-        data: {
-            skill
-        }
+        data: skill
     });
 });

@@ -24,9 +24,7 @@ exports.activateOne = Model => {
 
         res.status(res.locals.statusCode || 200).json({
             status: 'success',
-            data: {
-                data: doc
-            }
+            data: doc
         });
     });
 };

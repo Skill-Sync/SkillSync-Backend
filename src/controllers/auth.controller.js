@@ -91,7 +91,7 @@ exports.signup = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: { newUser }
+        data: newUser
     });
 });
 
@@ -182,6 +182,11 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
         { name: user.name, link: resetURL },
         './templates/requestResetPassword.handlebars'
     );
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Token sent to email'
+    });
 });
 
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
