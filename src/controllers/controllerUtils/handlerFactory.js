@@ -7,10 +7,15 @@ exports.getAll = Model => {
         const doc = await Model.find();
         if (!doc) return next(new AppError(`No ${Model} found at all`, 404));
 
-        const docObj =
-            `${Model}`.toLowerCase() === 'mentor'
-                ? doc.map(d => standarizeMentor(d))
-                : doc.map(d => standarizeUser(d));
+        let docObj = {};
+
+        if (`${Model}`.toLowerCase() === 'mentor') {
+            docObj = doc.map(d => standarizeMentor(d));
+        } else if (`${Model}`.toLowerCase() === 'user') {
+            docObj = doc.map(d => standarizeUser(d));
+        } else {
+            docObj = doc;
+        }
 
         res.status(res.locals.statusCode || res.locals.statusCode || 200).json({
             status: 'success',
@@ -28,10 +33,15 @@ exports.activateOne = Model => {
         if (!doc)
             return next(new AppError(`No ${Model} found with that ID`, 404));
 
-        const docObj =
-            `${Model}`.toLowerCase() === 'mentor'
-                ? standarizeMentor(doc)
-                : standarizeUser(doc);
+        let docObj = {};
+
+        if (`${Model}`.toLowerCase() === 'mentor') {
+            docObj = standarizeMentor(doc);
+        } else if (`${Model}`.toLowerCase() === 'user') {
+            docObj = standarizeMentor(doc);
+        } else {
+            docObj = doc;
+        }
 
         res.status(res.locals.statusCode || 200).json({
             status: 'success',
@@ -59,10 +69,15 @@ exports.getOne = Model => {
         if (!doc)
             return next(new AppError(`No ${Model} found with that ID`, 404));
 
-        const docObj =
-            `${Model}`.toLowerCase() === 'mentor'
-                ? standarizeMentor(doc)
-                : standarizeUser(doc);
+        let docObj = {};
+
+        if (`${Model}`.toLowerCase() === 'mentor') {
+            docObj = standarizeMentor(doc);
+        } else if (`${Model}`.toLowerCase() === 'user') {
+            docObj = standarizeMentor(doc);
+        } else {
+            docObj = doc;
+        }
 
         res.status(res.locals.statusCode || 200).json({
             status: 'success',
