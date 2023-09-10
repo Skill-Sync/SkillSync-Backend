@@ -9,28 +9,26 @@ const router = express.Router({ mergeParams: true });
 router.use('/courses', coursesRouter);
 router.use('/meetings', meetingsRouter);
 
-router
-    .get('/me', mentorController.getMe, mentorController.getMentor)
-    .delete(
-        '/deactivateMe',
-        mentorController.getMe,
-        mentorController.deactivateMentor
-    );
+router.get('/me', mentorController.getMe, mentorController.getMentor);
 router.patch(
-    '/updatePersonalData',
-    mentorController.getMe,
-    mentorController.UpdateMe
+  '/updatePersonalData',
+  mentorController.getMe,
+  mentorController.UpdateMe
 );
-// router.patch('/updatePassword', authController.updatePassword);
+router.post(
+  '/set-working-hours',
+  mentorController.getMe,
+  mentorController.setWorkingHours
+);
 //---------------Admin Routes---------------//
 router.use(authController.restrictTo('admin'));
 router.get('/', mentorController.getAllMentors);
 router.get('/mentorsRequests', mentorController.getMentorsReq);
 router.patch('/verifyMentor/:id', mentorController.verifyMentor);
 router
-    .route('/:id')
-    .get(mentorController.getMentor)
-    .delete(mentorController.deleteMentor);
+  .route('/:id')
+  .get(mentorController.getMentor)
+  .delete(mentorController.deleteMentor);
 router.patch('/activateMe', mentorController.activateMentor);
 //-------------------------------------------//
 module.exports = router;
