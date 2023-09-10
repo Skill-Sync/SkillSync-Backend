@@ -41,11 +41,9 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
     });
     await updatedUser.save({ runValidators: true });
 
-    const userObj = standarizeUser(updatedUser);
-
     res.status(res.locals.statusCode || 200).json({
         status: 'success',
-        data: userObj
+        data: updatedUser
     });
 });
 
