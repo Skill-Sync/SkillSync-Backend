@@ -8,17 +8,18 @@ const {
 // ------------- User Operations ------------//
 exports.getMyMeetings = catchAsyncError(async (req, res, next) => {
   const userId = res.locals.userId;
-  let meetingsQuery = { user: userId };
-  let populatePath = 'mentor';
+  let meetingsQuery = {};
+  let populatePath;
 
   if (res.locals.userType == 'mentor') {
     meetingsQuery = { mentor: userId, status: { $ne: 'not-selected' } };
     populatePath = 'user';
+  } else {
+    meetingsQuery = { user: userId };
+    populatePath = 'mentor';
   }
 
-  const meetings = await Meeting.find({
-    ...meetingsQuery
-  }).populate({
+  const meetings = await Meeting.find(meetingsQuery).populate({
     path: populatePath
   });
 
@@ -37,16 +38,29 @@ exports.getMyMeetings = catchAsyncError(async (req, res, next) => {
   });
 });
 
-exports.updateMeeting = catchAsyncError(async (req, res, next) => {});
+exports.updateMeeting = catchAsyncError(async (req, res, next) => {
+  const status = req.body.status == 'accepted' ? 'accepted' : 'rejected';
+  const meeting = await Meeting.findOneAndUpdate(
+    { _id: req.params.id, status: 'pending' },
+    { status },
+    { new: true }
+  );
+  if (!meeting) return next(new AppError('No meeting found with that ID', 404));
+
+  res.status(res.locals.statusCode || 200).json({
+    status: 'success',
+    data: meeting
+  });
+});
+
 exports.createMeeting = catchAsyncError(async (req, res, next) => {
   const userId = res.locals.userId;
-  const mentorId = req.params.id;
-  const { scheduledDate } = req.body;
-
-  const meeting = await Meeting.find({
-    mentor: mentorId,
-    scheduledDate
+  const meeting = await Meeting.findByIdAndUpdate(req.params.id, {
+    user: userId,
+    status: 'pending'
   });
+
+  if (!meeting) return next(new AppError('No meeting found with that ID', 404));
 
   res.status(res.locals.statusCode || 201).json({
     status: 'success',

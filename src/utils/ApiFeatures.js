@@ -41,14 +41,13 @@ exports.standarizeMentor = user => {
 exports.standMentorsMeeting = meeting => {
   const meetingObj = {
     _id: meeting._id,
-    mentor: meeting.mentor,
     status: meeting.status,
     scheduledDate: meeting.scheduledDate,
     user: {
-      _id: meeting.user._id,
-      name: meeting.user.name,
-      email: meeting.user.email,
-      photo: meeting.user.photo
+      _id: meeting.user?._id,
+      name: meeting.user?.name,
+      email: meeting.user?.email,
+      photo: meeting.user?.photo
     }
   };
   return meetingObj;
@@ -57,7 +56,6 @@ exports.standMentorsMeeting = meeting => {
 exports.standUsersMeeting = meeting => {
   const meetingObj = {
     _id: meeting._id,
-    user: meeting.user,
     status: meeting.status,
     scheduledDate: meeting.scheduledDate,
     mentor: {
