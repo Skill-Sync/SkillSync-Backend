@@ -1,15 +1,21 @@
 const catchAsyncError = require('../../utils/catchAsyncErrors');
 const AppError = require('../../utils/appErrorsClass');
+const { standarizeUser, standarizeMentor } = require('../../utils/ApiFeatures');
 //------------ Admin handler functions ------------//
 exports.getAll = Model => {
     return catchAsyncError(async (req, res, next) => {
         const doc = await Model.find();
         if (!doc) return next(new AppError(`No ${Model} found at all`, 404));
 
+        const docObj =
+            `${Model}`.toLowerCase() === 'mentor'
+                ? doc.map(mentor => standarizeMentor(mentor))
+                : doc.map(user => standarizeUser(user));
+
         res.status(res.locals.statusCode || res.locals.statusCode || 200).json({
             status: 'success',
             results: doc.length,
-            data: doc
+            data: docObj
         });
     });
 };
@@ -22,9 +28,14 @@ exports.activateOne = Model => {
         if (!doc)
             return next(new AppError(`No ${Model} found with that ID`, 404));
 
+        const docObj =
+            `${Model}`.toLowerCase() === 'mentor'
+                ? standarizeMentor(mentor)
+                : standarizeUser(user);
+
         res.status(res.locals.statusCode || 200).json({
             status: 'success',
-            data: doc
+            data: docObj
         });
     });
 };
@@ -48,9 +59,14 @@ exports.getOne = Model => {
         if (!doc)
             return next(new AppError(`No ${Model} found with that ID`, 404));
 
+        const docObj =
+            `${Model}`.toLowerCase() === 'mentor'
+                ? standarizeMentor(mentor)
+                : standarizeUser(user);
+
         res.status(res.locals.statusCode || 200).json({
             status: 'success',
-            data: doc
+            data: docObj
         });
     });
 };
