@@ -42,8 +42,8 @@ async function sendTokens(user, userType, statusCode, res) {
         cookieOptions.secure = true;
     }
 
-    // res.cookie('refreshJWT', refreshToken, cookieOptions);
-    // res.cookie('accessJWT', accessToken, cookieOptions);
+    res.cookie('refreshJWT', refreshToken, cookieOptions);
+    res.cookie('accessJWT', accessToken, cookieOptions);
 
     res.status(statusCode).json({
         status: 'success',
