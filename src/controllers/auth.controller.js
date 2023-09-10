@@ -42,8 +42,8 @@ async function sendTokens(user, userType, statusCode, res) {
         cookieOptions.secure = true;
     }
 
-    res.cookie('refreshJWT', refreshToken, cookieOptions);
-    res.cookie('accessJWT', accessToken, cookieOptions);
+    // res.cookie('refreshJWT', refreshToken, cookieOptions);
+    // res.cookie('accessJWT', accessToken, cookieOptions);
 
     res.status(statusCode).json({
         status: 'success',
@@ -91,7 +91,7 @@ exports.signup = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        data: { newUser }
+        data: newUser
     });
 });
 
