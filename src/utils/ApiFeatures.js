@@ -15,7 +15,6 @@ exports.standMentorsMeeting = meeting => {
     user: {
       _id: meeting.user?._id,
       name: meeting.user?.name,
-      email: meeting.user?.email,
       photo: meeting.user?.photo
     }
   };
@@ -30,8 +29,8 @@ exports.standUsersMeeting = meeting => {
     mentor: {
       _id: meeting.mentor._id,
       name: meeting.mentor.name,
-      email: meeting.mentor.email,
-      photo: meeting.mentor.photo
+      photo: meeting.mentor.photo,
+      skill: meeting.mentor.skill
     }
   };
   return meetingObj;
