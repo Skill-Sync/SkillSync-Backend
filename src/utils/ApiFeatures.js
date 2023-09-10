@@ -27,10 +27,10 @@ exports.standUsersMeeting = meeting => {
     status: meeting.status,
     scheduledDate: meeting.scheduledDate,
     mentor: {
-      _id: meeting.mentor._id,
-      name: meeting.mentor.name,
-      photo: meeting.mentor.photo,
-      skill: meeting.mentor.skill
+      _id: meeting.mentor?._id,
+      name: meeting.mentor?.name,
+      photo: meeting.mentor?.photo,
+      skill: meeting.mentor?.skill?.name
     }
   };
   return meetingObj;
