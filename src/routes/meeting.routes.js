@@ -2,19 +2,14 @@ const express = require('express');
 const authController = require('../controllers/auth.controller');
 const meetingController = require('../controllers/meeting.controller.js');
 //-----------------------------------------//
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 //-------------------Router----------------//
-router
-  .route('/')
-  .get(meetingController.getAllMeetings)
-  .post(authController.restrictTo('user'), meetingController.createMeeting);
+router.route('/').get(meetingController.getMyMeetings);
 
 router
   .route('/:id')
   .get(meetingController.getMeeting)
-  .patch(meetingController.updateMeeting)
-  .delete(meetingController.deleteMeeting);
-
-router.get('MyMeetings', meetingController.getMyMeetings);
+  .patch(authController.restrictTo('user'), meetingController.createMeeting)
+  .post(authController.restrictTo('mentor'), meetingController.updateMeeting);
 //-------------------------------------------//
 module.exports = router;

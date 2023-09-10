@@ -13,13 +13,7 @@ router.use('/friends', friendsRouter);
 
 router.get('/relevantMentors', userController.getRelevantMentors);
 
-router
-    .get('/me', userController.getMe, userController.getUser)
-    .delete(
-        '/deactivateMe',
-        userController.getMe,
-        userController.deactivateUser
-    );
+router.get('/me', userController.getMe, userController.getUser);
 router.patch(
     '/updatePersonalData',
     userController.getMe,
