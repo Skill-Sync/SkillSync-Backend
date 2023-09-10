@@ -58,7 +58,7 @@ const mentorSchema = new mongoose.Schema(
         ],
         skill: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Skill'
+            ref: 'skill'
         },
         requestLetter: {
             type: String,
