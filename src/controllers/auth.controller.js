@@ -11,7 +11,6 @@ const Mentor = require('../models/mentor.model');
 const Session = require('../models/authSession.models');
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
-const { standarizeUser, standarizeMentor } = require('./../utils/ApiFeatures');
 
 async function sendTokens(user, userType, statusCode, res) {
     user.pass = undefined;
@@ -46,16 +45,11 @@ async function sendTokens(user, userType, statusCode, res) {
     res.cookie('refreshJWT', refreshToken, cookieOptions);
     res.cookie('accessJWT', accessToken, cookieOptions);
 
-    const userObj =
-        userType.toLowerCase() === 'mentor'
-            ? standarizeMentor(user)
-            : standarizeUser(user);
-
     res.status(statusCode).json({
         status: 'success',
         accessJWT: accessToken,
         refreshJWT: refreshToken,
-        data: userObj
+        data: user
     });
 }
 
@@ -95,14 +89,9 @@ exports.signup = catchAsyncError(async (req, res, next) => {
         './templates/mailConfirmation.handlebars'
     );
 
-    const userObj =
-        req.body.type.toLowerCase() === 'mentor'
-            ? standarizeMentor(newUser)
-            : standarizeUser(newUser);
-
     res.status(200).json({
         status: 'success',
-        data: userObj
+        data: newUser
     });
 });
 
