@@ -8,20 +8,23 @@ const {
 // ------------- User Operations ------------//
 exports.getMyMeetings = catchAsyncError(async (req, res, next) => {
   const userId = res.locals.userId;
-  let meetingsQuery = {};
-  let populatePath;
 
-  if (res.locals.userType == 'mentor') {
-    meetingsQuery = { mentor: userId, status: { $ne: 'not-selected' } };
-    populatePath = 'user';
-  } else {
-    meetingsQuery = { user: userId };
-    populatePath = 'mentor';
-  }
+  const meetingsQuery =
+    res.locals.userType === 'mentor'
+      ? { mentor: userId, status: { $ne: 'not-selected' } }
+      : { user: userId };
+  const populateOptions =
+    res.locals.userType === 'mentor'
+      ? { path: 'user' }
+      : {
+          path: 'mentor',
+          populate: {
+            path: 'skill',
+            select: 'name'
+          }
+        };
 
-  const meetings = await Meeting.find(meetingsQuery).populate({
-    path: populatePath
-  });
+  const meetings = await Meeting.find(meetingsQuery).populate(populateOptions);
 
   const selectedMeetings = meetings.map(meeting => {
     if (res.locals.userType === 'mentor') {
