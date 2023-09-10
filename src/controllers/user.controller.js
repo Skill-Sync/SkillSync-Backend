@@ -40,24 +40,27 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
   await updatedUser.save({ runValidators: true });
 
   res.status(res.locals.statusCode || 200).json({
-        status: 'success',
-        data: updatedUser
-    });
+    status: 'success',
+    data: updatedUser
+  });
 });
 
 exports.getRelevantMentors = catchAsyncError(async (req, res, next) => {
-    const user = await User.findById(res.locals.userId);
+  const user = await User.findById(res.locals.userId);
 
-    const mentors = await Mentor.find({
-        skill: {
-            $in: user.skillsToLearn.map(skill => skill._id)
-        }
-    });
+  const mentors = await Mentor.find({
+    skill: {
+      $in: user.skillsToLearn.map(skill => skill._id)
+    }
+  }).populate({
+    path: 'skill',
+    select: 'name'
+  });
 
-    res.status(res.locals.statusCode || 200).json({
-        status: 'success',
-        data: mentors
-    });
+  res.status(res.locals.statusCode || 200).json({
+    status: 'success',
+    data: mentors
+  });
 });
 
 // exports.deactivateUser = factory.deactivateOne(User);
