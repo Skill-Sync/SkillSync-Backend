@@ -68,13 +68,13 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     let newUser;
 
     if (req.body.type.toLowerCase() === 'mentor') {
-        newUser = await Mentor.findOneAndUpdate(
-            { email },
-            {
-                pass,
-                passConfirm
-            }
-        );
+        newUser = await Mentor.findOne({ email: signUpData.email });
+        if (!newUser) {
+            return next(new AppError('No mentor found with that email', 404));
+        }
+        newUser.pass = signUpData.pass;
+        newUser.passConfirm = signUpData.passConfirm;
+        await newUser.save({ validateBeforeSave: false });
     } else {
         newUser = await User.create(signUpData);
     }
@@ -105,7 +105,7 @@ exports.signup = catchAsyncError(async (req, res, next) => {
 });
 
 exports.createMentorRequest = catchAsyncError(async (req, res, next) => {
-    const mentorRequestData = filterObj(
+    let mentorRequestData = filterObj(
         req.body,
         'name',
         'email',
@@ -113,6 +113,9 @@ exports.createMentorRequest = catchAsyncError(async (req, res, next) => {
         'skill',
         'requestLetter'
     );
+
+    mentorRequestData.pass = '12345678';
+    mentorRequestData.passConfirm = '12345678';
 
     const newMentorRequest = await Mentor.create(mentorRequestData);
 

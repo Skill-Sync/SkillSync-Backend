@@ -60,6 +60,11 @@ const mentorSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'skill'
         },
+        requestLetter: {
+            type: String,
+            trim: true,
+            default: 'No request letter'
+        },
         onboarding_completed: {
             type: Boolean,
             default: true
@@ -70,7 +75,7 @@ const mentorSchema = new mongoose.Schema(
         },
         active: {
             type: Boolean,
-            default: true,
+            default: false,
             select: false
         },
         passwordResetToken: String,
@@ -111,7 +116,7 @@ mentorSchema.pre('save', async function(next) {
 //-------------------Query Middleware-------------------//
 mentorSchema.pre(/^find/, function(next) {
     this.select(
-        'photo name email about experience courses onboarding_completed active role'
+        'photo name email about experience courses onboarding_completed active role skill'
     );
     this.find({ active: { $ne: false } });
     next();
