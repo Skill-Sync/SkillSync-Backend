@@ -11,7 +11,7 @@ exports.getMyMeetings = catchAsyncError(async (req, res, next) => {
 
   const meetingsQuery =
     res.locals.userType === 'mentor'
-      ? { mentor: userId, status: { $ne: 'not-selected' } }
+      ? { mentor: userId, status: { $nin: ['not-selected', 'rejected'] } }
       : { user: userId };
   const populateOptions =
     res.locals.userType === 'mentor'
