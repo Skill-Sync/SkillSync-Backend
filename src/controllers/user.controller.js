@@ -3,6 +3,7 @@ const factory = require('./controllerUtils/handlerFactory');
 
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
+const { standarizeUser } = require('../utils/ApiFeatures');
 //------------handler functions ------------//
 const filterObj = (obj, ...allowedFields) => {
     const returnedFiled = {};
@@ -40,13 +41,14 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
     });
     await updatedUser.save({ runValidators: true });
 
+    const userObj = standarizeUser(updatedUser);
+
     res.status(res.locals.statusCode || 200).json({
         status: 'success',
-        data: {
-            user: updatedUser
-        }
+        data: userObj
     });
 });
+
 exports.deactivateUser = factory.deactivateOne(User);
 //------Basic Admin CRUD Operations------//
 exports.getUser = factory.getOne(User);
