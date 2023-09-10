@@ -4,6 +4,7 @@ const authController = require('./../controllers/auth.controller');
 const router = express.Router();
 //-------------Auth Routes-----------------//
 router.post('/signup', authController.signup);
+router.post('/mentorRequest', authController.createMentorRequest);
 router.post('/login', authController.login);
 router.get('/confirmEmail/:token', authController.confirmEmail);
 router.post('/forgotPass', authController.forgotPassword);

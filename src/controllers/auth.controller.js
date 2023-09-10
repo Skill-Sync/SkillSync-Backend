@@ -11,7 +11,6 @@ const Mentor = require('../models/mentor.model');
 const Session = require('../models/authSession.models');
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
-const { standarizeUser, standarizeMentor } = require('./../utils/ApiFeatures');
 
 async function sendTokens(user, userType, statusCode, res) {
     user.pass = undefined;
@@ -46,16 +45,11 @@ async function sendTokens(user, userType, statusCode, res) {
     res.cookie('refreshJWT', refreshToken, cookieOptions);
     res.cookie('accessJWT', accessToken, cookieOptions);
 
-    const userObj =
-        userType.toLowerCase() === 'mentor'
-            ? standarizeMentor(user)
-            : standarizeUser(user);
-
     res.status(statusCode).json({
         status: 'success',
         accessJWT: accessToken,
         refreshJWT: refreshToken,
-        data: userObj
+        data: user
     });
 }
 
@@ -71,10 +65,19 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     //TODO:only the new users and the users with non active accounts can signup
     //TODO:what if the 10m are gone and the user didn't confirm his email -> if login without confirming email -> send email again
 
-    const newUser = await (req.body.type.toLowerCase() === 'mentor'
-        ? Mentor
-        : User
-    ).create(signUpData);
+    let newUser;
+
+    if (req.body.type.toLowerCase() === 'mentor') {
+        newUser = await Mentor.findOneAndUpdate(
+            { email },
+            {
+                pass,
+                passConfirm
+            }
+        );
+    } else {
+        newUser = await User.create(signUpData);
+    }
 
     //send Activation Mail to User
 
@@ -95,14 +98,27 @@ exports.signup = catchAsyncError(async (req, res, next) => {
         './templates/mailConfirmation.handlebars'
     );
 
-    const userObj =
-        req.body.type.toLowerCase() === 'mentor'
-            ? standarizeMentor(newUser)
-            : standarizeUser(newUser);
+    res.status(200).json({
+        status: 'success',
+        data: newUser
+    });
+});
+
+exports.createMentorRequest = catchAsyncError(async (req, res, next) => {
+    const mentorRequestData = filterObj(
+        req.body,
+        'name',
+        'email',
+        'phone',
+        'skill',
+        'requestLetter'
+    );
+
+    const newMentorRequest = await Mentor.create(mentorRequestData);
 
     res.status(200).json({
         status: 'success',
-        data: userObj
+        data: newMentorRequest
     });
 });
 

@@ -3,6 +3,7 @@ const factory = require('./controllerUtils/handlerFactory');
 
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
+const sendEmail = require('../utils/email/sendMail');
 //------------handler functions ------------//
 const filterObj = (obj, ...allowedFields) => {
     const returnedFiled = {};
@@ -67,6 +68,18 @@ exports.verifyMentor = catchAsyncError(async (req, res, next) => {
             new AppError('No mentor found with ID ready to verify', 404)
         );
     }
+
+    //send Approval Mail to Mentor
+
+    //2-send email
+    const redirectLink = `${req.protocol}://${process.env.CLIENT_URL}/signup?email=${mentor.email}&type=mentor`;
+
+    sendEmail(
+        mentor.email,
+        'Your Request Is Approved',
+        { name: mentor.name, link: redirectLink },
+        './templates/approvalMail.handlebars'
+    );
 
     res.status(res.locals.statusCode || 200).json({
         status: 'success',

@@ -56,15 +56,13 @@ const mentorSchema = new mongoose.Schema(
                 default: 'No experience'
             }
         ],
-        courses: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Course'
-            }
-        ],
+        skill: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'skill'
+        },
         onboarding_completed: {
             type: Boolean,
-            default: false
+            default: true
         },
         isVerified: {
             type: Boolean,
