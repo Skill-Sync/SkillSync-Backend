@@ -11,20 +11,22 @@ router.use('/courses', coursesRouter);
 router.use('/meetings', meetingsRouter);
 router.use('/friends', friendsRouter);
 
+router.get('/relevantMentors', userController.getRelevantMentors);
+
 router.get('/me', userController.getMe, userController.getUser);
 router.patch(
-  '/updatePersonalData',
-  userController.getMe,
-  userController.UpdateMe
+    '/updatePersonalData',
+    userController.getMe,
+    userController.UpdateMe
 );
 // router.patch('/updatePassword', authController.updatePassword);
 //---------------Admin Routes---------------//
 // router.use(authController.restrictTo('admin'));
 router.get('/', userController.getAllUsers);
 router
-  .route('/:id')
-  .get(userController.getUser)
-  .delete(userController.deleteUser);
+    .route('/:id')
+    .get(userController.getUser)
+    .delete(userController.deleteUser);
 router.patch('/activateMe', userController.activateUser);
 //-------------------------------------------//
 module.exports = router;
