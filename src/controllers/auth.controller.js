@@ -4,31 +4,25 @@ const {
     signEmailConfirmationToken,
     verifyToken
 } = require('./../utils/jwt');
+const { filterObj } = require('./../utils/ApiFeatures');
 const sendEmail = require('./../utils/email/sendMail');
 const User = require('../models/user.model');
 const Mentor = require('../models/mentor.model');
 const Session = require('../models/authSession.models');
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
-
-function filterObj(obj, ...allowedAtt) {
-    const newObj = {};
-    for (att in obj) {
-        if (allowedAtt.includes(att)) {
-            newObj[att] = obj[att];
-        }
-    }
-    return newObj;
-}
+const { standarizeUser, standarizeMentor } = require('./../utils/ApiFeatures');
 
 async function sendTokens(user, userType, statusCode, res) {
-    user.password = undefined;
+    user.pass = undefined;
     let session;
     try {
         session = await Session.createSession(user._id);
     } catch (err) {
         return next(new AppError('Error creating session', 500));
     }
+
+    // console.log(user.role);
 
     if (userType.toLowerCase() === 'user') {
         userType = user.role;
@@ -38,41 +32,34 @@ async function sendTokens(user, userType, statusCode, res) {
 
     const refreshToken = signRefreshToken(user._id, userType, session._id);
 
-    // res.cookies('refreshJWT', refreshToken, { httpOnly: true });
-    // res.cookies('accessJWT', accessToken, { httpOnly: true });
+    const cookieOptions = {
+        expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+        ),
+        httpOnly: true
+    };
 
-    let responseObject =
+    if (process.env.NODE_ENV === 'production') {
+        cookieOptions.secure = true;
+    }
+
+    res.cookie('refreshJWT', refreshToken, cookieOptions);
+    res.cookie('accessJWT', accessToken, cookieOptions);
+
+    const userObj =
         userType.toLowerCase() === 'mentor'
-            ? {
-                  name: user.name,
-                  email: user.email,
-                  about: user.about,
-                  experience: user.experience,
-                  identityCard: user.identityCard,
-                  courses: user.courses,
-                  onboarding_completed: user.onboarding_completed
-              }
-            : {
-                  name: user.name,
-                  email: user.email,
-                  photo: user.photo,
-                  about: user.about,
-                  isEmployed: user.isEmployed,
-                  skillsToLearn: user.skillsToLearn,
-                  onboarding_completed: user.onboarding_completed,
-                  skillsLearned: user.skillsLearned
-              };
+            ? standarizeMentor(user)
+            : standarizeUser(user);
 
     res.status(statusCode).json({
         status: 'success',
         accessJWT: accessToken,
         refreshJWT: refreshToken,
-        data: { responseObject }
+        data: userObj
     });
 }
 
 exports.signup = catchAsyncError(async (req, res, next) => {
-    const { type } = req.body;
     const signUpData = filterObj(
         req.body,
         'name',
@@ -81,57 +68,41 @@ exports.signup = catchAsyncError(async (req, res, next) => {
         'passConfirm'
     );
 
-    // Create a new user based on the 'type' (Mentor or User)
-    const newUser = await (type.toLowerCase() === 'mentor'
+    //TODO:only the new users and the users with non active accounts can signup
+    //TODO:what if the 10m are gone and the user didn't confirm his email -> if login without confirming email -> send email again
+
+    const newUser = await (req.body.type.toLowerCase() === 'mentor'
         ? Mentor
         : User
     ).create(signUpData);
 
-    // Create email confirmation token and confirmation URL
+    //send Activation Mail to User
+
+    //1-create email confirmation token
     const emailConfirmationToken = signEmailConfirmationToken(
         newUser._id,
-        type
+        req.body.type
     );
+    //2-send email
     const emailConfirmationURL = `${req.protocol}://${req.get(
         'host'
     )}/api/v1/auth/confirmEmail/${emailConfirmationToken}`;
 
-    // Send email with the confirmation link
     sendEmail(
         newUser.email,
         'Confirm your Email (valid for 10 min)',
-        {
-            name: newUser.name,
-            link: emailConfirmationURL
-        },
+        { name: newUser.name, link: emailConfirmationURL },
         './templates/mailConfirmation.handlebars'
     );
 
-    let responseObject =
-        type.toLowerCase() === 'mentor'
-            ? {
-                  name: newUser.name,
-                  email: newUser.email,
-                  about: newUser.about,
-                  experience: newUser.experience,
-                  identityCard: newUser.identityCard,
-                  courses: newUser.courses,
-                  onboarding_completed: newUser.onboarding_completed
-              }
-            : {
-                  name: newUser.name,
-                  email: newUser.email,
-                  photo: newUser.photo,
-                  about: newUser.about,
-                  isEmployed: newUser.isEmployed,
-                  skillsToLearn: newUser.skillsToLearn,
-                  onboarding_completed: newUser.onboarding_completed,
-                  skillsLearned: newUser.skillsLearned
-              };
+    const userObj =
+        req.body.type.toLowerCase() === 'mentor'
+            ? standarizeMentor(newUser)
+            : standarizeUser(newUser);
 
     res.status(200).json({
         status: 'success',
-        data: responseObject
+        data: userObj
     });
 });
 
@@ -146,13 +117,11 @@ exports.confirmEmail = catchAsyncError(async (req, res, next) => {
     const user = await (authenticationToken.userType.toLowerCase() === 'mentor'
         ? Mentor
         : User
-    ).findByIdAndUpdate(authenticationToken.id, {
-        active: true
-    });
+    ).findById(authenticationToken.id);
 
     //update user status
-    // user.active = true;
-    // await user.save({ validateBeforeSave: false });
+    user.active = true;
+    await user.save({ validateBeforeSave: false });
 
     //send welcome email
     sendEmail(
@@ -171,6 +140,7 @@ exports.confirmEmail = catchAsyncError(async (req, res, next) => {
 
 exports.login = catchAsyncError(async (req, res, next) => {
     const { email, pass, type } = req.body;
+
     if (!email || !pass)
         return next(new AppError('Please provide email and password', 400));
 
@@ -190,37 +160,50 @@ exports.login = catchAsyncError(async (req, res, next) => {
 });
 
 exports.logout = catchAsyncError(async (req, res, next) => {
+    //1- from the token get the user id
     const { refreshSession } = await verifyToken(
         req.headers.authorization?.split(' ')[2],
         process.env.JWT_REFRESH_SECRET
     );
+    // console.log(refreshSession);
+    //2- delete the session from the database
     await Session.invalidateSession(refreshSession);
     //3- delete the cookie
-    res.status(200 || res.locals.statusCode).json({
+    res.status(res.locals.statusCode || 200).json({
         status: 'success',
         message: 'Logged out successfully'
     });
 });
 
 exports.forgotPassword = catchAsyncError(async (req, res, next) => {
+    //1- get user based on email
     const user = await (req.body.type.toLowerCase() === 'mentor'
         ? Mentor
         : User
     ).findOne({ email: req.body.email });
 
+    //2- generate random token
     const resetToken = user.createPasswordResetToken();
+    //3- send it to user's email
     const resetURL = `${process.env.CLIENT_URL}/resetPass/${resetToken}`;
+
     sendEmail(
         user.email,
         'Reset your password (valid for 5 min)',
         { name: user.name, link: resetURL },
         './templates/requestResetPassword.handlebars'
     );
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Token sent to email'
+    });
 });
 
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
     const { token, type } = req.params;
 
+    //1- get user based on token
     const user = await (type.toLowerCase() === 'mentor'
         ? Mentor
         : User
@@ -232,10 +215,14 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     if (!user) {
         return next(new AppError('The token is invalid or has expired', 404));
     }
+    //2- if token has not expired and there is user, set new password
     user.pass = req.body.pass;
     user.passConfirm = req.body.passConfirm;
+    //3- update changedPassAt property for the user
+    // user.chancgedPassAt = Date.now() - 1000;
     await user.save({ validateBeforeSave: false });
 
+    //4-Invalidate all user sessions
     await Session.InvalidateAllUserSessions(user_id);
 
     //TODO:Redirect to login page
@@ -264,7 +251,7 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
 
     const decodedAccessToken = await verifyToken(
         accessToken,
-        process.env.JWT_REFRESH_SECRET
+        process.env.JWT_ACCESS_SECRET
     );
 
     const decodedRefreshToken = await verifyToken(
