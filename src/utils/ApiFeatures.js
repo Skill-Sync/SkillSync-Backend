@@ -7,37 +7,6 @@ exports.filterObj = (obj, ...allowedAtt) => {
   }
   return newObj;
 };
-
-exports.standarizeUser = user => {
-  const userObj = {
-    _id: user._id,
-    role: user.role,
-    active: user.active,
-    about: user.about,
-    name: user.name,
-    email: user.email,
-    isEmployed: user.isEmployed,
-    skillsToLearn: user.skillsToLearn,
-    skillsLearned: user.skillsLearned
-  };
-  return userObj;
-};
-
-exports.standarizeMentor = user => {
-  const userObj = {
-    _id: user._id,
-    role: user.role,
-    active: user.active,
-    about: user.about,
-    name: user.name,
-    email: user.email,
-    identityCard: user.identityCard,
-    courses: user.courses,
-    experience: user.experience
-  };
-  return userObj;
-};
-
 exports.standMentorsMeeting = meeting => {
   const meetingObj = {
     _id: meeting._id,
