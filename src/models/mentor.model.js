@@ -82,48 +82,45 @@ const mentorSchema = new mongoose.Schema(
       type: String,
       default: '9:00-14:00'
     },
-    passwordResetToken: String,
-    passwordResetExpires: Date
-  },
-  {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-  }
+    {
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
+    }
 );
 //-------------------Instance Methods-------------------//
 mentorSchema.methods.correctPassword = async function(loginPass, userPass) {
-  return await bcrypt.compare(loginPass, userPass);
+    return await bcrypt.compare(loginPass, userPass);
 };
 
 mentorSchema.methods.createPasswordResetToken = function() {
-  const resetToken = crypto.randomBytes(32).toString('hex');
-  this.passwordResetToken = crypto
-    .createHash('sha256')
-    .update(resetToken)
-    .digest('hex');
-  this.passwordResetExpires = Date.now() + 5 * 60 * 1000;
-  return resetToken;
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    this.passwordResetToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+    this.passwordResetExpires = Date.now() + 5 * 60 * 1000;
+    return resetToken;
 };
 //-------------------Document Middleware-----------------//
 mentorSchema.pre('save', function(next) {
-  if (this.isNew) return next();
-  this.onboarding_completed = true;
-  next();
+    if (this.isNew) return next();
+    this.onboarding_completed = true;
+    next();
 });
 
 mentorSchema.pre('save', async function(next) {
-  // Only run this function only when password got modified (or created)
-  if (!this.isModified('pass')) return next();
-  this.pass = await bcrypt.hash(this.pass, 12);
-  this.passConfirm = undefined;
+    // Only run this function only when password got modified (or created)
+    if (!this.isModified('pass')) return next();
+    this.pass = await bcrypt.hash(this.pass, 12);
+    this.passConfirm = undefined;
 });
 //-------------------Query Middleware-------------------//
 mentorSchema.pre(/^find/, function(next) {
-  this.select(
-    'photo name email about experience courses onboarding_completed active role skill'
-  );
-  this.find({ active: { $ne: false } });
-  next();
+    this.select(
+        'photo name email about experience courses onboarding_completed active role skill'
+    );
+    // this.find({ active: { $ne: false } });
+    next();
 });
 //-------------------------Export-----------------------//
 const Mentor = mongoose.model('Mentor', mentorSchema);
