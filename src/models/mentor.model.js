@@ -62,6 +62,10 @@ const mentorSchema = new mongoose.Schema(
         ref: 'Course'
       }
     ],
+    workHoursRange: {
+      type: String,
+      default: '9:00-14:00'
+    },
     onboarding_completed: {
       type: Boolean,
       default: false

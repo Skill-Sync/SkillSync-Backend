@@ -15,6 +15,11 @@ router.patch(
   mentorController.getMe,
   mentorController.UpdateMe
 );
+router.post(
+  '/set-working-hours',
+  mentorController.getMe,
+  mentorController.setWorkingHours
+);
 // router.patch('/updatePassword', authController.updatePassword);
 //---------------Admin Routes---------------//
 router.use(authController.restrictTo('admin'));
