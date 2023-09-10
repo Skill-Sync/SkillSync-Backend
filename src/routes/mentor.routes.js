@@ -20,7 +20,6 @@ router.post(
   mentorController.getMe,
   mentorController.setWorkingHours
 );
-// router.patch('/updatePassword', authController.updatePassword);
 //---------------Admin Routes---------------//
 router.use(authController.restrictTo('admin'));
 router.get('/', mentorController.getAllMentors);

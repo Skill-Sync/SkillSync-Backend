@@ -8,26 +8,26 @@ exports.getSkill = factory.getOne(Skill);
 exports.getAllSkills = factory.getAll(Skill);
 exports.deleteSkill = factory.deleteOne(Skill);
 exports.createSkill = catchAsyncError(async (req, res, next) => {
-    const skillObj = filterObj(req.body, 'name', 'description');
+  const skillObj = filterObj(req.body, 'name', 'description');
 
-    const newSkill = await Skill.create(skillObj);
+  const newSkill = await Skill.create(skillObj);
 
-    res.status(res.locals.statusCdoe || 201).json({
-        status: 'success',
-        data: newSkill
-    });
+  res.status(res.locals.statusCode || 201).json({
+    status: 'success',
+    data: newSkill
+  });
 });
 
 exports.updateSkill = catchAsyncError(async (req, res, next) => {
-    const skillObj = filterObj(req.body, 'name', 'description', 'logo');
+  const skillObj = filterObj(req.body, 'name', 'description', 'logo');
 
-    const skill = await Skill.findByIdAndUpdate(req.params.id, skillObj, {
-        new: true,
-        runValidators: true
-    });
+  const skill = await Skill.findByIdAndUpdate(req.params.id, skillObj, {
+    new: true,
+    runValidators: true
+  });
 
-    res.status(res.locals.statusCdoe || 200).json({
-        status: 'success',
-        data: skill
-    });
+  res.status(res.locals.statusCode || 200).json({
+    status: 'success',
+    data: skill
+  });
 });

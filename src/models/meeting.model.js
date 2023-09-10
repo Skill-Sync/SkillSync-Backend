@@ -23,7 +23,11 @@ const meetingsSchema = new mongoose.Schema({
     default: Date.now()
   }
 });
+//-------------------Query Middleware----------------//
+meetingsSchema.pre(/^find/, function(next) {
+  this.select('mentor user status scheduledDate');
+  next();
+});
 //-------------------------Export-----------------------//
-
 const Meeting = mongoose.model('Meeting', meetingsSchema);
 module.exports = Meeting;
