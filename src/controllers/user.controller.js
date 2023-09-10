@@ -1,9 +1,9 @@
 const User = require('../models/user.model');
+const Mentor = require('../models/mentor.model');
 const factory = require('./controllerUtils/handlerFactory');
 
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
-const { standarizeUser } = require('../utils/ApiFeatures');
 //------------handler functions ------------//
 const filterObj = (obj, ...allowedFields) => {
   const returnedFiled = {};
@@ -42,6 +42,21 @@ exports.UpdateMe = catchAsyncError(async (req, res, next) => {
   res.status(res.locals.statusCode || 200).json({
         status: 'success',
         data: updatedUser
+    });
+});
+
+exports.getRelevantMentors = catchAsyncError(async (req, res, next) => {
+    const user = await User.findById(res.locals.userId);
+
+    const mentors = await Mentor.find({
+        skill: {
+            $in: user.skillsToLearn.map(skill => skill._id)
+        }
+    });
+
+    res.status(res.locals.statusCode || 200).json({
+        status: 'success',
+        data: mentors
     });
 });
 
