@@ -12,22 +12,22 @@ const Review = require('../../src/models/review.model');
 dotenv.config({ path: path.join(__dirname, '..', '..', 'config.env') });
 //--------------------DB-------------------//
 const DB = process.env.DATABASE_Connection.replace(
-    '<password>',
-    process.env.DATABASE_Password
+  '<password>',
+  process.env.DATABASE_Password
 );
 
 mongoose
-    .connect(DB, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(console.log('DB connection successful!'));
+  .connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(console.log('DB connection successful!'));
 //------------------Read_File----------------//
 const users = JSON.parse(fs.readFileSync(`${__dirname}/users.json`, 'utf-8'));
 // const skills = JSON.parse(fs.readFileSync(`${__dirname}/skills.json`, 'utf-8'));
 
 const mentors = JSON.parse(
-    fs.readFileSync(`${__dirname}/mentors.json`, 'utf-8')
+  fs.readFileSync(`${__dirname}/mentors.json`, 'utf-8')
 );
 // const courses = JSON.parse(
 //   fs.readFileSync(`${__dirname}/courses.json`, 'utf-8')
@@ -37,35 +37,35 @@ const mentors = JSON.parse(
 // );
 //--------------------CRUD------------------//
 async function importData() {
-    try {
-        // await skill.create(skills);
-        // await Course.create(courses);
-        // await Review.create(reviews);
-        await User.create(users, { validateBeforeSave: false });
-        await Mentor.create(mentors, { validateBeforeSave: false });
-        console.log('Data successfully loaded!');
-    } catch (err) {
-        console.log(err);
-    }
-    process.exit();
+  try {
+    // await skill.create(skills);
+    // await Course.create(courses);
+    // await Review.create(reviews);
+    await User.create(users, { validateBeforeSave: false });
+    await Mentor.create(mentors, { validateBeforeSave: false });
+    console.log('Data successfully loaded!');
+  } catch (err) {
+    console.log(err);
+  }
+  process.exit();
 }
 
 async function deleteData() {
-    try {
-        await User.deleteMany();
-        await skill.deleteMany();
-        await Mentor.deleteMany();
-        await Course.deleteMany();
-        await Review.deleteMany();
-        console.log('Data successfully deleted!');
-    } catch (err) {
-        console.log(err);
-    }
-    process.exit();
+  try {
+    await User.deleteMany();
+    await skill.deleteMany();
+    await Mentor.deleteMany();
+    await Course.deleteMany();
+    await Review.deleteMany();
+    console.log('Data successfully deleted!');
+  } catch (err) {
+    console.log(err);
+  }
+  process.exit();
 }
 //--------------Run_Commands----------------//
 if (process.argv[2] === '--import') {
-    importData();
+  importData();
 } else if (process.argv[2] === '--delete') {
-    deleteData();
+  deleteData();
 }
