@@ -9,8 +9,8 @@ exports.getAll = Model => {
 
         const docObj =
             `${Model}`.toLowerCase() === 'mentor'
-                ? doc.map(mentor => standarizeMentor(mentor))
-                : doc.map(user => standarizeUser(user));
+                ? doc.map(d => standarizeMentor(d))
+                : doc.map(d => standarizeUser(d));
 
         res.status(res.locals.statusCode || res.locals.statusCode || 200).json({
             status: 'success',
@@ -30,8 +30,8 @@ exports.activateOne = Model => {
 
         const docObj =
             `${Model}`.toLowerCase() === 'mentor'
-                ? standarizeMentor(mentor)
-                : standarizeUser(user);
+                ? standarizeMentor(doc)
+                : standarizeUser(doc);
 
         res.status(res.locals.statusCode || 200).json({
             status: 'success',
@@ -61,8 +61,8 @@ exports.getOne = Model => {
 
         const docObj =
             `${Model}`.toLowerCase() === 'mentor'
-                ? standarizeMentor(mentor)
-                : standarizeUser(user);
+                ? standarizeMentor(doc)
+                : standarizeUser(doc);
 
         res.status(res.locals.statusCode || 200).json({
             status: 'success',

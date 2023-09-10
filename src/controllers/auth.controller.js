@@ -96,7 +96,7 @@ exports.signup = catchAsyncError(async (req, res, next) => {
     );
 
     const userObj =
-        userType.toLowerCase() === 'mentor'
+        type.toLowerCase() === 'mentor'
             ? standarizeMentor(newUser)
             : standarizeUser(newUser);
 
