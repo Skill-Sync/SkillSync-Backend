@@ -11,9 +11,7 @@ router.use('/courses', coursesRouter);
 router.use('/meetings', meetingsRouter);
 router.use('/friends', friendsRouter);
 
-router
-  .get('/me', userController.getMe, userController.getUser)
-  .delete('/deactivateMe', userController.getMe, userController.deactivateUser);
+router.get('/me', userController.getMe, userController.getUser);
 router.patch(
   '/updatePersonalData',
   userController.getMe,
