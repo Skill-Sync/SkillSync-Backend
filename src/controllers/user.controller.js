@@ -1,7 +1,6 @@
 const User = require('../models/user.model');
 const Mentor = require('../models/mentor.model');
 const factory = require('./controllerUtils/handlerFactory');
-const { ObjectId } = require('mongoose').Types;
 
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
