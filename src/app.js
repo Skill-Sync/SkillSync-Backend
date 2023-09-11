@@ -34,9 +34,9 @@ app.options('*', cors());
 // app.use(helmet.contentSecurityPolicy({}));
 
 const limiter = rateLimit({
-    max: 100,
-    windowMs: 60 * 60 * 1000,
-    message: 'Too many requests from this IP, please try again in an hour!'
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again in an hour!'
 });
 app.use('/api', limiter);
 
@@ -57,10 +57,10 @@ app.use(xss());
 // app.use(hpp());
 //--------------------------------//
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/skills', skillsRouter);
 app.use(isLogin);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/admins', adminRouter);
-app.use('/api/v1/skills', skillsRouter);
 app.use('/api/v1/mentors', mentorsRouter);
 app.use('/api/v1/courses', coursesRouter);
 app.use('/api/v1/reviews', reviewsRouter);
@@ -68,9 +68,9 @@ app.use('/api/v1/friends', friendsRouter);
 app.use('/api/v1/meetings', meetingsRouter);
 
 app.all('*', (req, res, next) => {
-    res.status(res.locals.statusCode || 404).json({
-        message: 'Invalid route, please check URL'
-    });
+  res.status(res.locals.statusCode || 404).json({
+    message: 'Invalid route, please check URL'
+  });
 });
 //--------------------------------//
 app.use(globalErrorHandler);
