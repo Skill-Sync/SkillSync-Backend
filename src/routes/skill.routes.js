@@ -10,7 +10,7 @@ router
   .get('/', skillController.getAllSkills)
   .get('/:id', skillController.getSkill);
 
-app.use(isLogin);
+router.use(isLogin);
 router.use(authController.restrictTo('admin'));
 router
   .post('/', skillController.createSkill)
