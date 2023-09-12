@@ -78,7 +78,10 @@ exports.createMeeting = catchAsyncError(async (req, res, next) => {
 exports.getMeeting = catchAsyncError(async (req, res, next) => {
     const meeting = await Meeting.find({
         mentor: req.params.id
-    });
+    })
+        .populate({ path: 'user', select: 'name email' })
+        .populate({ path: 'mentor', select: 'name email' });
+
     if (!meeting)
         return next(new AppError('No meeting found with that ID', 404));
 
