@@ -24,6 +24,7 @@ const friendshipsSchema = new mongoose.Schema({
         type: Date
     }
 });
+
 //-------------------------Export-----------------------//
 const FriendShip = mongoose.model('FriendShip', friendshipsSchema);
 module.exports = FriendShip;

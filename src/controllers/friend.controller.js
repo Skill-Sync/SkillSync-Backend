@@ -6,29 +6,35 @@ exports.getMyFriends = catchAsyncError(async (req, res, next) => {
     const userId = res.locals.userId;
 
     const friendships = await FriendShip.find({
-        $or: [{ user1: userId }, { user2: userId }],
+        $or: [{ user_1: userId }, { user_2: userId }],
         status: 'accepted'
     })
-        .populate('user1')
-        .populate('user2');
+        .populate('user_1')
+        .populate('user_2');
 
     const friends = friendships.map(friendship => {
-        return friendship.user1._id.toString() === userId
-            ? friendship.user2
-            : friendship.user1;
+        return friendship.user_1._id.toString() === userId
+            ? friendship.user_2
+            : friendship.user_1;
     });
 
-    res.status(res.locals.statusCode || 200).json({ friends });
+    res.status(res.locals.statusCode || 200).json({
+        status: 'success',
+        result: friends.length,
+        data: {
+            friends
+        }
+    });
 });
 exports.createEditFriendship = catchAsyncError(async (req, res, next) => {
     const userId = res.locals.userId;
     const friendId = req.params.id;
-    const { status } = req.body;
+    let { status } = req.body;
 
     if (userId === friendId)
         return next(new AppError('You cannot be friends with yourself', 400));
 
-    const friendship = await FriendShip.findOne({
+    let friendship = await FriendShip.findOne({
         $or: [
             { user_1: userId, user_2: friendId },
             { user_1: friendId, user_2: userId }
@@ -79,7 +85,7 @@ exports.deleteFriend = catchAsyncError(async (req, res, next) => {
     if (!friendship)
         return next(new AppError('Could not find friendship', 400));
 
-    await friendship.remove();
+    await FriendShip.findByIdAndDelete(friendship._id);
 
     res.status(res.locals.statusCode || 204).json({
         status: 'success',
