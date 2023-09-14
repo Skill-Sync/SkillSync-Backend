@@ -20,7 +20,7 @@ router.patch(
     userController.UpdateMe
 );
 //---------------Admin Routes---------------//
-// router.use(authController.restrictTo('admin'));
+router.use(authController.restrictTo('admin'));
 router.get('/', userController.getAllUsers);
 router
     .route('/:id')
