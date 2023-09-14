@@ -19,9 +19,8 @@ router.patch(
     userController.getMe,
     userController.UpdateMe
 );
-// router.patch('/updatePassword', authController.updatePassword);
 //---------------Admin Routes---------------//
-// router.use(authController.restrictTo('admin'));
+router.use(authController.restrictTo('admin'));
 router.get('/', userController.getAllUsers);
 router
     .route('/:id')
