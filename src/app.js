@@ -1,3 +1,4 @@
+const path = require('path');
 const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -18,8 +19,6 @@ const usersRouter = require('./routes/user.routes');
 const adminRouter = require('./routes/admin.routes');
 const skillsRouter = require('./routes/skill.routes');
 const mentorsRouter = require('./routes/mentor.routes');
-const coursesRouter = require('./routes/course.routes');
-const reviewsRouter = require('./routes/review.routes');
 const friendsRouter = require('./routes/friend.routes');
 const meetingsRouter = require('./routes/meeting.routes');
 //--------------------------------//
@@ -30,13 +29,16 @@ app.use(morgan('dev'));
 app.use(cors());
 app.options('*', cors());
 
+// Serve static content located in the "public" directory.
+app.use(express.static(path.join(__dirname, '..', 'public', 'img')));
+
 // Set security HTTP headers
 // app.use(helmet.contentSecurityPolicy({}));
 
 const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!'
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many requests from this IP, please try again in an hour!'
 });
 app.use('/api', limiter);
 
@@ -62,15 +64,13 @@ app.use(isLogin);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/mentors', mentorsRouter);
-app.use('/api/v1/courses', coursesRouter);
-app.use('/api/v1/reviews', reviewsRouter);
 app.use('/api/v1/friends', friendsRouter);
 app.use('/api/v1/meetings', meetingsRouter);
 
 app.all('*', (req, res, next) => {
-  res.status(res.locals.statusCode || 404).json({
-    message: 'Invalid route, please check URL'
-  });
+    res.status(res.locals.statusCode || 404).json({
+        message: 'Invalid route, please check URL'
+    });
 });
 //--------------------------------//
 app.use(globalErrorHandler);
