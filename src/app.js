@@ -19,8 +19,6 @@ const usersRouter = require('./routes/user.routes');
 const adminRouter = require('./routes/admin.routes');
 const skillsRouter = require('./routes/skill.routes');
 const mentorsRouter = require('./routes/mentor.routes');
-const coursesRouter = require('./routes/course.routes');
-const reviewsRouter = require('./routes/review.routes');
 const friendsRouter = require('./routes/friend.routes');
 const meetingsRouter = require('./routes/meeting.routes');
 //--------------------------------//
@@ -66,8 +64,6 @@ app.use(isLogin);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/admins', adminRouter);
 app.use('/api/v1/mentors', mentorsRouter);
-app.use('/api/v1/courses', coursesRouter);
-app.use('/api/v1/reviews', reviewsRouter);
 app.use('/api/v1/friends', friendsRouter);
 app.use('/api/v1/meetings', meetingsRouter);
 
