@@ -1,3 +1,5 @@
+const User = require('../models/user.model');
+const Mentor = require('../models/mentor.model');
 const Meeting = require('../models/meeting.model');
 const AppError = require('../utils/appErrorsClass');
 const catchAsyncError = require('../utils/catchAsyncErrors');
@@ -53,12 +55,19 @@ exports.getMyAuthToken = catchAsyncError(async (req, res, next) => {
     if (
         meeting.user.toString() !== res.locals.userId &&
         meeting.mentor.toString() !== res.locals.userId
-    )
+    ) {
         return next(
             new AppError('You are not authorized to access this meeting', 401)
         );
+    }
+
+    const User =
+        res.locals.userType === 'mentor'
+            ? User.findById(res.locals.userId)
+            : Mentor.findById(res.locals.userId);
 
     const token = await addUserToMeeting(meeting.dyteMeetingId, {
+        name: User.name,
         preset_name: 'test',
         custom_participant_id: res.locals.userId
     });
