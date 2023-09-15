@@ -1,12 +1,13 @@
 const axios = require('axios').default;
 
-const DYTE_API_BASE_URL = 'https://api.dyte.io/v2';
-const DYTE_API_TOKEN = `${process.env.ORG_ID}:${process.env.API_KEY}`;
+// const DYTE_API_Meeting_URL = 'https://api.dyte.io/v2/meetings';
+// const DYTE_API_Adding_URL = `https://api.dyte.io/v2
+// /meetings/{meeting_id}/participants`;
 
-exports.createDyteMeeting = async function(title) {
+exports.createDyteMeeting = async title => {
     try {
         const response = await axios.post(
-            `${DYTE_API_BASE_URL}/meetings`,
+            `${process.env.DYTE_BASE_URL}/meetings`,
             {
                 title: `${title}`,
                 preferred_region: 'ap-south-1',
@@ -16,29 +17,35 @@ exports.createDyteMeeting = async function(title) {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Basic ${DYTE_API_TOKEN}`
+                    Authorization: `Basic ${process.env.DYTE_API_TOKEN}`
                 }
             }
         );
 
-        return response.data.id;
+        // console.log(response.data.data.id);
+
+        return response.data.data.id;
     } catch (error) {
-        console.error('Error creating Dyte meeting:', error);
-        throw error;
+        console.error('Error creating Dyte meeting:', error.message);
+        // throw error;
     }
 };
 
+//add participant -->auth token
+
 exports.addUserToMeeting = async function(meetingId, userData) {
     try {
-        const url = `${DYTE_API_BASE_URL}/meetings/${meetingId}/participants`;
+        const url = `${process.env.DYTE_BASE_URL}/meetings/${meetingId}/participants`;
         const response = await axios.post(url, userData, {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Basic ${DYTE_API_TOKEN}`
+                Authorization: `Basic ${process.env.DYTE_API_TOKEN}`
             }
         });
 
-        return response.data.token;
+        console.log(response.data.data.token);
+
+        return response.data.data.token;
     } catch (error) {
         console.error('Error adding user to Dyte meeting:', error);
         throw error;
@@ -49,5 +56,5 @@ const userData = {
     name: '',
     picture: '',
     preset_name: '',
-    custom_participant_id: ''
+    custom_participant_id: ''
 };
