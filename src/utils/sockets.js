@@ -9,14 +9,14 @@ const dyte = require('./dyte');
 // );
 // // await client.set('foo', 'bar');
 
-//----upstash
-const redisClient = createClient({
-    url:
-        'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
-});
+// //----upstash
+// const redisClient = createClient({
+//     url:
+//         'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
+// });
 
 //-----localhost
-// const redisClient = createClient();
+const redisClient = createClient();
 
 redisClient.on('error', err => console.log('Redis Client Error', err));
 
@@ -213,6 +213,7 @@ const listen = function(io) {
                         });
                     await removeFromSet(tag, `${user._id}`);
                     await removeFromSet(crossSkill, `${match.MatchedUserId}`);
+                    console.log(`${user._id}/${match.MatchedUserId}`, 'buggg');
                     await setOne(
                         `${user._id}/${match.MatchedUserId}`,
                         'started'
@@ -260,6 +261,10 @@ const listen = function(io) {
                             crossSkill,
                             `${match.MatchedUserId}`
                         );
+                        console.log(
+                            `${user._id}/${match.MatchedUserId}`,
+                            'buggg'
+                        );
                         await setOne(
                             `${user._id}/${match.MatchedUserId}`,
                             'started'
@@ -281,7 +286,9 @@ const listen = function(io) {
 
                 console.log('hi from global approval');
 
-                const status = await getOne(`${userId}/${MatchedUserId}`);
+                const status1 = await getOne(`${userId}/${MatchedUserId}`);
+                const status2 = await getOne(`${MatchedUserId}/${userId}`);
+                const status = status1 || status2;
 
                 console.log(status);
                 if (status === 'started') {
@@ -341,11 +348,14 @@ const listen = function(io) {
             MatchedUserId
         }) {
             try {
+                console.log('hi from global rejection');
                 const socketId = this.id;
-                const status = await getOne(`${userId}/${MatchedUserId}`);
+                const status1 = await getOne(`${userId}/${MatchedUserId}`);
+                const status2 = await getOne(`${MatchedUserId}/${userId}`);
+                const status = status1 || status2;
 
                 console.log(socketId);
-                console.log(status);
+                console.log(status, status1, status2);
 
                 if (status === 'started' || status === 'pending') {
                     await setOne(`${userId}/${MatchedUserId}`, 'rejected');
