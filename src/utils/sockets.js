@@ -2,7 +2,17 @@ const User = require('../models/user.model');
 const { createClient } = require('redis');
 const dyte = require('./dyte');
 
-const redisClient = createClient();
+// const { Redis } = require('ioredis');
+
+// const redisClient = new Redis(
+//     'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
+// );
+// // await client.set('foo', 'bar');
+
+const redisClient = createClient({
+    url:
+        'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
+});
 
 redisClient.on('error', err => console.log('Redis Client Error', err));
 
