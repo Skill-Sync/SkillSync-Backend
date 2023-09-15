@@ -57,7 +57,8 @@ exports.getMyAuthToken = catchAsyncError(async (req, res, next) => {
 
     const token = await addUserToMeeting(meeting.dyteMeetingId, {
         name: res.locals.userName,
-        email: res.locals.userEmail
+        preset_name: 'test',
+        custom_participant_id: res.locals.userId
     });
 
     res.status(res.locals.statusCode || 200).json({
