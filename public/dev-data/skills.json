@@ -1,0 +1,92 @@
+[
+    {
+        "_id": "6504a75e4a793e6c243cfa11",
+        "name": "JavaScript",
+        "description": "A versatile programming language used for web development."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa12",
+        "name": "Python",
+        "description": "A high-level programming language known for its simplicity and readability."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa13",
+        "name": "React",
+        "description": "A JavaScript library for building user interfaces."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa14",
+        "name": "Node.js",
+        "description": "A JavaScript runtime environment for server-s_ide applications."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa15",
+        "name": "Back-End Development",
+        "description": "Back-end development involves working with server-s_ide technologies to develop logic, interact with databases, and handle user authentication."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa16",
+        "name": "Front-End Development",
+        "description": "Front-end development involves working with user-facing technologies to develop the visual aspects of a website or application."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa17",
+        "name": "UI/UX Design",
+        "description": "User interface and user experience design for creating user-friendly products."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa18",
+        "name": "Graphic Design",
+        "description": "Creating visual content and graphics for various media."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa19",
+        "name": "Data Analysis",
+        "description": "Analyzing data to extract valuable insights."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa1a",
+        "name": "Machine Learning",
+        "description": "Using algorithms to enable computers to learn and make predictions."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa1b",
+        "name": "Cybersecurity",
+        "description": "Protecting computer systems and networks from security breaches."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa1c",
+        "name": "Cloud Computing",
+        "description": "Using remote servers to store, manage, and process data over the internet."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa1d",
+        "name": "Mobile App Development",
+        "description": "Creating applications for mobile devices."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa1e",
+        "name": "DevOps",
+        "description": "Combining development and IT operations for streamlined software delivery."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa1f",
+        "name": "Blockchain",
+        "description": "A decentralized and secure ledger technology."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa20",
+        "name": "Artificial Intelligence",
+        "description": "Creating intelligent systems that can perform tasks without human intervention."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa21",
+        "name": "3D Modeling",
+        "description": "Creating three-dimensional models for various applications."
+    },
+    {
+        "_id": "6504a75e4a793e6c243cfa22",
+        "name": "Game Development",
+        "description": "Creating interactive games for various platforms."
+    }
+]

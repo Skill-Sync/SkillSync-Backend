@@ -254,11 +254,23 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
 // exports.getResetToken = catchAsyncError(async (req, res, next) => {});
 
 exports.isLogin = catchAsyncError(async (req, res, next) => {
-    const [accessToken, refreshToken] = [
-        req.headers.authorization?.split(' ')[1] || null,
-        req.headers.authorization?.split(' ')[2] || null
-    ];
+    // const [accessToken, refreshToken] = [
+    //     req.headers.authorization?.split(' ')[1] || null,
+    //     req.headers.authorization?.split(' ')[2] || null
+    // ];
 
+    let accessToken, refreshToken;
+    if (req.headers.authorization) {
+        [accessToken, refreshToken] = [
+            req.headers.authorization?.split(' ')[1] || null,
+            req.headers.authorization?.split(' ')[2] || null
+        ];
+    } else if (req.cookies.refreshJWT && req.cookies.accessJWT) {
+        [accessToken, refreshToken] = [
+            req.cookies.accessJWT || null,
+            req.cookies.refreshJWT || null
+        ];
+    }
     if (!accessToken || !refreshToken) {
         return next(
             new AppError(

@@ -1,38 +1,68 @@
 [
-  {
-    "name": "Mentor 1",
-    "email": "mentor1@example.com",
-    "pass": "password123",
-    "passConfirm": "password123",
-    "identityCard": "12345",
-    "photo": "mentor1.jpg",
-    "skill": "64fcb555d14e59693748102e",
-    "about": "About Mentor 1",
-    "courses": [],
-    "onboarding_completed": false
-  },
-  {
-    "name": "Mentor 2",
-    "email": "mentor2@example.com",
-    "pass": "password456",
-    "passConfirm": "password456",
-    "identityCard": "54321",
-    "photo": "mentor2.jpg",
-    "skill": "64fcc1c431010b05d9634812",
-    "about": "About Mentor 2",
-    "courses": [],
-    "onboarding_completed": false
-  },
-  {
-    "name": "Mentor 3",
-    "email": "mentor3@example.com",
-    "pass": "password789",
-    "passConfirm": "password789",
-    "identityCard": "98765",
-    "photo": "mentor3.jpg",
-    "skill": "64fcb555d14e59693748102e",
-    "about": "About Mentor 3",
-    "courses": [],
-    "onboarding_completed": false
-  }
+    {
+        "name": "Mohamed Abo El-Seoud",
+        "email": "mohamed.11021@outlook.com",
+        "pass": "pass1221",
+        "passConfirm": "pass1221",
+        "identityCard": "12345",
+        "photo": "https://skill-sync.onrender.com/mentors/mentor-1.jpg",
+        "skill": "6504a75e4a793e6c243cfa15",
+        "about": "In my backend course, I'll be your expert guide into the realm of server-side development. From building robust APIs to managing databases, I'll equip you with the knowledge and skills to create scalable and efficient backend systems that power today's digital world  ",
+        "onboarding_completed": true
+    },
+    {
+        "name": "Leo Gillespie",
+        "email": "leo@example.com",
+        "pass": "password456",
+        "passConfirm": "password456",
+        "identityCard": "54321",
+        "photo": "https://skill-sync.onrender.com/mentors/mentor-2.jpg",
+        "skill": "6504a75e4a793e6c243cfa13",
+        "about": "My React course offers a transformative learning experience, where I provide personalized guidance and support to help you become a proficient React developer. Through practical projects and expert insights, I'll empower you to excel in the world of web development with confidence.",
+        "onboarding_completed": true
+    },
+    {
+        "name": "Sophie Louise Hart",
+        "email": "sophie@example.com",
+        "pass": "password789",
+        "passConfirm": "password789",
+        "identityCard": "98765",
+        "photo": "https://skill-sync.onrender.com/mentors/mentor-3.jpg",
+        "skill": "6504a75e4a793e6c243cfa22",
+        "about": "In my Game Development course, I'll lead you on an exciting journey into the world of interactive entertainment. From game design fundamentals to coding mechanics and graphics, I'll empower you to craft immersive and captivating gaming experiences, transforming your passion into playable reality.",
+        "onboarding_completed": true
+    },
+    {
+        "name": "Cristian Vega",
+        "email": "chris@example.com",
+        "pass": "password789",
+        "passConfirm": "password789",
+        "identityCard": "98765",
+        "photo": "https://skill-sync.onrender.com/mentors/mentor-4.jpg",
+        "skill": "6504a75e4a793e6c243cfa1f",
+        "about": "In my Blockchain course, I'll be your guide to the revolutionary technology that underpins cryptocurrencies and beyond. You'll gain in-depth knowledge of decentralized systems, smart contracts, and blockchain development, empowering you to harness the potential of this transformative technology.",
+        "onboarding_completed": true
+    },
+    {
+        "name": "Steve T. Scaife",
+        "email": "steve@example.com",
+        "pass": "password789",
+        "passConfirm": "password789",
+        "identityCard": "98765",
+        "photo": "https://skill-sync.onrender.com/mentors/mentor-5.jpg",
+        "skill": "6504a75e4a793e6c243cfa1d",
+        "about": "n my Mobile App Development course, I'll lead you through the exciting world of creating mobile applications. From mastering the latest app development tools and platforms to designing user-friendly interfaces, you'll acquire the skills needed to bring your app ideas to life in today's mobile-driven landscape.",
+        "onboarding_completed": true
+    },
+    {
+        "name": "Aarav Lynn",
+        "email": "aarav@example.com",
+        "pass": "password789",
+        "passConfirm": "password789",
+        "identityCard": "98765",
+        "photo": "https://skill-sync.onrender.com/mentors/mentor-6.jpg",
+        "skill": "6504a75e4a793e6c243cfa18",
+        "about": "In my Graphic Design course, I'll be your creative mentor, guiding you through the art and science of visual communication. From mastering design principles to using industry-standard software, I'll empower you to craft compelling visuals that captivate audiences and make a lasting impact.",
+        "onboarding_completed": true
+    }
 ]
