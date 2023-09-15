@@ -28,7 +28,7 @@ const meetingsSchema = new mongoose.Schema({
 });
 //-------------------Query Middleware----------------//
 meetingsSchema.pre(/^find/, function(next) {
-    this.select('mentor user status scheduledDate');
+    this.select('mentor user status scheduledDate dyteMeetingId');
     next();
 });
 //-------------------------Export-----------------------//

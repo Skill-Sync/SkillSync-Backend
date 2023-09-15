@@ -6,7 +6,7 @@ const router = express.Router({ mergeParams: true });
 //-------------------Router----------------//
 router.route('/').get(meetingController.getMyMeetings);
 
-router.get('/id/AuthToken', meetingController.getMyAuthToken());
+router.get('/:id/AuthToken', meetingController.getMyAuthToken);
 
 router
     .route('/:id')

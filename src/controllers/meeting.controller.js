@@ -50,20 +50,27 @@ exports.getMyAuthToken = catchAsyncError(async (req, res, next) => {
     if (!meeting)
         return next(new AppError('No meeting found with that ID', 404));
 
-    if (meeting.user.toString() !== res.locals.userId)
+    if (
+        meeting.user.toString() !== res.locals.userId &&
+        meeting.mentor.toString() !== res.locals.userId
+    )
         return next(
             new AppError('You are not authorized to access this meeting', 401)
         );
 
     const token = await addUserToMeeting(meeting.dyteMeetingId, {
-        name: res.locals.userName,
         preset_name: 'test',
         custom_participant_id: res.locals.userId
     });
 
+    if (!token) return next(new AppError('Error generating token', 500));
+
     res.status(res.locals.statusCode || 200).json({
         status: 'success',
-        data: token
+        data: {
+            meetingId: meeting.dyteMeetingId,
+            token
+        }
     });
 });
 
