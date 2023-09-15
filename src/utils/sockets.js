@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const { createClient } = require('redis');
+const dyte = require('./dyte');
 
 const redisClient = createClient();
 
@@ -135,7 +136,7 @@ const listen = function(io) {
         console.log(socketId, 'socketId');
         //1- get user to user skills
         // console.log('connected');
-        socket.on('start-search', async function({
+        socket.on('start-searching', async function({
             userId,
             wantedInnerSkill,
             userSocketId
@@ -335,7 +336,13 @@ const listen = function(io) {
             }
         });
 
-        // socket.on('disconnect', reason => {});
+        socket.on('hi', async function({ userId }) {
+            dyte.runPreset();
+        });
+
+        socket.on('disconnect', reason => {
+            console.log('disconnected', reason);
+        });
     });
 };
 
