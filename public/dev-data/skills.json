@@ -1,1 +1,74 @@
- 
+[
+    {
+        "name": "JavaScript",
+        "description": "A versatile programming language used for web development."
+    },
+    {
+        "name": "Python",
+        "description": "A high-level programming language known for its simplicity and readability."
+    },
+    {
+        "name": "React",
+        "description": "A JavaScript library for building user interfaces."
+    },
+    {
+        "name": "Node.js",
+        "description": "A JavaScript runtime environment for server-side applications."
+    },
+    {
+        "name": "Back-End Development",
+        "description": "Back-end development involves working with server-side technologies to develop logic, interact with databases, and handle user authentication."
+    },
+    {
+        "name": "Front-End Development",
+        "description": "Front-end development involves working with user-facing technologies to develop the visual aspects of a website or application."
+    },
+    {
+        "name": "UI/UX Design",
+        "description": "User interface and user experience design for creating user-friendly products."
+    },
+    {
+        "name": "Graphic Design",
+        "description": "Creating visual content and graphics for various media."
+    },
+    {
+        "name": "Data Analysis",
+        "description": "Analyzing data to extract valuable insights."
+    },
+    {
+        "name": "Machine Learning",
+        "description": "Using algorithms to enable computers to learn and make predictions."
+    },
+    {
+        "name": "Cybersecurity",
+        "description": "Protecting computer systems and networks from security breaches."
+    },
+    {
+        "name": "Cloud Computing",
+        "description": "Using remote servers to store, manage, and process data over the internet."
+    },
+    {
+        "name": "Mobile App Development",
+        "description": "Creating applications for mobile devices."
+    },
+    {
+        "name": "DevOps",
+        "description": "Combining development and IT operations for streamlined software delivery."
+    },
+    {
+        "name": "Blockchain",
+        "description": "A decentralized and secure ledger technology."
+    },
+    {
+        "name": "Artificial Intelligence",
+        "description": "Creating intelligent systems that can perform tasks without human intervention."
+    },
+    {
+        "name": "3D Modeling",
+        "description": "Creating three-dimensional models for various applications."
+    },
+    {
+        "name": "Game Development",
+        "description": "Creating interactive games for various platforms."
+    }
+]

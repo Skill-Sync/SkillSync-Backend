@@ -1,59 +1,88 @@
 [
     {
-        "name": "User 1",
-        "email": "user1@example.com",
-        "pass": "password123",
-        "passConfirm": "password123",
-        "about": "About User 1",
+        "name": "Mohamed Abo El-Seoud",
+        "email": "mohamed.11021@outlook.com",
+        "pass": "pass1221",
+        "passConfirm": "pass1221",
+        "about": "I'm a MERN web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
         "isEmployed": true,
+        "photo": "users/user-1.jpg",
         "skillsToLearn": [],
         "skillsLearned": []
     },
     {
-        "name": "User 2",
-        "email": "user2@example.com",
+        "name": "Lourdes Browning",
+        "email": "loulou@example.com",
         "pass": "password456",
         "passConfirm": "password456",
-        "about": "About User 2",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
         "isEmployed": false,
+        "photo": "users/user-2.jpg",
         "skillsToLearn": [],
         "skillsLearned": []
     },
     {
-        "name": "User 3",
-        "email": "user3@example.com",
+        "name": "Leo Gillespie",
+        "email": "leo@example.com",
         "pass": "password789",
         "passConfirm": "password789",
-        "about": "About User 3",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
         "isEmployed": true,
+        "photo": "users/user-3.jpg",
         "skillsToLearn": [],
         "skillsLearned": []
     },
     {
-        "name": "User 4",
-        "email": "user4@example.com",
+        "name": "Sophie Louise Hart",
+        "email": "sophie@example.com",
         "pass": "passwordABC",
         "passConfirm": "passwordABC",
-        "about": "About User 4",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
         "isEmployed": false,
+        "photo": "users/user-4.jpg",
         "skillsToLearn": [],
         "skillsLearned": []
     },
     {
-        "name": "User 5",
-        "email": "user5@example.com",
+        "name": "Cristian Vega",
+        "email": "chris@example.com",
         "pass": "passwordXYZ",
         "passConfirm": "passwordXYZ",
-        "about": "About User 5",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
         "isEmployed": true,
+        "photo": "users/user-5.jpg",
         "skillsToLearn": [],
         "skillsLearned": []
     },
     {
+        "name": "Steve T. Scaife",
+        "email": "steve@example.com",
+        "pass": "passwordXYZ",
+        "passConfirm": "passwordXYZ",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": true,
+        "photo": "users/user-6.jpg",
+        "skillsToLearn": [],
+        "skillsLearned": []
+    },
+    {
+        "name": "Ayla Cornell",
+        "email": "ayls@example.com",
+        "pass": "passwordXYZ",
+        "passConfirm": "passwordXYZ",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": true,
+        "photo": "users/user-7.jpg",
+        "skillsToLearn": [],
+        "skillsLearned": []
+    },
+    {
+        "role": "admin",
         "name": "admin",
         "email": "adminemail@me.com",
         "pass": "pass1221",
         "passConfirm": "pass1221",
-        "about": "About admin"
+        "photo": "users/user-7.jpg",
+        "about": "i'm admin and i can do anything i want."
     }
 ]

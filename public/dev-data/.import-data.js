@@ -26,7 +26,6 @@ const skills = JSON.parse(fs.readFileSync(`${__dirname}/skills.json`, 'utf-8'));
 const mentors = JSON.parse(
     fs.readFileSync(`${__dirname}/mentors.json`, 'utf-8')
 );
-
 //--------------------CRUD------------------//
 async function importData() {
     try {

@@ -10,11 +10,6 @@ const skillsSchema = new mongoose.Schema({
         type: String,
         trim: true,
         required: [true, 'A skill must have a description']
-    },
-    logo: {
-        type: String,
-        trim: true,
-        default: 'defaultSkill.jpg'
     }
 });
 //-------------------------Export-----------------------//
