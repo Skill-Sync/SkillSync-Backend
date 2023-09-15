@@ -177,99 +177,77 @@ const listen = function(io) {
                 );
                 //test
                 console.log(userInnerSkills);
-
                 user = userInner;
                 userSkills = userInnerSkills;
                 wantedSkill = wantedInnerSkill;
-
                 // await setOne(`${socketId}`, `${user._id}`);
-
                 await setMany([`${user._id}`], `${userSocketId || socketId}`);
-
                 await setMany([`${user._id}/not-to-provide`], 'Starter');
-
                 // 4- create search tags
-                tags = createSkills(wantedInnerSkill, userInnerSkills);
-
+                const tags = createSkills(wantedInnerSkill, userInnerSkills);
                 // console.log(tags);
                 // console.log(await getMany(tags[0]));
-
                 await setMany(tags, `${user._id}`);
-
                 // 5- search for match
                 console.log(tags, '-------------------tags');
-                tags.map(async tag => {
-                    const crossSkill = getcrossSkill(tag);
-                    const notToProvide = await getMany(
-                        `${user._id}/not-to-provide`
+                const tag = tags[0];
+                const crossSkill = getcrossSkill(tag);
+                const notToProvide = await getMany(
+                    `${user._id}/not-to-provide`
+                );
+                const match = await searchForMatch(crossSkill, notToProvide);
+                if (match.found) {
+                    const matchSocketId = await getMany(
+                        `${match.MatchedUserId}`
                     );
-                    const match = await searchForMatch(
-                        crossSkill,
-                        notToProvide
+                    const userSockets = await getMany(`${user._id}`);
+                    const matchedUser = await User.findById(
+                        match.MatchedUserId
                     );
-
-                    if (match.found) {
-                        const matchSocketId = await getMany(
-                            `${match.MatchedUserId}`
-                        );
-                        const userSockets = await getMany(`${user._id}`);
-
-                        const matchedUser = await User.findById(
-                            match.MatchedUserId
-                        );
-
-                        io.to(socketId)
-                            .to(userSockets)
-                            .to(matchSocketId)
-                            .emit('match-found', {
-                                user1: matchedUser,
-                                user2: userInner
-                            });
-
-                        await removeFromSet(tag, `${user._id}`);
-                        await removeFromSet(
+                    io.to(socketId)
+                        .to(userSockets)
+                        .to(matchSocketId)
+                        .emit('match-found', {
+                            user1: matchedUser,
+                            user2: userInner
+                        });
+                    await removeFromSet(tag, `${user._id}`);
+                    await removeFromSet(crossSkill, `${match.MatchedUserId}`);
+                    await setOne(
+                        `${user._id}/${match.MatchedUserId}`,
+                        'started'
+                    );
+                } else {
+                    while (match.found === false) {
+                        const match = await searchForMatch(
                             crossSkill,
-                            `${match.MatchedUserId}`
+                            notToProvide
                         );
-
-                        await setOne(
-                            `${user._id}/${match.MatchedUserId}`,
-                            'started'
+                        console.log(
+                            await getOne(`${user._id}/${match.MatchedUserId}`),
+                            'res of status'
                         );
-                    } else {
-                        while (match.found === false) {
-                            const match = await searchForMatch(
-                                crossSkill,
-                                notToProvide
-                            );
-
-                            console.log(
-                                await getOne(
-                                    `${user._id}/${match.MatchedUserId}`
-                                ),
-                                'res of status'
-                            );
-
-                            if (
-                                match.found ||
-                                (await getOne(
-                                    `${user._id}/${match.MatchedUserId}`
-                                )) === 'started'
-                            ) {
-                                break;
-                            }
+                        if (
+                            match.found ||
+                            (await getOne(
+                                `${user._id}/${match.MatchedUserId}`
+                            )) === 'started'
+                        ) {
+                            break;
                         }
-
-                        // if (match.found) {
+                    }
+                    if (
+                        match.found &&
+                        (await getOne(`${user._id}/${match.MatchedUserId}`)) !==
+                            'started'
+                    ) {
                         const matchSocketId = await getMany(
                             `${match.MatchedUserId}`
                         );
                         const userSockets = await getMany(`${user._id}`);
-
                         const matchedUser = await User.findById(
                             match.MatchedUserId
                         );
-
                         io.to(socketId)
                             .to(userSockets)
                             .to(matchSocketId)
@@ -277,21 +255,17 @@ const listen = function(io) {
                                 user1: matchedUser,
                                 user2: userInner
                             });
-
                         await removeFromSet(tag, `${user._id}`);
                         await removeFromSet(
                             crossSkill,
                             `${match.MatchedUserId}`
                         );
-
                         await setOne(
                             `${user._id}/${match.MatchedUserId}`,
                             'started'
                         );
-                        // }
                     }
-                });
-
+                }
                 // io.to(socketId).emit('dude', { info: { isFuckable: false } });
             } catch (err) {
                 console.log(err.message);
