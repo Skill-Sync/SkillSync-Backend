@@ -1,5 +1,4 @@
 const express = require('express');
-const coursesRouter = require('./course.routes');
 const meetingsRouter = require('./meeting.routes');
 const friendsRouter = require('./friend.routes');
 const authController = require('../controllers/auth.controller');
@@ -7,7 +6,6 @@ const userController = require('../controllers/user.controller');
 //------------------------------------------//
 const router = express.Router({ mergeParams: true });
 //-------------Users Routes-----------------//
-router.use('/courses', coursesRouter);
 router.use('/meetings', meetingsRouter);
 router.use('/friends', friendsRouter);
 

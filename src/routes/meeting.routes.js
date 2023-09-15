@@ -6,10 +6,12 @@ const router = express.Router({ mergeParams: true });
 //-------------------Router----------------//
 router.route('/').get(meetingController.getMyMeetings);
 
+router.get('/:id/AuthToken', meetingController.getMyAuthToken);
+
 router
-  .route('/:id')
-  .get(meetingController.getMeeting)
-  .patch(authController.restrictTo('user'), meetingController.createMeeting)
-  .post(authController.restrictTo('mentor'), meetingController.updateMeeting);
+    .route('/:id')
+    .get(meetingController.getMeeting)
+    .patch(authController.restrictTo('user'), meetingController.createMeeting)
+    .post(authController.restrictTo('mentor'), meetingController.updateMeeting);
 //-------------------------------------------//
 module.exports = router;

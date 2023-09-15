@@ -271,6 +271,7 @@ exports.isLogin = catchAsyncError(async (req, res, next) => {
             req.cookies.refreshJWT || null
         ];
     }
+
     if (!accessToken || !refreshToken) {
         return next(
             new AppError(
