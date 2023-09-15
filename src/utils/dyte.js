@@ -56,5 +56,5 @@ const userData = {
     name: '',
     picture: '',
     preset_name: '',
-    custom_participant_id: ''
+    custom_participant_id: ''
 };
