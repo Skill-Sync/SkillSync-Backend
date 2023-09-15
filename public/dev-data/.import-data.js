@@ -29,7 +29,7 @@ const mentors = JSON.parse(
 //--------------------CRUD------------------//
 async function importData() {
     try {
-        await skill.create(skills);
+        // await skill.create(skills);
         await User.create(users, { validateBeforeSave: false });
         await Mentor.create(mentors, { validateBeforeSave: false });
         console.log('Data successfully loaded!');
@@ -42,7 +42,7 @@ async function importData() {
 async function deleteData() {
     try {
         await User.deleteMany();
-        await skill.deleteMany();
+        // await skill.deleteMany();
         await Mentor.deleteMany();
         console.log('Data successfully deleted!');
     } catch (err) {
