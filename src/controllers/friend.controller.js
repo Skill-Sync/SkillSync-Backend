@@ -21,9 +21,7 @@ exports.getMyFriends = catchAsyncError(async (req, res, next) => {
     res.status(res.locals.statusCode || 200).json({
         status: 'success',
         result: friends.length,
-        data: {
-            friends
-        }
+        friends
     });
 });
 exports.createEditFriendship = catchAsyncError(async (req, res, next) => {
