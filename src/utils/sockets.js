@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const { createClient } = require('redis');
+const dyte = require('./dyte');
 
 const redisClient = createClient();
 
@@ -135,7 +136,7 @@ const listen = function(io) {
         console.log(socketId, 'socketId');
         //1- get user to user skills
         // console.log('connected');
-        socket.on('start-search', async function({
+        socket.on('start-searching', async function({
             userId,
             wantedInnerSkill,
             userSocketId
@@ -197,13 +198,19 @@ const listen = function(io) {
                             `${match.MatchedUserId}`
                         );
                         const userSockets = await getMany(`${user._id}`);
+
+                        const matchedUser = await User.findById(
+                            match.MatchedUserId
+                        );
+
                         io.to(socketId)
                             .to(userSockets)
                             .to(matchSocketId)
                             .emit('match-found', {
-                                user1: match.MatchedUserId,
-                                user2: user._id
+                                user1: matchedUser,
+                                user2: userInner
                             });
+
                         await removeFromSet(tag, `${user._id}`);
                         await removeFromSet(
                             crossSkill,
@@ -232,12 +239,16 @@ const listen = function(io) {
                         );
                         const userSockets = await getMany(`${user._id}`);
 
+                        const matchedUser = await User.findById(
+                            match.MatchedUserId
+                        );
+
                         io.to(socketId)
                             .to(userSockets)
                             .to(matchSocketId)
                             .emit('match-found', {
-                                user1: match.MatchedUserId,
-                                user2: user._id
+                                user1: matchedUser,
+                                user2: userInner
                             });
 
                         await removeFromSet(tag, `${user._id}`);
@@ -262,8 +273,13 @@ const listen = function(io) {
 
         socket.on('client-approval', async function({ userId, MatchedUserId }) {
             try {
+                const user = await User.findById(userId);
+                const matchedUser = await User.findById(MatchedUserId);
+
                 const socketId = this.id;
+
                 console.log('hi from global approval');
+
                 const status = await getOne(`${userId}/${MatchedUserId}`);
 
                 console.log(status);
@@ -279,14 +295,40 @@ const listen = function(io) {
                     const matchSocketIds = await getMany(`${MatchedUserId}`);
                     const userSocketIds = await getMany(`${userId}`);
 
-                    //add auth-token and create meeting and add particbant
+                    //1- create meeting
+                    const meetingID = await dyte.createDyteMeeting(
+                        `${userId}/${MatchedUserId}`
+                    );
+                    //2- add the two participant to meeting
+                    const userToken = await dyte.addUserToMeeting(meetingID, {
+                        name: user.name,
+                        preset_name: 'test',
+                        custom_participant_id: user._id
+                    });
+
+                    const matchedUserToken = await dyte.addUserToMeeting(
+                        meetingID,
+                        {
+                            name: matchedUser.name,
+                            preset_name: 'test',
+                            custom_participant_id: matchedUser._id
+                        }
+                    );
+
+                    //3- return meeting id and auth token
                     io.to(socketId)
                         .to(userSocketIds)
-                        .to(matchSocketIds)
                         .emit('server-approval', {
-                            user1: userId,
-                            user2: MatchedUserId
+                            user1: user,
+                            user2: matchedUser,
+                            authToken: userToken
                         });
+
+                    io.to(matchSocketIds).emit('server-approval', {
+                        user1: matchedUser,
+                        user2: user,
+                        authToken: matchedUserToken
+                    });
                 }
             } catch (err) {
                 console.log(err.message);
@@ -335,7 +377,21 @@ const listen = function(io) {
             }
         });
 
-        // socket.on('disconnect', reason => {});
+        // socket.on('hi', async function({ userId }) {
+        //     const meetingID = await dyte.createDyteMeeting('test');
+        //     console.log(meetingID);
+        //     const token = await dyte.addUserToMeeting(meetingID, {
+        //         // name: 'test',
+        //         // picture: 'test',
+        //         preset_name: 'test',
+        //         custom_participant_id: 'sdafhosadkfhoksadf'
+        //     });
+        //     console.log(token);
+        // });
+
+        socket.on('disconnect', reason => {
+            console.log('disconnected', reason);
+        });
     });
 };
 
