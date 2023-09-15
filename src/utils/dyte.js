@@ -1,119 +1,60 @@
-//preset
-var axios = require('axios').default;
+const axios = require('axios').default;
 
-const API_HASH = Buffer.from(
-    `${process.env.DYTE_ORG_ID}:${process.env.DYTE_API_KEY}`,
-    'utf-8'
-).toString('base64');
+// const DYTE_API_Meeting_URL = 'https://api.dyte.io/v2/meetings';
+// const DYTE_API_Adding_URL = `https://api.dyte.io/v2
+// /meetings/{meeting_id}/participants`;
 
-var options = {
-    method: 'POST',
-    url: 'https://api.dyte.io/v2/presets',
-    headers: {
-        'Content-Type': 'application/json',
-        Authorization:
-            'Basic Y2E5YmI3NzMtZmFhMy00OTgzLWE3YTQtZDBjZGRkMDc4MThkOmVjMTljMmQ2OWE1MjI4NzcxMWIx'
-    },
-    data: {
-        name: 'Test',
-        config: {
-            view_type: 'GROUP_CALL',
-            max_video_streams: { mobile: 0, desktop: 0 },
-            max_screenshare_count: 0,
-            media: {
-                video: { quality: 'hd', frame_rate: 30 },
-                screenshare: { quality: 'hd', frame_rate: 0 }
-            }
-        },
-        permissions: {
-            accept_waiting_requests: true,
-            can_accept_production_requests: true,
-            can_edit_display_name: true,
-            can_spotlight: true,
-            is_recorder: false,
-            recorder_type: 'NONE',
-            disable_participant_audio: true,
-            disable_participant_screensharing: true,
-            disable_participant_video: true,
-            kick_participant: true,
-            pin_participant: true,
-            can_record: true,
-            can_livestream: true,
-            waiting_room_type: 'SKIP',
-            plugins: {
-                can_close: true,
-                can_start: true,
-                can_edit_config: true,
-                config: '4de5a1b6-f730-4513-9ebe-16895971a32d'
-            },
-            connected_meetings: {
-                can_alter_connected_meetings: true,
-                can_switch_connected_meetings: true,
-                can_switch_to_parent_meeting: true
-            },
-            polls: { can_create: true, can_vote: true, can_view: true },
-            media: {
-                video: { can_produce: 'ALLOWED' },
-                audio: { can_produce: 'ALLOWED' },
-                screenshare: { can_produce: 'ALLOWED' }
-            },
-            chat: {
-                public: { can_send: true, text: true, files: true },
-                private: {
-                    can_send: true,
-                    can_receive: true,
-                    text: true,
-                    files: true
-                }
-            },
-            hidden_participant: true,
-            show_participant_list: true,
-            can_change_participant_permissions: true
-        },
-        ui: {
-            design_tokens: {
-                border_radius: 'rounded',
-                border_width: 'thin',
-                spacing_base: 4,
-                theme: 'dark',
-                colors: {
-                    brand: {
-                        '300': '#844d1c',
-                        '400': '#9d5b22',
-                        '500': '#b56927',
-                        '600': '#d37c30',
-                        '700': '#d9904f'
-                    },
-                    background: {
-                        '600': '#222222',
-                        '700': '#1f1f1f',
-                        '800': '#1b1b1b',
-                        '900': '#181818',
-                        '1000': '#141414'
-                    },
-                    danger: '#FF2D2D',
-                    text: '#EEEEEE',
-                    text_on_brand: '#EEEEEE',
-                    success: '#62A504',
-                    video_bg: '#191919',
-                    warning: '#FFCD07'
-                },
-                logo: 'string'
-            },
-            config_diff: {}
-        }
-    }
-};
-
-exports.runPreset = async () => {
-    // console.log(process.env.DYTE_API_TOKEN);
+exports.createDyteMeeting = async title => {
     try {
-        const response = await axios.request(options);
-        console.log(response.data);
+        const response = await axios.post(
+            `${process.env.DYTE_BASE_URL}/meetings`,
+            {
+                title: `${title}`,
+                preferred_region: 'ap-south-1',
+                record_on_start: false,
+                live_stream_on_start: false
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Basic ${process.env.DYTE_API_TOKEN}`
+                }
+            }
+        );
+
+        // console.log(response.data.data.id);
+
+        return response.data.data.id;
     } catch (error) {
-        console.error(error.message);
+        console.error('Error creating Dyte meeting:', error.message);
+        // throw error;
     }
 };
 
-//create meeting -->meeting id
 //add participant -->auth token
+
+exports.addUserToMeeting = async function(meetingId, userData) {
+    try {
+        const url = `${process.env.DYTE_BASE_URL}/meetings/${meetingId}/participants`;
+        const response = await axios.post(url, userData, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Basic ${process.env.DYTE_API_TOKEN}`
+            }
+        });
+
+        console.log(response.data.data.token);
+
+        return response.data.data.token;
+    } catch (error) {
+        console.error('Error adding user to Dyte meeting:', error);
+        throw error;
+    }
+};
+
+const userData = {
+    name: '',
+    picture: '',
+    preset_name: '',
+    custom_participant_id: ''
+};

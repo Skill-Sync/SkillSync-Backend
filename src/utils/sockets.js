@@ -337,7 +337,15 @@ const listen = function(io) {
         });
 
         socket.on('hi', async function({ userId }) {
-            dyte.runPreset();
+            const meetingID = await dyte.createDyteMeeting('test');
+            console.log(meetingID);
+            const token = await dyte.addUserToMeeting(meetingID, {
+                // name: 'test',
+                // picture: 'test',
+                preset_name: 'test',
+                custom_participant_id: 'sdafhosadkfhoksadf'
+            });
+            console.log(token);
         });
 
         socket.on('disconnect', reason => {
