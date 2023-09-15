@@ -61,13 +61,13 @@ exports.getMyAuthToken = catchAsyncError(async (req, res, next) => {
         );
     }
 
-    const User =
+    const user =
         res.locals.userType === 'mentor'
-            ? User.findById(res.locals.userId)
-            : Mentor.findById(res.locals.userId);
+            ? Mentor.findById(res.locals.userId)
+            : User.findById(res.locals.userId);
 
     const token = await addUserToMeeting(meeting.dyteMeetingId, {
-        name: User.name,
+        name: user.name,
         preset_name: 'test',
         custom_participant_id: res.locals.userId
     });
