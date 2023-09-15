@@ -9,10 +9,14 @@ const dyte = require('./dyte');
 // );
 // // await client.set('foo', 'bar');
 
-const redisClient = createClient({
-    url:
-        'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
-});
+//----upstash
+// const redisClient = createClient({
+//     url:
+//         'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
+// });
+
+//-----localhost
+const redisClient = createClient();
 
 redisClient.on('error', err => console.log('Redis Client Error', err));
 
@@ -96,14 +100,14 @@ async function searchForMatch(crossSkill, notToProvide) {
                 results = { found: false, MatchedUserId: null };
                 console.log('no match found', results);
             }
-        }, 500);
+        }, 5 * 1000);
 
         //set time out for searching for match 5 secends (if no match found)
         setTimeout(() => {
             console.log('returning results', results);
             clearInterval(intervalId);
             resolve(results);
-        }, 5000);
+        }, 20 * 1000);
     });
 }
 
@@ -193,6 +197,7 @@ const listen = function(io) {
                 await setMany(tags, `${user._id}`);
 
                 // 5- search for match
+                console.log(tags, '-------------------tags');
                 tags.map(async tag => {
                     const crossSkill = getcrossSkill(tag);
                     const notToProvide = await getMany(
@@ -238,7 +243,19 @@ const listen = function(io) {
                                 notToProvide
                             );
 
-                            if (match.found) {
+                            console.log(
+                                await getOne(
+                                    `${user._id}/${match.MatchedUserId}`
+                                ),
+                                'res of status'
+                            );
+
+                            if (
+                                match.found ||
+                                (await getOne(
+                                    `${user._id}/${match.MatchedUserId}`
+                                )) === 'started'
+                            ) {
                                 break;
                             }
                         }
