@@ -23,8 +23,8 @@ const friendsRouter = require('./routes/friend.routes');
 const meetingsRouter = require('./routes/meeting.routes');
 //--------------------------------//
 const app = express();
-// if (process.env.NODE_ENV === 'development')
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+else app.use(morgan(''));
 
 app.use(cors());
 app.options('*', cors());
@@ -40,7 +40,7 @@ const limiter = rateLimit({
     windowMs: 60 * 60 * 1000,
     message: 'Too many requests from this IP, please try again in an hour!'
 });
-// app.use('/api', limiter);
+app.use('/api', limiter);
 
 // Payment webhook, BEFORE body-parser, because it needs the body as stream
 // app.post('/webhook-checkout', bodyParser.raw({ type: 'application/json' }));
