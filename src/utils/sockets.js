@@ -162,7 +162,7 @@ const listen = function(io) {
                     'userId',
                     wantedInnerSkill,
                     'wantedInnerSkill',
-                    socketId,
+                    userSocketId,
                     'socket'
                 );
                 // console.log('connected');
