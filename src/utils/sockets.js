@@ -181,7 +181,7 @@ const listen = function(io) {
                 userSkills = userInnerSkills;
                 wantedSkill = wantedInnerSkill;
                 await setOne(`${user._id}/state`, 'started');
-                await setMany([`${user._id}`], `${userSocketId || socketId}`);
+                await setMany([`${user._id}`], `${userSocketId}`);
                 await setMany([`${user._id}/not-to-provide`], 'Starter');
                 // 4- create search tags
                 const tags = createSkills(wantedInnerSkill, userInnerSkills);
