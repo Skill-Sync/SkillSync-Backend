@@ -246,6 +246,15 @@ const listen = function(io) {
                             state === 'started' ||
                             singleUserState === 'stopped'
                         ) {
+                            await removeFromSet(tag, `${user._id}`);
+                            await removeFromSet(
+                                crossSkill,
+                                `${match.MatchedUserId}`
+                            );
+                            console.log(
+                                `${user._id}/${match.MatchedUserId}`,
+                                'buggg'
+                            );
                             break;
                         }
                     }
@@ -268,15 +277,6 @@ const listen = function(io) {
                                 user1: matchedUser,
                                 user2: userInner
                             });
-                        await removeFromSet(tag, `${user._id}`);
-                        await removeFromSet(
-                            crossSkill,
-                            `${match.MatchedUserId}`
-                        );
-                        console.log(
-                            `${user._id}/${match.MatchedUserId}`,
-                            'buggg'
-                        );
                         await setOne(
                             `${user._id}/${match.MatchedUserId}`,
                             'started'
@@ -421,7 +421,6 @@ const listen = function(io) {
                 // const user = await User.findById(userId);
 
                 const state = await getOne(`${userId}/state`);
-
                 console.log(state);
 
                 if (state === 'started') {
