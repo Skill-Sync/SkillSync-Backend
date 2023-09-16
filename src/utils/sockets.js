@@ -10,13 +10,13 @@ const dyte = require('./dyte');
 // // await client.set('foo', 'bar');
 
 // //----upstash
-// const redisClient = createClient({
-//     url:
-//         'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
-// });
+const redisClient = createClient({
+    url:
+        'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
+});
 
 //-----localhost
-const redisClient = createClient();
+// const redisClient = createClient();
 
 redisClient.on('error', err => console.log('Redis Client Error', err));
 
