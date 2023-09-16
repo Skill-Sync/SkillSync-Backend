@@ -332,11 +332,13 @@ const listen = function(io) {
                             authToken: userToken
                         });
 
-                    io.to(matchSocketIds).emit('server-approval', {
-                        user1: matchedUser,
-                        user2: user,
-                        authToken: matchedUserToken
-                    });
+                    io.to(socketId)
+                        .to(matchSocketIds)
+                        .emit('server-approval', {
+                            user1: matchedUser,
+                            user2: user,
+                            authToken: matchedUserToken
+                        });
                 }
             } catch (err) {
                 console.log(err.message);
