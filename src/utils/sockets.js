@@ -10,13 +10,13 @@ const dyte = require('./dyte');
 // // await client.set('foo', 'bar');
 
 // //----upstash
-const redisClient = createClient({
-    url:
-        'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
-});
+// const redisClient = createClient({
+//     url:
+//         'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
+// });
 
 //-----localhost
-// const redisClient = createClient();
+const redisClient = createClient();
 
 redisClient.on('error', err => console.log('Redis Client Error', err));
 
@@ -100,14 +100,14 @@ async function searchForMatch(crossSkill, notToProvide) {
                 results = { found: false, MatchedUserId: null };
                 console.log('no match found', results);
             }
-        }, 10 * 1000);
+        }, 1 * 1000);
 
         //set time out for searching for match 5 secends (if no match found)
         setTimeout(() => {
             console.log('returning results', results);
             clearInterval(intervalId);
             resolve(results);
-        }, 30 * 1000);
+        }, 5 * 1000);
     });
 }
 
@@ -180,7 +180,7 @@ const listen = function(io) {
                 user = userInner;
                 userSkills = userInnerSkills;
                 wantedSkill = wantedInnerSkill;
-                // await setOne(`${socketId}`, `${user._id}`);
+                await setOne(`${user._id}/state`, 'started');
                 await setMany([`${user._id}`], `${userSocketId || socketId}`);
                 await setMany([`${user._id}/not-to-provide`], 'Starter');
                 // 4- create search tags
@@ -228,11 +228,23 @@ const listen = function(io) {
                             await getOne(`${user._id}/${match.MatchedUserId}`),
                             'res of status'
                         );
+
+                        // if (!match.MatchedUserId) {
+                        //     await setOne(`${user._id}/state`, 'stopped');
+                        // }
+
+                        const state = await getOne(
+                            `${user._id}/${match.MatchedUserId}`
+                        );
+
+                        const singleUserState = await getOne(
+                            `${user._id}/state`
+                        );
+
                         if (
                             match.found ||
-                            (await getOne(
-                                `${user._id}/${match.MatchedUserId}`
-                            )) === 'started'
+                            state === 'started' ||
+                            singleUserState === 'stopped'
                         ) {
                             break;
                         }
@@ -401,6 +413,24 @@ const listen = function(io) {
         //     });
         //     console.log(token);
         // });
+
+        socket.on('cancel-search', async function({ userId }) {
+            try {
+                console.log('hi from cancel-search');
+                // const socketId = this.id;
+                // const user = await User.findById(userId);
+
+                const state = await getOne(`${userId}/state`);
+
+                console.log(state);
+
+                if (state === 'started') {
+                    await setOne(`${userId}/state`, 'stopped');
+                }
+            } catch (err) {
+                console.log(err.message);
+            }
+        });
 
         socket.on('disconnect', reason => {
             console.log('disconnected', reason);
