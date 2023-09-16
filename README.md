@@ -51,8 +51,8 @@ Database ERD       |  System Architecture
   
 
 
-<!-- 
-<div>
+
+
   ## API Usage and Documentation
 Before using the API, you need to set the variables in Postman depending on your environment (development or production). Simply add:
 ```
@@ -62,6 +62,8 @@ Before using the API, you need to set the variables in Postman depending on your
 For more info check API Documentation on Postman 👉 : [Skill-Sync API Documentation](https://documenter.getpostman.com/view/24663115/2s9YC7SWnB).
 
 
+<!-- 
+<div>
 | General Package                  | Description                                      |
 |--------------------------|--------------------------------------------------|
 | express                  | Web framework for building APIs.                  |
