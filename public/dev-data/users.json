@@ -1,59 +1,148 @@
 [
-  {
-    "name": "User 1",
-    "email": "user1@example.com",
-    "pass": "password123",
-    "passConfirm": "password123",
-    "about": "About User 1",
-    "isEmployed": true,
-    "skillsToLearn": [],
-    "skillsLearned": []
-  },
-  {
-    "name": "User 2",
-    "email": "user2@example.com",
-    "pass": "password456",
-    "passConfirm": "password456",
-    "about": "About User 2",
-    "isEmployed": false,
-    "skillsToLearn": [],
-    "skillsLearned": []
-  },
-  {
-    "name": "User 3",
-    "email": "user3@example.com",
-    "pass": "password789",
-    "passConfirm": "password789",
-    "about": "About User 3",
-    "isEmployed": true,
-    "skillsToLearn": [],
-    "skillsLearned": []
-  },
-  {
-    "name": "User 4",
-    "email": "user4@example.com",
-    "pass": "passwordABC",
-    "passConfirm": "passwordABC",
-    "about": "About User 4",
-    "isEmployed": false,
-    "skillsToLearn": [],
-    "skillsLearned": []
-  },
-  {
-    "name": "User 5",
-    "email": "user5@example.com",
-    "pass": "passwordXYZ",
-    "passConfirm": "passwordXYZ",
-    "about": "About User 5",
-    "isEmployed": true,
-    "skillsToLearn": [],
-    "skillsLearned": []
-  },
-  {
-    "name": "admin",
-    "email": "adminemail@me.com",
-    "pass": "pass1221",
-    "passConfirm": "pass1221",
-    "about": "About admin"
-  }
+    {
+        "name": "Mohamed Abo El-Seoud",
+        "email": "mohamed.11021@outlook.com",
+        "pass": "pass1221",
+        "passConfirm": "pass1221",
+        "about": "I'm a MERN web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": true,
+        "photo": "https://skill-sync.onrender.com/users/user-1.jpg",
+        "skillsToLearn": [
+            "6504a75e4a793e6c243cfa15",
+            "6504a75e4a793e6c243cfa13"
+        ],
+        "skillsLearned": [
+            {
+                "skill": "6504a75e4a793e6c243cfa14",
+                "level": "intermediate"
+            }
+        ],
+        "onboarding_completed": true,
+        "active": true
+    },
+    {
+        "name": "Lourdes Browning",
+        "email": "loulou@example.com",
+        "pass": "password456",
+        "passConfirm": "password456",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": false,
+        "photo": "https://skill-sync.onrender.com/users/user-2.jpg",
+        "skillsToLearn": ["6504a75e4a793e6c243cfa14"],
+        "skillsLearned": [
+            {
+                "skill": "6504a75e4a793e6c243cfa15",
+                "level": "intermediate"
+            },
+            {
+                "skill": "6504a75e4a793e6c243cfa13",
+                "level": "beginner"
+            }
+        ],
+        "onboarding_completed": true
+    },
+    {
+        "name": "Leo Gillespie",
+        "email": "leo@example.com",
+        "pass": "password789",
+        "passConfirm": "password789",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": true,
+        "photo": "https://skill-sync.onrender.com/users/user-3.jpg",
+        "skillsToLearn": [
+            "6504a75e4a793e6c243cfa12",
+            "6504a75e4a793e6c243cfa16"
+        ],
+        "skillsLearned": [
+            {
+                "skill": "6504a75e4a793e6c243cfa17",
+                "level": "beginner"
+            }
+        ]
+    },
+    {
+        "name": "Sophie Louise Hart",
+        "email": "sophie@example.com",
+        "pass": "passwordABC",
+        "passConfirm": "passwordABC",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": false,
+        "photo": "https://skill-sync.onrender.com/users/user-4.jpg",
+        "skillsToLearn": ["6504a75e4a793e6c243cfa17"],
+        "skillsLearned": [
+            {
+                "skill": "6504a75e4a793e6c243cfa12",
+                "level": "intermediate"
+            },
+            {
+                "skill": "6504a75e4a793e6c243cfa16",
+                "level": "intermediate"
+            }
+        ],
+        "onboarding_completed": true
+    },
+    {
+        "name": "Cristian Vega",
+        "email": "chris@example.com",
+        "pass": "passwordXYZ",
+        "passConfirm": "passwordXYZ",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": true,
+        "photo": "https://skill-sync.onrender.com/users/user-5.jpg",
+        "skillsToLearn": ["6504a75e4a793e6c243cfa19"],
+        "skillsLearned": [
+            {
+                "skill": "6504a75e4a793e6c243cfa1a",
+                "level": "intermediate"
+            }
+        ],
+        "onboarding_completed": true
+    },
+    {
+        "name": "Steve T. Scaife",
+        "email": "steve@example.com",
+        "pass": "passwordXYZ",
+        "passConfirm": "passwordXYZ",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": true,
+        "photo": "https://skill-sync.onrender.com/users/user-6.jpg",
+        "skillsToLearn": ["6504a75e4a793e6c243cfa1a"],
+        "skillsLearned": [
+            {
+                "skill": "6504a75e4a793e6c243cfa19",
+                "level": "intermediate"
+            },
+            {
+                "skill": "6504a75e4a793e6c243cfa17",
+                "level": "intermediate"
+            }
+        ],
+        "onboarding_completed": true
+    },
+    {
+        "name": "Ayla Cornell",
+        "email": "ayls@example.com",
+        "pass": "passwordXYZ",
+        "passConfirm": "passwordXYZ",
+        "about": "I'm a web developer, i'm a fast learner who loves to learn new things and i'm a hard worker who loves to work on new projects.",
+        "isEmployed": true,
+        "photo": "https://skill-sync.onrender.com/users/user-7.jpg",
+        "skillsToLearn": ["6504a75e4a793e6c243cfa1b"],
+        "skillsLearned": [
+            {
+                "skill": "6504a75e4a793e6c243cfa1f",
+                "level": "intermediate"
+            }
+        ],
+        "onboarding_completed": true
+    },
+    {
+        "role": "admin",
+        "name": "admin",
+        "email": "adminemail@me.com",
+        "pass": "pass1221",
+        "passConfirm": "pass1221",
+        "photo": "https://skill-sync.onrender.com/users/user-8.jpg",
+        "about": "i'm admin and i can do anything i want."
+    }
 ]
