@@ -100,14 +100,14 @@ async function searchForMatch(crossSkill, notToProvide) {
                 results = { found: false, MatchedUserId: null };
                 console.log('no match found', results);
             }
-        }, 500);
+        }, 10 * 1000);
 
         //set time out for searching for match 5 secends (if no match found)
         setTimeout(() => {
             console.log('returning results', results);
             clearInterval(intervalId);
             resolve(results);
-        }, 5 * 1000);
+        }, 30 * 1000);
     });
 }
 
