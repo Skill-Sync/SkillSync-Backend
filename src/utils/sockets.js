@@ -10,13 +10,13 @@ const dyte = require('./dyte');
 // // await client.set('foo', 'bar');
 
 // //----upstash
-const redisClient = createClient({
-    url:
-        'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
-});
+// const redisClient = createClient({
+//     url:
+//         'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
+// });
 
 //-----localhost
-// const redisClient = createClient();
+const redisClient = createClient();
 
 redisClient.on('error', err => console.log('Redis Client Error', err));
 
@@ -195,6 +195,10 @@ const listen = function(io) {
                 const notToProvide = await getMany(
                     `${user._id}/not-to-provide`
                 );
+                console.log(crossSkill);
+                console.log(notToProvide);
+                console.log(`${tag}`, await getMany(tag), 'tag conten');
+                //start ------------------
                 const match = await searchForMatch(crossSkill, notToProvide);
                 if (match.found) {
                     const matchSocketId = await getMany(
@@ -219,7 +223,8 @@ const listen = function(io) {
                         'started'
                     );
                 } else {
-                    while (match.found === false) {
+                    // while (match.found === false ) {
+                    while (true) {
                         const match = await searchForMatch(
                             crossSkill,
                             notToProvide
@@ -246,43 +251,67 @@ const listen = function(io) {
                             state === 'started' ||
                             singleUserState === 'stopped'
                         ) {
+                            console.log(
+                                `${user._id}/${match.MatchedUserId}`,
+                                'buggg'
+                            );
+                            const matchSocketId = await getMany(
+                                `${match.MatchedUserId}`
+                            );
+                            const userSockets = await getMany(`${user._id}`);
+                            const matchedUser = await User.findById(
+                                match.MatchedUserId
+                            );
+                            io.to(socketId)
+                                .to(userSockets)
+                                .to(matchSocketId)
+                                .emit('match-found', {
+                                    user1: matchedUser,
+                                    user2: userInner
+                                });
                             await removeFromSet(tag, `${user._id}`);
                             await removeFromSet(
                                 crossSkill,
                                 `${match.MatchedUserId}`
                             );
-                            console.log(
+                            await setOne(
                                 `${user._id}/${match.MatchedUserId}`,
-                                'buggg'
+                                'started'
                             );
                             break;
                         }
                     }
-                    if (
-                        match.found &&
-                        (await getOne(`${user._id}/${match.MatchedUserId}`)) !==
-                            'started'
-                    ) {
-                        const matchSocketId = await getMany(
-                            `${match.MatchedUserId}`
-                        );
-                        const userSockets = await getMany(`${user._id}`);
-                        const matchedUser = await User.findById(
-                            match.MatchedUserId
-                        );
-                        io.to(socketId)
-                            .to(userSockets)
-                            .to(matchSocketId)
-                            .emit('match-found', {
-                                user1: matchedUser,
-                                user2: userInner
-                            });
-                        await setOne(
-                            `${user._id}/${match.MatchedUserId}`,
-                            'started'
-                        );
-                    }
+
+                    // if (
+                    //     match.found &&
+                    //     (await getOne(`${user._id}/${match.MatchedUserId}`)) !==
+                    //         'started'
+                    // ) {
+                    // const matchSocketId = await getMany(
+                    //     `${match.MatchedUserId}`
+                    // );
+                    // const userSockets = await getMany(`${user._id}`);
+                    // const matchedUser = await User.findById(
+                    //     match.MatchedUserId
+                    // );
+                    // io.to(socketId)
+                    //     .to(userSockets)
+                    //     .to(matchSocketId)
+                    //     .emit('match-found', {
+                    //         user1: matchedUser,
+                    //         user2: userInner
+                    //     });
+                    // await removeFromSet(tag, `${user._id}`);
+                    // await removeFromSet(
+                    //     crossSkill,
+                    //     `${match.MatchedUserId}`
+                    // );
+                    // await setOne(
+                    //     `${user._id}/${match.MatchedUserId}`,
+                    //     'started'
+                    // );
                 }
+                // }
                 // io.to(socketId).emit('dude', { info: { isFuckable: false } });
             } catch (err) {
                 console.log(err.message);
@@ -414,7 +443,10 @@ const listen = function(io) {
         //     console.log(token);
         // });
 
-        socket.on('cancel-search', async function({ userId }) {
+        socket.on('cancel-search', async function({
+            userId,
+            wantedInnerSkill
+        }) {
             try {
                 console.log('hi from cancel-search');
                 // const socketId = this.id;
@@ -422,9 +454,32 @@ const listen = function(io) {
 
                 const state = await getOne(`${userId}/state`);
                 console.log(state);
+                const userInner = await User.findById(userId);
+                const userInnerSkills = userInner.skillsLearned.map(
+                    skillLearned => {
+                        // console.log(skillLearned);
+                        return skillLearned.skill?.name;
+                    }
+                );
+                const tags = createSkills(wantedInnerSkill, userInnerSkills);
+
+                console.log(tags);
 
                 if (state === 'started') {
                     await setOne(`${userId}/state`, 'stopped');
+                    tags.forEach(async tag => {
+                        console.log(
+                            `${tag}`,
+                            await getMany(tag),
+                            'this tag content'
+                        );
+                        await removeFromSet(tag, `${user._id}`);
+                        console.log(
+                            `${tag}`,
+                            await getMany(tag),
+                            'this tag content'
+                        );
+                    });
                 }
             } catch (err) {
                 console.log(err.message);
