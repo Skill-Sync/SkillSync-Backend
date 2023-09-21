@@ -29,10 +29,9 @@
 | Features                          | Description                                                                                                 |
 |----------------------------------|------------------------------------------------------------------------------------------------------|
 | Authentication and  Authorization System   | This feature provides users with login and logout functionality to access the system.                  |
-| Managing & Scheduling Live Sessions      | |
-| Real-Time Matching System        | |
-| Payment system         | |
-| Optimized Feed        | |
+|  Scheduling Live Sessions      | Empower users to request mentorship sessions and provide the option to either accept or decline them. |
+| Real-Time Matching System        | A Real-Time matching system  that connects the two most pertinent individuals in a live session |
+| Optimized Feed        | The platform's feed revolves around user-specific data, ensuring that each user receives personalized mentor suggestions and matching experiences |
 
 
 ## Digrams
@@ -60,14 +59,8 @@ Before using the API, you need to set the variables in Postman depending on your
 - {{URL}} with your hostname as value (Eg. http://127.0.0.1:3000 or http://www.example.com)
 - {{password}} with your user password as value.
 ```
-For more info check API Documentation on Postman 👉 : [Natours API Documentation](https://documenter.getpostman.com/view/8689170/SVmzvwpY?version=latest).
+For more info check API Documentation on Postman 👉 : [Skill-Sync API Documentation](https://documenter.getpostman.com/view/24663115/2s9YC7SWnB).
 
-- Some API End-Points: 
-  - 👉 [Tours List](https://natours-pw5m.onrender.com/api/v1/tours)
-  - 👉 [Tours State](https://natours-pw5m.onrender.com/api/v1/tours/tour-stats)
-  - 👉 [Get Top 5 Cheap Tours](https://natours-pw5m.onrender.com/api/v1/tours/top_5_rated)
-  - 👉 [Get Tours Within Radius](https://natours-pw5m.onrender.com/api/v1/tours/tours-within/200/center/34.098453,-118.096327/unit/mi)
-  - 👉 [Get Tours Plans In Each Month](https://natours-pw5m.onrender.com/api/v1/tours/monthly-plan/2021)
 
 | General Package                  | Description                                      |
 |--------------------------|--------------------------------------------------|
@@ -131,22 +124,8 @@ Security Packages          |  Development Packages
 :-------------------------:|:-------------------------:
 <img width="500px"  src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Security%20Packages.png" />  |<img width="500px" src="https://github.com/Skill-Sync/SkillSync-Backend/blob/master/.github/res/imgs/Development%20Packages.png"  /> <br> we utilize [ESLint](https://eslint.org/) and [Prettier](https://prettier.io/) for formatting and style.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## CI/CD Pipeline
--
+- We have established a continuous deployment pipeline by connecting our two primary branches (develop and master) to Render serverless applications. This setup ensures that we maintain two server instances, the main and the backup, both of which receive a new deployment with each merge into their respective branches.. 
   
 ## Team-Members
 #### BackEnd Team consists of:
