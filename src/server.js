@@ -36,7 +36,7 @@ process.on('uncaughtException', err => {
     console.log(err.name, err.message);
     process.exit(1);
 });
-// //--------------Rejection Handling------------//
+//--------------Rejection Handling------------//
 process.on('unhandledRejection', err => {
     console.log('UNHANDLED REJECTION! 💥 Shutting down...');
     console.log(err.name, err.message);
@@ -46,7 +46,7 @@ process.on('unhandledRejection', err => {
 });
 process.on('SIGTERM', () => {
     console.log('👋 SIGTERM RECEIVED. Shutting down gracefully');
-    server.close(() => {
-        console.log('💥 Process terminated!');
-    });
+    // server.close(() => {
+    //     console.log('💥 Process terminated!');
+    // });
 });
