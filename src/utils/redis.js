@@ -1,13 +1,18 @@
 const { createClient } = require('redis');
 
-const redisConfig =
-    process.env.NODE_ENV === 'production'
-        ? {
-              url: process.env.REDIS_URL
-          }
-        : {};
+// const redisConfig =
+//     process.env.NODE_ENV === 'production'
+//         ? {
+//               url: `${process.env.REDIS_URL}`
+//           }
+//         : {};
 
-const redisClient = createClient(redisConfig);
+const redisClient = createClient({
+    url:
+        'redis://default:145b15782fff4086b23126a3d07305ce@amusing-bulldog-39687.upstash.io:39687'
+});
+
+// const redisClient = createClient();
 
 redisClient.on('error', err => console.log('Redis Client Error', err));
 
