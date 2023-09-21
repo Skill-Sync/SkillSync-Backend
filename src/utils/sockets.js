@@ -217,6 +217,8 @@ const listen = function(io) {
             try {
                 const socketId = this.id;
 
+                console.log(socketId, 'socket');
+
                 const {
                     emitServerRejection,
                     userSocketIds,

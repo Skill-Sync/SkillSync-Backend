@@ -208,7 +208,7 @@ exports.clientRejection = async (userId, MatchedUserId) => {
         const matchSocketIds = await getMany(`${MatchedUserId}`);
         const userSocketIds = await getMany(`${userId}`);
 
-        console.log(matchSocketIds, userSocketIds, socketId);
+        console.log(matchSocketIds, userSocketIds);
 
         return {
             emitServerRejection: true,
