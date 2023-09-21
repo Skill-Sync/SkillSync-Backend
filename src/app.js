@@ -24,7 +24,7 @@ const meetingsRouter = require('./routes/meeting.routes');
 //--------------------------------//
 const app = express();
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
-else app.use(morgan(''));
+else app.use(morgan('dev'));
 
 app.use(cors());
 app.options('*', cors());
