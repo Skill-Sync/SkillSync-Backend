@@ -19,31 +19,46 @@ function getcrossSkill(str) {
 async function searchForMatch(crossSkill, notToProvide) {
     return new Promise(resolve => {
         let results = {};
+
         //set interval for firing the search every 1/2 secend
         const intervalId = setInterval(async () => {
+            //test----------------
             // console.log('searching for match');
+            //--------------------
             const crossSkillUsers = await getMany(crossSkill);
-            //remove any user that is in notToProvide
+            //test----------------
             // console.log(
             //     crossSkillUsers,
             //     'crossSkill',
             //     notToProvide,
             //     'notToProvide'
             // );
+            //--------------------
+
+            //remove any user that is in notToProvide
             crossSkillUsers.filter(user => {
                 if (!notToProvide.includes(user)) {
+                    //test----------------
                     // console.log('user not in notToProvide', user);
+                    //--------------------
                     return user;
                 }
             });
 
+            //test----------------
             // console.log(crossSkillUsers, notToProvide);
+            //--------------------
+
             if (crossSkillUsers.length > 0) {
                 results = { found: true, MatchedUserId: crossSkillUsers[0] };
+                //test----------------
                 // console.log('match found', results);
+                //--------------------
             } else {
                 results = { found: false, MatchedUserId: null };
+                //test----------------
                 // console.log('no match found', results);
+                //--------------------
             }
         }, 1 * 1000);
 
@@ -59,7 +74,9 @@ async function searchForMatch(crossSkill, notToProvide) {
 function createSkills(wantedSkill, userSkills) {
     const userSkillsArray = [...new Set(userSkills)];
     let strings = [];
+    //test----------------
     // console.log(userSkillsArray, wantedSkill);
+    //--------------------
     userSkillsArray.map(skill => {
         strings.push(`${skill}/${wantedSkill}`);
     });
@@ -283,7 +300,8 @@ exports.clientRejection = async (userId, MatchedUserId) => {
     // console.log(status, status1, status2);
     //--------------------
 
-    //if the user/matchedUser session state is started or pending set matching session state to rejected and add the rejected user to the blocked list of the other user
+    //if the user/matchedUser session state is started or pending set matching session state to rejected
+    //and add the rejected user to the blocked list of the other user
     if (status === 'started' || status === 'pending') {
         await setOne(`${userId}/${MatchedUserId}`, 'rejected');
 
@@ -329,6 +347,7 @@ exports.clientCancelation = async (userId, wantedInnerSkill) => {
 
     //create search tags
     const tags = createSkills(wantedInnerSkill, userInnerSkills);
+
     //test----------------
     // console.log(tags);
     //--------------------
@@ -338,8 +357,12 @@ exports.clientCancelation = async (userId, wantedInnerSkill) => {
 
     //remove the user from all tags (skills) matching queues
     tags.forEach(async tag => {
+        //test----------------
         // console.log(`${tag}`, await getMany(tag), 'this tag content');
+        //--------------------
         await removeFromSet(tag, `${userInner._id}`);
+        //test----------------
         // console.log(`${tag}`, await getMany(tag), 'this tag content');
+        //--------------------
     });
 };
