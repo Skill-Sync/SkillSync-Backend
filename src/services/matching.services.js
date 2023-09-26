@@ -68,21 +68,29 @@ function createSkills(wantedSkill, userSkills) {
 
 exports.findMatch = async (userId, wantedInnerSkill, userSocketId) => {
     const userInner = await User.findById(userId);
-    //test
+    //test----------------
     // console.log(userInner);
+    //--------------------
     const userInnerSkills = userInner.skillsLearned.map(skillLearned => {
+        //test----------------
         // console.log(skillLearned);
+        //--------------------
         return skillLearned.skill?.name;
     });
-    //test
+    //test----------------
     // console.log(userInnerSkills);
+    //--------------------
+    //setting the user session state to started
     await setOne(`${userInner._id}/state`, 'started');
+    //preseting the user socket id in redis
     await setMany([`${userInner._id}`], `${userSocketId}`);
-    // await setMany([`${userInner._id}/not-to-provide`], 'Starter');
     // 4- create search tags
     const tags = createSkills(wantedInnerSkill, userInnerSkills);
+    //test----------------
     // console.log(tags);
     // console.log(await getMany(tags[0]));
+    //--------------------
+    //setting the user tags in redis with initial  user id value of first user to have this skill tag
     await setMany(tags, `${userInner._id}`);
     // 5- search for match
     // console.log(tags, '-------------------tags');
@@ -120,6 +128,7 @@ exports.findMatch = async (userId, wantedInnerSkill, userSocketId) => {
             await setOne(`${userInner._id}/${match.MatchedUserId}`, 'started');
             await setOne(`${userInner._id}/state`, 'found');
             await setOne(`${matchedUser._id}/state`, 'found');
+
             return {
                 emitMatchFound: true,
                 matchedUser,
@@ -135,18 +144,18 @@ exports.clinetApproval = async (userId, MatchedUserId) => {
     const user = await User.findById(userId);
     const matchedUser = await User.findById(MatchedUserId);
 
-    console.log('hi from global approval');
+    // console.log('hi from global approval');
 
     const status1 = await getOne(`${userId}/${MatchedUserId}`);
     const status2 = await getOne(`${MatchedUserId}/${userId}`);
     const status = status1 || status2;
 
-    console.log(status, status1, status2, 'status');
+    // console.log(status, status1, status2, 'status');
     if (status === 'started') {
-        console.log('hi from started');
+        // console.log('hi from started');
         await setOne(`${userId}/${MatchedUserId}`, 'pending');
     } else if (status === 'pending') {
-        console.log('hi from pending');
+        // console.log('hi from pending');
         await setOne(`${userId}/${MatchedUserId}`, 'approved');
 
         // console.log(this.id);
@@ -185,7 +194,7 @@ exports.clinetApproval = async (userId, MatchedUserId) => {
 };
 
 exports.clientRejection = async (userId, MatchedUserId) => {
-    console.log('hi from global rejection');
+    // console.log('hi from global rejection');
     // const socketId = this.id;
 
     const user = await User.findById(userId);
@@ -196,7 +205,7 @@ exports.clientRejection = async (userId, MatchedUserId) => {
     const status = status1 || status2;
 
     // console.log(socketId);
-    console.log(status, status1, status2);
+    // console.log(status, status1, status2);
 
     if (status === 'started' || status === 'pending') {
         await setOne(`${userId}/${MatchedUserId}`, 'rejected');
@@ -208,7 +217,7 @@ exports.clientRejection = async (userId, MatchedUserId) => {
         const matchSocketIds = await getMany(`${MatchedUserId}`);
         const userSocketIds = await getMany(`${userId}`);
 
-        console.log(matchSocketIds, userSocketIds);
+        // console.log(matchSocketIds, userSocketIds);
 
         return {
             emitServerRejection: true,
@@ -222,7 +231,7 @@ exports.clientRejection = async (userId, MatchedUserId) => {
 };
 
 exports.clientCancelation = async (userId, wantedInnerSkill) => {
-    console.log('hi from cancel-search');
+    // console.log('hi from cancel-search');
 
     // const state = await getOne(`${userId}/state`);
     // console.log(state);
@@ -235,6 +244,7 @@ exports.clientCancelation = async (userId, wantedInnerSkill) => {
     // console.log(tags);
 
     await setOne(`${userId}/state`, 'stopped');
+
     tags.forEach(async tag => {
         // console.log(`${tag}`, await getMany(tag), 'this tag content');
         await removeFromSet(tag, `${userInner._id}`);
