@@ -67,45 +67,60 @@ function createSkills(wantedSkill, userSkills) {
 }
 
 exports.findMatch = async (userId, wantedInnerSkill, userSocketId) => {
+    //get the user
     const userInner = await User.findById(userId);
+
     //test----------------
     // console.log(userInner);
     //--------------------
+
     const userInnerSkills = userInner.skillsLearned.map(skillLearned => {
         //test----------------
         // console.log(skillLearned);
         //--------------------
         return skillLearned.skill?.name;
     });
+
     //test----------------
     // console.log(userInnerSkills);
     //--------------------
+
     //setting the user session state to started
     await setOne(`${userInner._id}/state`, 'started');
+
     //preseting the user socket id in redis
     await setMany([`${userInner._id}`], `${userSocketId}`);
+
     // 4- create search tags
     const tags = createSkills(wantedInnerSkill, userInnerSkills);
+
     //test----------------
     // console.log(tags);
     // console.log(await getMany(tags[0]));
     //--------------------
+
     //setting the user tags in redis with initial  user id value of first user to have this skill tag
     await setMany(tags, `${userInner._id}`);
+
     //test----------------
     // console.log(tags, 'tags');
     //--------------------
+
     //start searching for match for only the first user skill tag
     const tag = tags[0];
+
     //get the opposite skill tag to match with the first user skill tag
     const crossSkill = getcrossSkill(tag);
+
     //get the not to provide list (a list of all rejected users) of user
     const notToProvide = await getMany(`${userInner._id}/not-to-provide`);
+
     //test----------------
     // console.log(crossSkill);
     // console.log(notToProvide);
     // console.log(`${tag}`, await getMany(tag), 'tag conten');
     //--------------------
+
     //start searching for match as long as the user session state is not stopped or found
     while (true) {
         const match = await searchForMatch(crossSkill, notToProvide);
@@ -123,8 +138,12 @@ exports.findMatch = async (userId, wantedInnerSkill, userSocketId) => {
 
         //if the user session state is stopped or found
         if (singleUserState === 'stopped' || singleUserState === 'found') {
-            console.log('hi from stopped or found');
+            //test----------------
+            //console.log('hi from stopped or found');
+            //--------------------
+
             return { emitMatchFound: false };
+
             //if the user/matchedUser session state is stated
         } else if (match.found || state === 'started') {
             //test----------------
@@ -134,10 +153,13 @@ exports.findMatch = async (userId, wantedInnerSkill, userSocketId) => {
             //     'buggg'
             // );
             //--------------------
+
             //get the socket id of the matched user
             const matchSocketId = await getMany(`${match.MatchedUserId}`);
+
             //get the socket ids of the user
             const userSockets = await getMany(`${userInner._id}`);
+
             //get the matched user
             const matchedUser = await User.findById(match.MatchedUserId);
 
@@ -205,6 +227,7 @@ exports.clinetApproval = async (userId, MatchedUserId) => {
 
         //get the socket ids of the matched user
         const matchSocketIds = await getMany(`${MatchedUserId}`);
+
         //get the socket ids of the user
         const userSocketIds = await getMany(`${userId}`);
 
@@ -246,6 +269,7 @@ exports.clientRejection = async (userId, MatchedUserId) => {
 
     //get the user
     const user = await User.findById(userId);
+
     //get the matched user
     const matchedUser = await User.findById(MatchedUserId);
 
@@ -269,6 +293,7 @@ exports.clientRejection = async (userId, MatchedUserId) => {
 
         //get the socket ids of the matched user
         const matchSocketIds = await getMany(`${MatchedUserId}`);
+
         //get the socket ids of the user
         const userSocketIds = await getMany(`${userId}`);
 
@@ -288,20 +313,30 @@ exports.clientRejection = async (userId, MatchedUserId) => {
 };
 
 exports.clientCancelation = async (userId, wantedInnerSkill) => {
+    //test----------------
     // console.log('hi from cancel-search');
-
     // const state = await getOne(`${userId}/state`);
     // console.log(state);
+    //--------------------
+
+    //get the user
     const userInner = await User.findById(userId);
+
+    //get all user learned skills
     const userInnerSkills = userInner.skillsLearned.map(skillLearned => {
         return skillLearned.skill?.name;
     });
+
+    //create search tags
     const tags = createSkills(wantedInnerSkill, userInnerSkills);
-
+    //test----------------
     // console.log(tags);
+    //--------------------
 
+    //set the user session state to stopped
     await setOne(`${userId}/state`, 'stopped');
 
+    //remove the user from all tags (skills) matching queues
     tags.forEach(async tag => {
         // console.log(`${tag}`, await getMany(tag), 'this tag content');
         await removeFromSet(tag, `${userInner._id}`);
