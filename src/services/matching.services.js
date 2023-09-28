@@ -230,7 +230,8 @@ exports.clinetApproval = async (userId, MatchedUserId) => {
         //--------------------
         await redis.setOne(`${userId}/${MatchedUserId}`, 'pending');
 
-        //if the user/matchedUser session state is pending set matching session state to approved and create meeting then add the two participant to meeting
+        //if the user/matchedUser session state is pending set matching session state to approved
+        //and create meeting then add the two participant to meeting
     } else if (status === 'pending') {
         //test----------------
         // console.log('hi from pending');
