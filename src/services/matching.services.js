@@ -56,7 +56,9 @@ async function searchForMatch(crossSkill, notToProvide) {
 
         //set time out for searching for match 5 secends (if no match found)
         setTimeout(() => {
-            console.log('returning results', results);
+            //test----------------
+            // console.log('returning results', results);
+            //--------------------
             clearInterval(intervalId);
             resolve(results);
         }, 5 * 1000);
